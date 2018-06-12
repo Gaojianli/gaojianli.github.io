@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>高渐离の屋</title>
+  
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://us.gaojianli.tk/"/>
+  <updated>2018-06-12T09:37:17.383Z</updated>
+  <id>https://us.gaojianli.tk/</id>
+  
+  <author>
+    <name>Gaojianli</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>写在前面</title>
+    <link href="https://us.gaojianli.tk/2018/06/12/%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2/"/>
+    <id>https://us.gaojianli.tk/2018/06/12/写在前面/</id>
+    <published>2018-06-12T09:33:05.000Z</published>
+    <updated>2018-06-12T09:37:17.383Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;思前想后，看见大家都有了，我还是开一个博客吧。&lt;br&gt;之前一直懒得弄的原因是担心自己没有动力去写文章。但是，怎么说呢，完事开头难，人家&lt;a
+        
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+</feed>
