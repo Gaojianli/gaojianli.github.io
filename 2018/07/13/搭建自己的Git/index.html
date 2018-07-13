@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="树莓派,Web,服务器," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="高渐离の屋" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="前言事情的起因非常简单，得益于某位校长的功劳，我的网络访问Github奇慢无比，最近甚至出现了push失败的情况，我连博客都没法好好更新了！（说的好像你更新得很多一样）嘛，正好潇在给我孜孜不倦地推荐Gitea，我就来试试在树莓派上搭建一下吧。首先我们来看官方文档：  易安装您除了可以根据操作系统平台通过 二进制运行，还可以通过 Docker 或 Vagrant，以及 包管理 安装。  嚯，挺厉害嘛">
+<meta name="keywords" content="树莓派,Web,服务器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建自己的Git">
+<meta property="og:url" content="https://us.gaojianli.tk/2018/07/13/搭建自己的Git/index.html">
+<meta property="og:site_name" content="高渐离の屋">
+<meta property="og:description" content="前言事情的起因非常简单，得益于某位校长的功劳，我的网络访问Github奇慢无比，最近甚至出现了push失败的情况，我连博客都没法好好更新了！（说的好像你更新得很多一样）嘛，正好潇在给我孜孜不倦地推荐Gitea，我就来试试在树莓派上搭建一下吧。首先我们来看官方文档：  易安装您除了可以根据操作系统平台通过 二进制运行，还可以通过 Docker 或 Vagrant，以及 包管理 安装。  嚯，挺厉害嘛">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-07-13T10:06:10.238Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="搭建自己的Git">
+<meta name="twitter:description" content="前言事情的起因非常简单，得益于某位校长的功劳，我的网络访问Github奇慢无比，最近甚至出现了push失败的情况，我连博客都没法好好更新了！（说的好像你更新得很多一样）嘛，正好潇在给我孜孜不倦地推荐Gitea，我就来试试在树莓派上搭建一下吧。首先我们来看官方文档：  易安装您除了可以根据操作系统平台通过 二进制运行，还可以通过 Docker 或 Vagrant，以及 包管理 安装。  嚯，挺厉害嘛">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://us.gaojianli.tk/2018/07/13/搭建自己的Git/"/>
+
+
+
+
+
+  <title>搭建自己的Git | 高渐离の屋</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">高渐离の屋</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://us.gaojianli.tk/2018/07/13/搭建自己的Git/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gaojianli">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="高渐离の屋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">搭建自己的Git</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-13T14:44:25+08:00">
+                2018-07-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,698字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>事情的起因非常简单，得益于某位校长的功劳，我的网络访问Github奇慢无比，最近甚至出现了push失败的情况，我连博客都没法好好更新了！<del><b>（说的好像你更新得很多一样）</b></del><br>嘛，正好潇在给我孜孜不倦地推荐<a href="https://gitea.io" target="_blank" rel="noopener">Gitea</a>，我就来试试在树莓派上搭建一下吧。<br>首先我们来看官方文档：</p>
+<blockquote>
+<p>易安装<br>您除了可以根据操作系统平台通过 二进制运行，还可以通过 Docker 或 Vagrant，以及 包管理 安装。</p>
+</blockquote>
+<p>嚯，挺厉害嘛，那就图个省事，用Docker安装吧。然而这之后我才知道，这是地狱的开始。</p>
+<h2 id="Docker试探"><a href="#Docker试探" class="headerlink" title="Docker试探"></a>Docker试探</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>官方的教程非常的简单，<del>看起来就和能用一样</del></p>
+<blockquote>
+<p>我们在 Docker Hub 的 Gitea 组织中提供了自动更新的 Docker 镜像，它会保持最新的稳定版。你也可以用其它 Docker 服务来更新。首先你需要pull镜像：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker pull gitea/gitea:latest</span><br><span class="line">sudo mkdir -p /var/lib/gitea <span class="comment">//如果要将git和其它数据持久化，你需要创建一个目录来作为数据存储的地方</span></span><br><span class="line">docker run -d --name=gitea -p <span class="number">10022</span>:<span class="number">22</span> -p <span class="number">10080</span>:<span class="number">3000</span> -v /var/lib/gitea:/data gitea/gitea:latest <span class="comment">//然后就可以运行 docker 容器了，这很简单。 当然你需要定义端口数数据目录：</span></span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>这时候我才发现我根本就没有安装docker，赶紧apt解决：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install docker</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>然后开始pull，这时又要忍受国内网络的龟速：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">docker pull gitea/gitea:latest</span><br><span class="line">latest: Pulling from gitea/gitea</span><br><span class="line">911c6d0c7995: Pull complete</span><br><span class="line">fe8708a98e1d: Pull complete</span><br><span class="line">754e5dc9c218: Pull complete</span><br><span class="line">99ffba26b3d3: Pull complete</span><br><span class="line">ee04a0c4cde1: Pull complete</span><br><span class="line">78a8e5235d3e: Pull complete</span><br><span class="line">Digest: sha256:6f28b3e5127f29f614b765738cf5e4d673b1a0762d42c095323433c26eef779d</span><br><span class="line">Status: Downloaded newer image for gitea/gitea:latest</span><br></pre></td></tr></table></figure></p>
+<h3 id="受阻"><a href="#受阻" class="headerlink" title="受阻"></a>受阻</h3><p>尝试运行一下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># root @ rasp in ~ [14:46:44]</span><br><span class="line">$ docker run -d --name=gitea -p 10022:22 -p 10080:3000 -v /mnt/disk/Git:/data gitea/gitea:latest</span><br><span class="line">ee43cb4883e4d6e75f0eea1c8b90988880c1569b7088bc1f072274f2a2eaf4dc</span><br></pre></td></tr></table></figure></p>
+<p>没有回显，不过还是先看看容器跑起来没有:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># root @ rasp in ~ [14:46:54]</span><br><span class="line">$ docker logs gitea</span><br><span class="line">standard_init_linux.go:185: exec user process caused &quot;exec format error&quot;</span><br></pre></td></tr></table></figure></p>
+<p>喵喵喵？这尼玛是啥？看起来好像是可执行文件架构不对。。</p>
+<h3 id="原因分析"><a href="#原因分析" class="headerlink" title="原因分析"></a>原因分析</h3><p>总之先inspect一下吧<br><figure class="highlight plain"><figcaption><span>root @ rasp in ~ [14:55:17]</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker inspect gitea/gitea:latest</span><br></pre></td></tr></table></figure></p>
+<p>得到如下结果:<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">"Id"</span>: <span class="string">"sha256:67ff9596dc004fdbbd87289f854ef8fb2920ab66621155117f618290457f42c9"</span>,</span><br><span class="line">        <span class="attr">"RepoTags"</span>: [</span><br><span class="line">            <span class="string">"gitea/gitea:latest"</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="attr">"RepoDigests"</span>: [</span><br><span class="line">            <span class="string">"gitea/gitea@sha256:6f28b3e5127f29f614b765738cf5e4d673b1a0762d42c095323433c26eef779d"</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="attr">"Parent"</span>: <span class="string">""</span>,</span><br><span class="line">        <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">        <span class="attr">"Created"</span>: <span class="string">"2018-07-12T14:14:03.941666864Z"</span>,</span><br><span class="line">        <span class="attr">"Container"</span>: <span class="string">"9c524fa2972be8a9c2e777219e07bdb23c8a21a18cff8d7884f2df6c95795948"</span>,</span><br><span class="line">        <span class="attr">"ContainerConfig"</span>: &#123;</span><br><span class="line">            <span class="attr">"Hostname"</span>: <span class="string">"9c524fa2972b"</span>,</span><br><span class="line">            <span class="attr">"Domainname"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"User"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"AttachStdin"</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">"AttachStdout"</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">"AttachStderr"</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">"ExposedPorts"</span>: &#123;</span><br><span class="line">                <span class="attr">"22/tcp"</span>: &#123;&#125;,</span><br><span class="line">                <span class="attr">"3000/tcp"</span>: &#123;&#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">"Tty"</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">"OpenStdin"</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">"StdinOnce"</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">"Env"</span>: [</span><br><span class="line">                <span class="string">"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"</span>,</span><br><span class="line">                <span class="string">"USER=git"</span>,</span><br><span class="line">                <span class="string">"GITEA_CUSTOM=/data/gitea"</span></span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">"Cmd"</span>: [</span><br><span class="line">                <span class="string">"/bin/sh"</span>,</span><br><span class="line">                <span class="string">"-c"</span>,</span><br><span class="line">                <span class="string">"#(nop) "</span>,</span><br><span class="line">                <span class="string">"LABEL org.label-schema.build-date=2018-07-12T14:11:41Z org.label-schema.vcs-ref=659bc727bd12bf219d80d38d8b634bd578ddb84f org.label-schema.vcs-url=https://github.com/go-gitea/gitea.git"</span></span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">"ArgsEscaped"</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="attr">"Image"</span>: <span class="string">"sha256:5789f396c54923dbf5643737a149337f5fc0c1fd0cc186f41ecc30c96b300e9a"</span>,</span><br><span class="line">            <span class="attr">"Volumes"</span>: &#123;</span><br><span class="line">                <span class="attr">"/data"</span>: &#123;&#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">"WorkingDir"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Entrypoint"</span>: [</span><br><span class="line">                <span class="string">"/usr/bin/entrypoint"</span></span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">"OnBuild"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Labels"</span>: &#123;</span><br><span class="line">                <span class="attr">"maintainer"</span>: <span class="string">"maintainers@gitea.io"</span>,</span><br><span class="line">                <span class="attr">"org.label-schema.build-date"</span>: <span class="string">"2018-07-12T14:11:41Z"</span>,</span><br><span class="line">                <span class="attr">"org.label-schema.vcs-ref"</span>: <span class="string">"659bc727bd12bf219d80d38d8b634bd578ddb84f"</span>,</span><br><span class="line">                <span class="attr">"org.label-schema.vcs-url"</span>: <span class="string">"https://github.com/go-gitea/gitea.git"</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"DockerVersion"</span>: <span class="string">"17.12.0-ce"</span>,</span><br><span class="line">        <span class="attr">"Author"</span>: <span class="string">""</span>,</span><br><span class="line">        <span class="attr">"Config"</span>: &#123;</span><br><span class="line">            <span class="attr">"Hostname"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Domainname"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"User"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"AttachStdin"</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">"AttachStdout"</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">"AttachStderr"</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">"ExposedPorts"</span>: &#123;</span><br><span class="line">                <span class="attr">"22/tcp"</span>: &#123;&#125;,</span><br><span class="line">                <span class="attr">"3000/tcp"</span>: &#123;&#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">"Tty"</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">"OpenStdin"</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">"StdinOnce"</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">"Env"</span>: [</span><br><span class="line">                <span class="string">"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"</span>,</span><br><span class="line">                <span class="string">"USER=git"</span>,</span><br><span class="line">                <span class="string">"GITEA_CUSTOM=/data/gitea"</span></span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">"Cmd"</span>: [</span><br><span class="line">                <span class="string">"/bin/s6-svscan"</span>,</span><br><span class="line">                <span class="string">"/etc/s6"</span></span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">"ArgsEscaped"</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="attr">"Image"</span>: <span class="string">"sha256:5789f396c54923dbf5643737a149337f5fc0c1fd0cc186f41ecc30c96b300e9a"</span>,</span><br><span class="line">            <span class="attr">"Volumes"</span>: &#123;</span><br><span class="line">                <span class="attr">"/data"</span>: &#123;&#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">"WorkingDir"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Entrypoint"</span>: [</span><br><span class="line">                <span class="string">"/usr/bin/entrypoint"</span></span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">"OnBuild"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Labels"</span>: &#123;</span><br><span class="line">                <span class="attr">"maintainer"</span>: <span class="string">"maintainers@gitea.io"</span>,</span><br><span class="line">                <span class="attr">"org.label-schema.build-date"</span>: <span class="string">"2018-07-12T14:11:41Z"</span>,</span><br><span class="line">                <span class="attr">"org.label-schema.vcs-ref"</span>: <span class="string">"659bc727bd12bf219d80d38d8b634bd578ddb84f"</span>,</span><br><span class="line">                <span class="attr">"org.label-schema.vcs-url"</span>: <span class="string">"https://github.com/go-gitea/gitea.git"</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"Architecture"</span>: <span class="string">"amd64"</span>,</span><br><span class="line">        <span class="attr">"Os"</span>: <span class="string">"linux"</span>,</span><br><span class="line">        <span class="attr">"Size"</span>: <span class="number">75448364</span>,</span><br><span class="line">        <span class="attr">"VirtualSize"</span>: <span class="number">75448364</span>,</span><br><span class="line">        <span class="attr">"GraphDriver"</span>: &#123;</span><br><span class="line">            <span class="attr">"Data"</span>: &#123;</span><br><span class="line">                <span class="attr">"LowerDir"</span>: <span class="string">"/var/lib/docker/overlay2/9fce26ccc4b7e0aefe663ecb165615aadda2d2437b3ab7cafab599de5d055736/diff:/var/lib/docker/overlay2/a0cf2ef094b8fb958037aff40de9cf54cd2c1be580fbe2fe592b5839e1a08cd5/diff:/var/lib/docker/overlay2/29e0cfce429c5eba2e674761d6a27dc914a2432a5b87c4eb7168623f62f0ed35/diff:/var/lib/docker/overlay2/b37847000ccdd55f5acd0ea549f16073da142458dd7e1cc1487d5ce2ea944611/diff:/var/lib/docker/overlay2/c1e252414cf059e505f719e559a35d5635608c136cdac00bce2ecba73dbf5111/diff"</span>,</span><br><span class="line">                <span class="attr">"MergedDir"</span>: <span class="string">"/var/lib/docker/overlay2/196a454e1b7f7f5f0424e1afefd7a5b1b07edce529dca3f5b8a6a591f51de02f/merged"</span>,</span><br><span class="line">                <span class="attr">"UpperDir"</span>: <span class="string">"/var/lib/docker/overlay2/196a454e1b7f7f5f0424e1afefd7a5b1b07edce529dca3f5b8a6a591f51de02f/diff"</span>,</span><br><span class="line">                <span class="attr">"WorkDir"</span>: <span class="string">"/var/lib/docker/overlay2/196a454e1b7f7f5f0424e1afefd7a5b1b07edce529dca3f5b8a6a591f51de02f/work"</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">"Name"</span>: <span class="string">"overlay2"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"RootFS"</span>: &#123;</span><br><span class="line">            <span class="attr">"Type"</span>: <span class="string">"layers"</span>,</span><br><span class="line">            <span class="attr">"Layers"</span>: [</span><br><span class="line">                <span class="string">"sha256:717b092b8c86356cf976d9c83fa6f0ea67f2bf3148a5bbb7e02026a5d3245e68"</span>,</span><br><span class="line">                <span class="string">"sha256:0c8bc7fe995df099706fa9de6efe8780873009fa9bd88c1d061a9da42208ce3d"</span>,</span><br><span class="line">                <span class="string">"sha256:934a2cc01616c95aceffe2f7c906d0608e3d3e69d6c315e6b35980138b72bfa6"</span>,</span><br><span class="line">                <span class="string">"sha256:13f47d251abf8fb04b518a7f78a626d3aa8edd19690cec8158972ad6297866a7"</span>,</span><br><span class="line">                <span class="string">"sha256:5e395242ed599a17ffa4225218344a6ac2c336ba774be69ef59d5a4323f0a1e9"</span>,</span><br><span class="line">                <span class="string">"sha256:dd6e07b2f31502448541c62eb16a27958f3a8cb91fafa8010961a72b209ccc43"</span></span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"Metadata"</span>: &#123;</span><br><span class="line">            <span class="attr">"LastTagTime"</span>: <span class="string">"0001-01-01T00:00:00Z"</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<p>进入到LowerDir看一下？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># root @ rasp in /var/lib/docker/overlay2/9fce26ccc4b7e0aefe663ecb165615aadda2d2437b3ab7cafab599de5d055736/diff/app/gitea [15:18:01]</span><br><span class="line">$ ls</span><br><span class="line">gitea</span><br></pre></td></tr></table></figure></p>
+<p>只有一个执行文件，这时候需要请出file大法了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># root @ rasp in /var/lib/docker/overlay2/9fce26ccc4b7e0aefe663ecb165615aadda2d2437b3ab7cafab599de5d055736/diff/app/gitea [15:18:02]</span><br><span class="line">$ file gitea</span><br><span class="line">gitea: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-musl-x86_64.so.1, stripped</span><br></pre></td></tr></table></figure></p>
+<p>やっぱり！™这个文档谁写的！头伸过来，看我不来给你加个bug，你写这个文档的时候就没考虑过其他架构的CPU的感受么！你是不是看不起ARM！！</p>
+<h3 id="最后的挣扎"><a href="#最后的挣扎" class="headerlink" title="最后的挣扎"></a>最后的挣扎</h3><p>嘛，既然这样了，摆在我面前也就三条路:</p>
+<ol>
+<li>制作基于ARM64的docker容器</li>
+<li>放弃docker</li>
+<li>玩一些骚操作<br>首先看看骚操作，既然它的运行依靠的是单文件，那我如果下载arm64的二进制文件手动替换，不就可以运行了么？<br>但是事实狠狠的打了我的脸，前面的替换进行地很顺利，直到…<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">root@rasp:/var/lib/docker/overlay2# cd b37847000ccdd55f5acd0ea549f16073da142458dd7e1cc1487d5ce2ea944611/diff/bin/</span><br><span class="line">root@rasp:/var/lib/docker/overlay2/b37847000ccdd55f5acd0ea549f16073da142458dd7e1cc1487d5ce2ea944611/diff/bin# ls</span><br><span class="line">background        fdreserve     multisubstitute             s6-fdholder-list           s6-ipcserver               s6-svlisten1</span><br><span class="line">backtick          fdswap        pipeline                    s6-fdholder-listc          s6-ipcserver-access        s6-svok</span><br><span class="line">bash              forbacktickx  piperw                      s6-fdholder-retrieve       s6-ipcserverd              s6-svscan</span><br><span class="line">bashbug           foreground    redirfd                     s6-fdholder-retrievec      s6-ipcserver-socketbinder  s6-svscanctl</span><br><span class="line">cd                forstdin      runblock                    s6-fdholder-setdump        s6lockd                    s6-svstat</span><br><span class="line">define            forx          s6-accessrules-cdb-from-fs  s6-fdholder-setdumpc       s6-log                     s6-svwait</span><br><span class="line">dollarat          getcwd        s6-accessrules-fs-from-cdb  s6-fdholder-store          s6-mkfifodir               s6-tai64n</span><br><span class="line">elgetopt          getpid        s6-applyuidgid              s6-fdholder-storec         s6-notifyoncheck           s6-tai64nlocal</span><br><span class="line">elgetpositionals  heredoc       s6-cleanfifodir             s6-fdholder-transferdump   s6-setlock                 shift</span><br><span class="line">elglob            homeof        s6-connlimit                s6-fdholder-transferdumpc  s6-setsid                  trap</span><br><span class="line">emptyenv          if            s6-envdir                   s6-fghack                  s6-setuidgid               tryexec</span><br><span class="line">exec              ifelse        s6-envuidgid                s6-ftrig-listen            s6-softlimit               ucspilogd</span><br><span class="line">execlineb         ifte          s6-fdholderd                s6-ftrig-listen1           s6-sudo                    umask</span><br><span class="line">exit              ifthenelse    s6-fdholder-daemon          s6-ftrig-notify            s6-sudoc                   unexport</span><br><span class="line">export            import        s6-fdholder-delete          s6-ftrigrd                 s6-sudod                   wait</span><br><span class="line">fdblock           importas      s6-fdholder-deletec         s6-ftrig-wait              s6-supervise               withstdinas</span><br><span class="line">fdclose           loopwhilex    s6-fdholder-getdump         s6-ioconnect               s6-svc</span><br><span class="line">fdmove            multidefine   s6-fdholder-getdumpc        s6-ipcclient               s6-svlisten</span><br><span class="line">root@rasp:/var/lib/docker/overlay2/b37847000ccdd55f5acd0ea549f16073da142458dd7e1cc1487d5ce2ea944611/diff/bin# file bash</span><br><span class="line">bash: ELF 64-bit LSB pie executable x86-64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-musl-x86_64.so.1, stripped</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><strong>惹不起，惹不起，告辞！</strong><br>至于编译，我实在不想弄，理由如下：<br>首先，有了上次编译驱动的经历之后，我是再也不想在树莓派上编译任何东西了。且不说CPU的弱鸡，光是内存不足就足够你喝一壶的。至于交叉编译？不好意思，编译之神Baymax持续掉线中。</p>
+<h2 id="二进制安装"><a href="#二进制安装" class="headerlink" title="二进制安装"></a>二进制安装</h2><p>那就只有来二进制文件了。<br>嘛，这个就没啥说的了，直接参照<a href="https://docs.gitea.io/en-us/install-from-binary/" target="_blank" rel="noopener">官方教程</a>就好了。<br>配置文件随便根据官网改改就好，这里就不贴出来。</p>
+<h2 id="最终效果"><a href="#最终效果" class="headerlink" title="最终效果"></a>最终效果</h2><p><a href="https://git.gaojianli.tk" target="_blank" rel="noopener">Gitea</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/树莓派/" rel="tag"># 树莓派</a>
+          
+            <a href="/tags/Web/" rel="tag"># Web</a>
+          
+            <a href="/tags/服务器/" rel="tag"># 服务器</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/28/微软Insider-DevTour小记/" rel="next" title="微软Insider DevTour小记">
+                <i class="fa fa-chevron-left"></i> 微软Insider DevTour小记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Gaojianli" />
+            
+              <p class="site-author-name" itemprop="name">Gaojianli</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Gaojianli" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:823805669hehe@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://byrio.org/" title="BYRIO" target="_blank">BYRIO</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.xice.cf/" title="Xice's Note" target="_blank">Xice's Note</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://beardic.cn/" title="Dict Xiong" target="_blank">Dict Xiong</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker试探"><span class="nav-number">2.</span> <span class="nav-text">Docker试探</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">2.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#受阻"><span class="nav-number">2.2.</span> <span class="nav-text">受阻</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原因分析"><span class="nav-number">2.3.</span> <span class="nav-text">原因分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后的挣扎"><span class="nav-number">2.4.</span> <span class="nav-text">最后的挣扎</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二进制安装"><span class="nav-number">3.</span> <span class="nav-text">二进制安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最终效果"><span class="nav-number">4.</span> <span class="nav-text">最终效果</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gaojianli</span>
+
+  
+</div>
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

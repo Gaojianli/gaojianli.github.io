@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://us.gaojianli.tk/"/>
-  <updated>2018-06-29T05:50:42.364Z</updated>
+  <updated>2018-07-13T10:06:10.238Z</updated>
   <id>https://us.gaojianli.tk/</id>
   
   <author>
@@ -15,6 +15,37 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>搭建自己的Git</title>
+    <link href="https://us.gaojianli.tk/2018/07/13/%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84Git/"/>
+    <id>https://us.gaojianli.tk/2018/07/13/搭建自己的Git/</id>
+    <published>2018-07-13T06:44:25.000Z</published>
+    <updated>2018-07-13T10:06:10.238Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;事情的起因非常简单，得益于某位校长的功劳，我的网络访问Github奇慢无比，最近甚至出现了push失败的情况，我连博客都没法好好更新了！&lt;del&gt;&lt;b&gt;（说的好像你更新得很多一样）&lt;/b&gt;&lt;/del&gt;&lt;br&gt;嘛，正好潇在给我孜孜不倦地推荐&lt;a href=&quot;https://gitea.io&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Gitea&lt;/a&gt;，我就来试试在树莓派上搭建一下吧。&lt;br&gt;首先我们来看官方文档：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;易安装&lt;br&gt;您除了可以根据操作系统平台通过 二进制运行，还可以通过 Docker 或 Vagrant，以及 包管理 安装。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;嚯，挺厉害嘛，那就图个省事，用Docker安装吧。然而这之后我才知道，这是地狱的开始。&lt;/p&gt;
+&lt;h2 id=&quot;Docker试探&quot;&gt;&lt;a href=&quot;#Docker试探&quot; class=&quot;headerlink&quot; title=&quot;Docker试探&quot;&gt;&lt;/a&gt;Docker试探&lt;/h2&gt;&lt;h3 id=&quot;安装&quot;&gt;&lt;a href=&quot;#安装&quot; class=&quot;headerlink&quot; title=&quot;安装&quot;&gt;&lt;/a&gt;安装&lt;/h3&gt;&lt;p&gt;官方的教程非常的简单，&lt;del&gt;看起来就和能用一样&lt;/del&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;我们在 Docker Hub 的 Gitea 组织中提供了自动更新的 Docker 镜像，它会保持最新的稳定版。你也可以用其它 Docker 服务来更新。首先你需要pull镜像：&lt;br&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;docker pull gitea/gitea:latest&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;sudo mkdir -p /var/lib/gitea &lt;span class=&quot;comment&quot;&gt;//如果要将git和其它数据持久化，你需要创建一个目录来作为数据存储的地方&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;docker run -d --name=gitea -p &lt;span class=&quot;number&quot;&gt;10022&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;22&lt;/span&gt; -p &lt;span class=&quot;number&quot;&gt;10080&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;3000&lt;/span&gt; -v /var/lib/gitea:/data gitea/gitea:latest &lt;span class=&quot;comment&quot;&gt;//然后就可以运行 docker 容器了，这很简单。 当然你需要定义端口数数据目录：&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这时候我才发现我根本就没有安装docker，赶紧apt解决：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;apt install docker&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="树莓派" scheme="https://us.gaojianli.tk/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/"/>
+    
+      <category term="Web" scheme="https://us.gaojianli.tk/tags/Web/"/>
+    
+      <category term="服务器" scheme="https://us.gaojianli.tk/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    
+  </entry>
   
   <entry>
     <title>微软Insider DevTour小记</title>
