@@ -315,7 +315,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,699字
+                  1,740字
                 </span>
               
 
@@ -331,7 +331,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  8分钟
+                  9分钟
                 </span>
               
             </div>
@@ -360,8 +360,9 @@
 <p>嚯，挺厉害嘛，那就图个省事，用Docker安装吧。然而这之后我才知道，这是地狱的开始。</p>
 <h2 id="Docker试探"><a href="#Docker试探" class="headerlink" title="Docker试探"></a>Docker试探</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>官方的教程非常的简单，<del>看起来就和能用一样</del></p>
 <blockquote>
-<p>我们在 Docker Hub 的 Gitea 组织中提供了自动更新的 Docker 镜像，它会保持最新的稳定版。你也可以用其它 Docker 服务来更新。首先你需要pull镜像：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker pull gitea/gitea:latest</span><br><span class="line">sudo mkdir -p /var/lib/gitea <span class="comment">//如果要将git和其它数据持久化，你需要创建一个目录来作为数据存储的地方</span></span><br><span class="line">docker run -d --name=gitea -p <span class="number">10022</span>:<span class="number">22</span> -p <span class="number">10080</span>:<span class="number">3000</span> -v /var/lib/gitea:/data gitea/gitea:latest <span class="comment">//然后就可以运行 docker 容器了，这很简单。 当然你需要定义端口数数据目录：</span></span><br></pre></td></tr></table></figure></p>
+<p>我们在 Docker Hub 的 Gitea 组织中提供了自动更新的 Docker 镜像，它会保持最新的稳定版。你也可以用其它 Docker 服务来更新。首先你需要pull镜像：</p>
 </blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker pull gitea/gitea:latest</span><br><span class="line">sudo mkdir -p /var/lib/gitea //如果要将git和其它数据持久化，你需要创建一个目录来作为数据存储的地方</span><br><span class="line">docker run -d --name=gitea -p 10022:22 -p 10080:3000 -v /var/lib/gitea:/data gitea/gitea:latest //然后就可以运行 docker 容器了，这很简单。 当然你需要定义端口数数据目录：</span><br></pre></td></tr></table></figure>
 <p>这时候我才发现我根本就没有安装docker，赶紧apt解决：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install docker</span><br></pre></td></tr></table></figure></p>
           <!--noindex-->
           <div class="post-button text-center">
