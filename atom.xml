@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://us.gaojianli.tk/"/>
-  <updated>2018-07-23T07:24:26.807Z</updated>
+  <updated>2018-07-24T06:47:40.789Z</updated>
   <id>https://us.gaojianli.tk/</id>
   
   <author>
@@ -17,11 +17,34 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>为博客添加Gitalk评论插件</title>
+    <link href="https://us.gaojianli.tk/2018/07/24/%E4%B8%BA%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0Gitalk%E8%AF%84%E8%AE%BA%E6%8F%92%E4%BB%B6/"/>
+    <id>https://us.gaojianli.tk/2018/07/24/为博客添加Gitalk评论插件/</id>
+    <published>2018-07-24T05:09:03.000Z</published>
+    <updated>2018-07-24T06:47:40.789Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;一直以来都想要给自己的博客弄个评论系统，但是hexo作为一个静态博客，本身是不可能具有这种功能的，只能仰仗第三方插件。这方面的插件也非常多，比如disqus,vline等。但这些插件都存在或多或少问题，比如注册麻烦或者干脆国内不能访问。考虑到我家长城宽带的现实，必须选择一个在各地都能流畅访问的插件，这里我选择了&lt;a href=&quot;https://github.com/gitalk/gitalk&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Gitalk&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;先来看看官网的简介吧：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Gitalk is a modern comment component based on GitHub Issue and Preact.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;顾名思义，这是一个基于GitHub的issue功能构建的评论系统。为了部署方便，我的博客本身也是托管在GitHub上的，而且其CDN也遍布全球各地，即使是长城宽带也能保证访问。此外相信本文的绝大多数读者也都具有GitHub账号，这也省去了大家注册的麻烦。因此,从各种意义上来说，它都是一个理想的插件。&lt;br&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="博客" scheme="https://us.gaojianli.tk/tags/%E5%8D%9A%E5%AE%A2/"/>
+    
+  </entry>
+  
+  <entry>
     <title>搭建自己的Git</title>
     <link href="https://us.gaojianli.tk/2018/07/13/%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84Git/"/>
     <id>https://us.gaojianli.tk/2018/07/13/搭建自己的Git/</id>
     <published>2018-07-13T06:44:25.000Z</published>
-    <updated>2018-07-23T07:24:26.807Z</updated>
+    <updated>2018-07-24T06:45:15.750Z</updated>
     
     <summary type="html">
     
@@ -30,12 +53,7 @@
 &lt;p&gt;易安装&lt;br&gt;您除了可以根据操作系统平台通过 二进制运行，还可以通过 Docker 或 Vagrant，以及 包管理 安装。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;嚯，挺厉害嘛，那就图个省事，用Docker安装吧。然而这之后我才知道，这是地狱的开始。&lt;/p&gt;
-&lt;h2 id=&quot;Docker试探&quot;&gt;&lt;a href=&quot;#Docker试探&quot; class=&quot;headerlink&quot; title=&quot;Docker试探&quot;&gt;&lt;/a&gt;Docker试探&lt;/h2&gt;&lt;h3 id=&quot;安装&quot;&gt;&lt;a href=&quot;#安装&quot; class=&quot;headerlink&quot; title=&quot;安装&quot;&gt;&lt;/a&gt;安装&lt;/h3&gt;&lt;p&gt;官方的教程非常的简单，&lt;del&gt;看起来就和能用一样&lt;/del&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;我们在 Docker Hub 的 Gitea 组织中提供了自动更新的 Docker 镜像，它会保持最新的稳定版。你也可以用其它 Docker 服务来更新。首先你需要pull镜像：&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;docker pull gitea/gitea:latest&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;sudo mkdir -p /var/lib/gitea //如果要将git和其它数据持久化，你需要创建一个目录来作为数据存储的地方&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;docker run -d --name=gitea -p 10022:22 -p 10080:3000 -v /var/lib/gitea:/data gitea/gitea:latest //然后就可以运行 docker 容器了，这很简单。 当然你需要定义端口数数据目录：&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;这时候我才发现我根本就没有安装docker，赶紧apt解决：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;apt install docker&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h2 id=&quot;Docker试探&quot;&gt;&lt;a href=&quot;#Docker试探&quot; class=&quot;headerlink&quot; title=&quot;Docker试探&quot;&gt;&lt;/a&gt;Docker试探&lt;/h2&gt;&lt;h3 id=&quot;安装&quot;&gt;&lt;a href=&quot;#安装&quot; class=&quot;headerlink&quot; title=&quot;安装&quot;&gt;&lt;/a&gt;安装&lt;/h3&gt;&lt;p&gt;官方的教程非常的简单，&lt;del&gt;看起来就和能用一样&lt;/del&gt;&lt;br&gt;&lt;/p&gt;
     
     </summary>
     
@@ -53,7 +71,7 @@
     <link href="https://us.gaojianli.tk/2018/06/28/%E5%BE%AE%E8%BD%AFInsider-DevTour%E5%B0%8F%E8%AE%B0/"/>
     <id>https://us.gaojianli.tk/2018/06/28/微软Insider-DevTour小记/</id>
     <published>2018-06-28T15:16:01.000Z</published>
-    <updated>2018-07-23T07:19:53.647Z</updated>
+    <updated>2018-07-24T06:43:48.735Z</updated>
     
     <summary type="html">
     
@@ -78,7 +96,7 @@
     <link href="https://us.gaojianli.tk/2018/06/12/%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2/"/>
     <id>https://us.gaojianli.tk/2018/06/12/写在前面/</id>
     <published>2018-06-12T09:33:05.000Z</published>
-    <updated>2018-06-12T09:47:06.458Z</updated>
+    <updated>2018-07-24T06:43:53.979Z</updated>
     
     <summary type="html">
     
