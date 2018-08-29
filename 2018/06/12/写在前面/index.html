@@ -837,7 +837,7 @@
         <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
         <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
         <script type="text/javascript"> 
-        if($(".tag-cloud").length===0){
+        if($(".tag-cloud").length===0&&$(".page-home").length===0){
             var gitalk = new Gitalk({
                 clientID: '885335d032aa6845f987', 
                 clientSecret: 'c928e0aaf80e0a91bc7a00c6c786e7a4d95d5643',
@@ -849,7 +849,7 @@
             }) 
             gitalk.render('gitalk-container') 
         }
-        else if($(".page-home").length===0){
+        else {
             $("#gitalk-container").remove()
         }
         </script>  
