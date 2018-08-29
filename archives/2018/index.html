@@ -660,7 +660,7 @@
     
       <span class="post-meta-item-text">站点总字数：</span>
     
-    <span title="站点总字数">21k</span>
+    <span title="站点总字数">22k</span>
   
 
   
@@ -671,7 +671,7 @@
     
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
     
-    <span title="站点阅读时长">34 分钟</span>
+    <span title="站点阅读时长">37 分钟</span>
   
 </div>
 
@@ -733,6 +733,7 @@
 
 
 
+  
 
 
 
@@ -742,6 +743,9 @@
 
 
 
+
+
+  
 
 
 
@@ -758,6 +762,16 @@
   
   
     <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/reading_progress/reading_progress.js"></script>
   
 
 
@@ -808,6 +822,7 @@
         <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
         <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
         <script type="text/javascript"> 
+        if($(".tag-cloud").length===0){
             var gitalk = new Gitalk({
                 clientID: '885335d032aa6845f987', 
                 clientSecret: 'c928e0aaf80e0a91bc7a00c6c786e7a4d95d5643',
@@ -818,6 +833,10 @@
                 distractionFreeMode: false,
             }) 
             gitalk.render('gitalk-container') 
+        }
+        else{
+            $("#gitalk-container").remove()
+        }
         </script>  
      
 
@@ -847,7 +866,9 @@
   
   
   
-  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+    
+  
+  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-bookmark@latest/bookmark.min.js"></script>
   <script type="text/javascript">
   
     bookmark.loadBookmark();

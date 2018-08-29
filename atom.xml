@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://us.gaojianli.tk/"/>
-  <updated>2018-07-24T12:40:50.450Z</updated>
+  <updated>2018-08-29T05:36:13.026Z</updated>
   <id>https://us.gaojianli.tk/</id>
   
   <author>
@@ -21,16 +21,16 @@
     <link href="https://us.gaojianli.tk/2018/07/24/%E4%B8%BA%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0Gitalk%E8%AF%84%E8%AE%BA%E6%8F%92%E4%BB%B6/"/>
     <id>https://us.gaojianli.tk/2018/07/24/为博客添加Gitalk评论插件/</id>
     <published>2018-07-24T05:09:03.000Z</published>
-    <updated>2018-07-24T12:40:50.450Z</updated>
+    <updated>2018-08-29T05:36:13.026Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;一直以来都想要给自己的博客弄个评论系统，但是hexo作为一个静态博客，本身是不可能具有这种功能的，只能仰仗第三方插件。这方面的插件也非常多，比如disqus,vline等。但这些插件都存在或多或少问题，比如注册麻烦或者干脆国内不能访问。考虑到我家长城宽带的现实，必须选择一个在各地都能流畅访问的插件，这里我选择了&lt;a href=&quot;https://github.com/gitalk/gitalk&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Gitalk&lt;/a&gt;.&lt;/p&gt;
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;一直以来都想要给自己的博客弄个评论系统，但是hexo作为一个静态博客，本身是不可能具有这种功能的，只能仰仗第三方插件。这方面的插件也非常多，比如disqus、vline等。但这些插件都存在或多或少问题，比如注册麻烦或者干脆国内不能访问。考虑到我家长城宽带的现实，必须选择一个在各地都能流畅访问的插件，这里我选择了&lt;a href=&quot;https://github.com/gitalk/gitalk&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Gitalk&lt;/a&gt;.&lt;/p&gt;
 &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;先来看看官网的简介吧：&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Gitalk is a modern comment component based on GitHub Issue and Preact.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;顾名思义，这是一个基于GitHub的issue功能构建的评论系统。为了部署方便，我的博客本身也是托管在GitHub上的，而且其CDN也遍布全球各地，即使是长城宽带也能保证访问。此外相信本文的绝大多数读者也都具有GitHub账号，这也省去了大家注册的麻烦。因此,从各种意义上来说，它都是一个理想的插件。&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;顾名思义，这是一个基于GitHub的issue功能构建的评论系统。为了部署方便，我的博客本身也是托管在GitHub上的，而且其CDN也遍布全球各地，即使是长城宽带也能保证访问。此外相信本文的绝大多数读者也都具有GitHub账号，这也省去了大家注册的麻烦。因此，从各种意义上来说，它都是一个理想的插件。&lt;br&gt;&lt;/p&gt;
     
     </summary>
     
