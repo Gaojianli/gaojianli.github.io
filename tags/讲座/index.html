@@ -701,7 +701,7 @@
             }) 
             gitalk.render('gitalk-container') 
         }
-        else{
+        else if($(".page-home").length===0){
             $("#gitalk-container").remove()
         }
         </script>  
