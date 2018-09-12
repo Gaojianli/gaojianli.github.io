@@ -801,7 +801,22 @@
 
   <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.0"></script>
 
-
+<script>
+  (function() {
+      var OriginTitile = document.title, titleTime;
+      document.addEventListener('visibilitychange', function() {
+          if (document.hidden) {
+              document.title = '揠□烫烫?洭锟斤拷嬽p祠?寋鈓□瑢??f';
+              clearTimeout(titleTime);
+          } else {
+              document.title = '(つェ⊂)咦？又好了!';
+              titleTime = setTimeout(function() {
+                  document.title = OriginTitile;
+              },2000);
+          }
+      });
+  })();
+</script>
 
   
 
@@ -853,6 +868,13 @@
   
 
   
+  
+
+  
+  
+
+  
+
 
   
   
