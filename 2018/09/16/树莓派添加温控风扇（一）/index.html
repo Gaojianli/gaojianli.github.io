@@ -117,7 +117,7 @@
 <meta property="og:description" content="前言前不久不知道树莓派抽什么风，风扇的噪音突然变得奇大无比，弄得潇叫苦连连。虽然我亲自去听了之后觉得声音远远比不上他的神舟和那台安装了FreeBSD的古董机，但毕竟有求于人，这样下去也不是个办法。稍加分析不难得出，风扇声音大是因为24小时常开导致了积灰和磨损，尤其是前者更是难以避免。而我树莓派大部分时候都处于闲置状态，风扇其实是没必要24小时上线的。那么，能不能让风扇按需启动呢？这样一来可以改善噪">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://us.gaojianli.tk/2018/09/16/树莓派添加温控风扇（一）/pi-gpio.png">
-<meta property="og:updated_time" content="2018-09-16T13:39:47.509Z">
+<meta property="og:updated_time" content="2018-09-18T02:59:35.995Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="树莓派添加温控风扇（一）">
 <meta name="twitter:description" content="前言前不久不知道树莓派抽什么风，风扇的噪音突然变得奇大无比，弄得潇叫苦连连。虽然我亲自去听了之后觉得声音远远比不上他的神舟和那台安装了FreeBSD的古董机，但毕竟有求于人，这样下去也不是个办法。稍加分析不难得出，风扇声音大是因为24小时常开导致了积灰和磨损，尤其是前者更是难以避免。而我树莓派大部分时候都处于闲置状态，风扇其实是没必要24小时上线的。那么，能不能让风扇按需启动呢？这样一来可以改善噪">
@@ -345,12 +345,24 @@
                 
               
 
-              <time title="创建时间：2018-09-16 14:17:32 / 修改时间：21:39:47" itemprop="dateCreated datePublished" datetime="2018-09-16T14:17:32+08:00">2018-09-16</time>
+              <time title="创建时间：2018-09-16 14:17:32" itemprop="dateCreated datePublished" datetime="2018-09-16T14:17:32+08:00">2018-09-16</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-09-18 10:59:35" itemprop="dateModified" datetime="2018-09-18T10:59:35+08:00">2018-09-18</time>
               
             
           </span>
@@ -432,7 +444,7 @@
 <p>1.We aren’t supporting 64-bit builds, although if there are simple things we can do (like hosting defconfigs for arm64) then we will.<br>2.When we do support arm64 it will be with the absolute minimum number of changes to the upstream kernel (ideally none), and the content of /proc/cpuinfo would not be high on the list of priorities. Board revision number and serial number are concepts that don’t appear to exist in the arm64 architecture, but we will continue to make that information available via /proc/device-tree/system/linux,revision and /proc/device-tree/system/linux,serial, with human-readable versions in /proc/device-tree/model and /proc/device-tree/serial-number</p>
 </blockquote>
 <p>大意就是树莓派linux从未支持过arm64，并且arm64的上游内核决定在cpuinfo里面显示更少的信息，并将版本号等信息移到<code>/proc/device-tree/model</code>等地去，他们决定对上游内核做尽可能少的修改，因此不打算修复这个不算bug的问题。所有我能做的就是等待wiringPi等库更新，以兼容arm64。</p>
-<h3 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h3><p>很遗憾，根据这个issue提出的日期来看，他们是没有兼容的意向的，因此我现在就维持在一种凉凉的状态。只能说，这就是使用小众系统的代价，找不到文档或者社区支持已经是常态，BSD也好，slackware也好，都是这样。<br>对于这种问题来讲目前是没有什么好思路的，今天天色也不早了，问题留到明天在看看吧。<br>つづく</p>
+<h3 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h3><p>很遗憾，根据这个issue提出的日期来看，他们是没有兼容的意向的，因此我现在就维持在一种凉凉的状态。只能说，这就是使用小众系统的代价，找不到文档或者社区支持已经是常态，BSD也好，slackware也好，都是这样。<br>对于这种问题来讲目前是没有什么好思路的，今天天色也不早了，问题留到明天再看看吧。<br>つづく</p>
 
       
     </div>
