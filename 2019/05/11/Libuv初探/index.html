@@ -116,7 +116,7 @@
 <meta property="og:site_name" content="高渐离の屋">
 <meta property="og:description" content="前言作为一个Node.js玩家，libuv的鼎鼎大名可谓是如雷贯耳。在我的印象中，libuv就是个“封装了ICOP/epoll等的超级牛逼的基于事件循环的库”，换句话说，就是“我知道你很牛逼，但是我啥都不知道”。在生活中，有很多事情不是不能做，只是需要一个契机。有了这个契机，我就能有足够的动力去完成之。而我这学期的C++专业选修课大作业便给了我这个契机：  题目三（10分）在题目二的基础上，将游戏">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-05-11T08:58:22.528Z">
+<meta property="og:updated_time" content="2019-05-11T09:02:04.769Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Libuv初探">
 <meta name="twitter:description" content="前言作为一个Node.js玩家，libuv的鼎鼎大名可谓是如雷贯耳。在我的印象中，libuv就是个“封装了ICOP/epoll等的超级牛逼的基于事件循环的库”，换句话说，就是“我知道你很牛逼，但是我啥都不知道”。在生活中，有很多事情不是不能做，只是需要一个契机。有了这个契机，我就能有足够的动力去完成之。而我这学期的C++专业选修课大作业便给了我这个契机：  题目三（10分）在题目二的基础上，将游戏">
@@ -343,7 +343,7 @@
                 
               
 
-              <time title="创建时间：2019-05-11 15:35:08 / 修改时间：16:58:22" itemprop="dateCreated datePublished" datetime="2019-05-11T15:35:08+08:00">2019-05-11</time>
+              <time title="创建时间：2019-05-11 15:35:08 / 修改时间：17:02:04" itemprop="dateCreated datePublished" datetime="2019-05-11T15:35:08+08:00">2019-05-11</time>
             
 
             
@@ -432,7 +432,7 @@
 <p>非常相似，毕竟socket本质上也是文件描述符。总而言之，通过<code>UVW</code>我们便可将不熟悉的C++开发变成我们熟悉的Node后端开发，所谓<code>知己知彼百战不殆</code>，若不知彼将其化为知的“彼”即可。</p>
 <h3 id="绑定端口"><a href="#绑定端口" class="headerlink" title="绑定端口"></a>绑定端口</h3><p>当然，前面我们只是绑定好了相应的事件，还差最后一点微小的工作：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tcp-&gt;bind&lt;uvw::IPv6&gt;(<span class="string">"[::]"</span>, port);<span class="comment">//监听0.0.0.0:port和[::]:port</span></span><br><span class="line">tcp-&gt;listen();</span><br></pre></td></tr></table></figure></p>
 <p>值得注意的是：不同于Nginx，在<code>libuv</code>中监听IPv6端口即可同时完成对IPv4和IPv6的双栈监听，若要IPv6 Only还需要显式加入<code>TCPHandle::Bind::IPV6ONLY</code> Flag。</p>
-<h3 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h3><p>本文所有代码可以在这里下载：<a href="https://github.com/Gaojianli/Word-Clear" target="_blank" rel="noopener">https://github.com/Gaojianli/Word-Clear</a><br>事实证明，纵使是<code>libuv</code>这种库也并不是什么洪水猛兽。令和元年，站在巨人的肩膀上的我们面前，面前并不存在什么完全无法跨越的高峰，<strong>需要的仅仅是个契机</strong>。而所谓契机，在我看来仅仅是个打破自己惰性的借口罢了。<del>自己研究是不可能研究的，只有布置了作业才能去看看这样子</del><br>今日写在这里，引以为鉴。<br>では、諸君は。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>本文所有代码可以在这里下载：<a href="https://github.com/Gaojianli/Word-Clear" target="_blank" rel="noopener">https://github.com/Gaojianli/Word-Clear</a><br>事实证明，纵使是<code>libuv</code>这种库也并不是什么洪水猛兽。令和元年，站在巨人的肩膀上的我们面前，面前并不存在什么完全无法跨越的高峰，<strong>需要的仅仅是个契机</strong>。而所谓契机，在我看来仅仅是个打破自己惰性的借口罢了。<del>自己主动研究是不可能研究的，只有布置了作业才能去看看这样子</del><br>今日写在这里，引以为鉴。<br>では、諸君は。</p>
 
       
     </div>
@@ -685,7 +685,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从入门到放弃"><span class="nav-number">2.</span> <span class="nav-text">从入门到放弃</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#绝处逢生"><span class="nav-number">3.</span> <span class="nav-text">绝处逢生</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建循环"><span class="nav-number">3.1.</span> <span class="nav-text">创建循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#监听事件绑定"><span class="nav-number">3.2.</span> <span class="nav-text">监听事件绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接事件绑定"><span class="nav-number">3.3.</span> <span class="nav-text">连接事件绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绑定端口"><span class="nav-number">3.4.</span> <span class="nav-text">绑定端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结语"><span class="nav-number">3.5.</span> <span class="nav-text">结语</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从入门到放弃"><span class="nav-number">2.</span> <span class="nav-text">从入门到放弃</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#绝处逢生"><span class="nav-number">3.</span> <span class="nav-text">绝处逢生</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建循环"><span class="nav-number">3.1.</span> <span class="nav-text">创建循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#监听事件绑定"><span class="nav-number">3.2.</span> <span class="nav-text">监听事件绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接事件绑定"><span class="nav-number">3.3.</span> <span class="nav-text">连接事件绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绑定端口"><span class="nav-number">3.4.</span> <span class="nav-text">绑定端口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">4.</span> <span class="nav-text">结语</span></a></li></ol></div>
             
 
           </div>
