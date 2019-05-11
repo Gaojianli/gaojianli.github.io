@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.4.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言作为一个Node.js玩家，libuv的鼎鼎大名可谓是如雷贯耳。在我的印象中，libuv就是个“封装了ICOP/epoll等的超级牛逼的基于事件循环的库”，换句话说，就是“我知道你很牛逼，但是我啥都不知道”。在生活中，有很多事情不是不能做，只是需要一个契机。有了这个契机，我就能有足够的动力去完成之。而我这学期的C++专业选修课大作业便给了我这个契机：  题目三（10分）在题目二的基础上，将游戏">
+<meta name="keywords" content="编程,C&#x2F;C++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Libuv初探">
+<meta property="og:url" content="https://blog.gaojianli.tk/2019/05/11/Libuv初探/index.html">
+<meta property="og:site_name" content="高渐离の屋">
+<meta property="og:description" content="前言作为一个Node.js玩家，libuv的鼎鼎大名可谓是如雷贯耳。在我的印象中，libuv就是个“封装了ICOP/epoll等的超级牛逼的基于事件循环的库”，换句话说，就是“我知道你很牛逼，但是我啥都不知道”。在生活中，有很多事情不是不能做，只是需要一个契机。有了这个契机，我就能有足够的动力去完成之。而我这学期的C++专业选修课大作业便给了我这个契机：  题目三（10分）在题目二的基础上，将游戏">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-05-11T08:58:22.528Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Libuv初探">
+<meta name="twitter:description" content="前言作为一个Node.js玩家，libuv的鼎鼎大名可谓是如雷贯耳。在我的印象中，libuv就是个“封装了ICOP/epoll等的超级牛逼的基于事件循环的库”，换句话说，就是“我知道你很牛逼，但是我啥都不知道”。在生活中，有很多事情不是不能做，只是需要一个契机。有了这个契机，我就能有足够的动力去完成之。而我这学期的C++专业选修课大作业便给了我这个契机：  题目三（10分）在题目二的基础上，将游戏">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="高渐离の屋" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://blog.gaojianli.tk/2019/05/11/Libuv初探/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Libuv初探 | 高渐离の屋</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">高渐离の屋</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.gaojianli.tk/2019/05/11/Libuv初探/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gaojianli">
+      <meta itemprop="description" content="一个不起眼的个人小站">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="高渐离の屋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Libuv初探
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-11 15:35:08 / 修改时间：16:58:22" itemprop="dateCreated datePublished" datetime="2019-05-11T15:35:08+08:00">2019-05-11</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">7.3k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">12 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>作为一个Node.js玩家，<a href="http://libuv.org/" target="_blank" rel="noopener">libuv</a>的鼎鼎大名可谓是如雷贯耳。在我的印象中，libuv就是个“封装了ICOP/epoll等的超级牛逼的基于事件循环的库”，换句话说，就是“我知道你很牛逼，但是我啥都不知道”。<br>在生活中，有很多事情不是不能做，只是需要一个契机。有了这个契机，我就能有足够的动力去完成之。而我这学期的C++专业选修课大作业便给了我这个契机：</p>
+<blockquote>
+<p>题目三（10分）<br>在题目二的基础上，将游戏由本地单机，扩展为服务器多人游戏平台，使用客户端/服务器的方式，同一时间可以多人登录系统。将所有闯关者、出题者信息保存在服务器。<br>要求：<br>    必须在题目二基础上进行修改。<br>    使用socket进行通信。<br>    需要完成服务器端程序，以及客户端程序。客户端可以启动多个同时与服务器交互，要求服务器具有并发处理能力。</p>
+</blockquote>
+<h2 id="从入门到放弃"><a href="#从入门到放弃" class="headerlink" title="从入门到放弃"></a>从入门到放弃</h2><p>其实一开始，我曾经被<code>libuv</code>吓退过，究其原因就是那一大堆<code>uv_</code>开头的指针，而代码写出来大概是这个画风：<br><a href="https://github.com/nikhilm/uvbook/blob/master/code/pipe-echo-server/main.c" target="_blank" rel="noopener">Echo-Server</a><br><a id="more"></a><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;uv.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">uv_loop_t</span> *loop;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="keyword">uv_write_t</span> req;</span><br><span class="line">    <span class="keyword">uv_buf_t</span> buf;</span><br><span class="line">&#125; <span class="keyword">write_req_t</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">free_write_req</span><span class="params">(<span class="keyword">uv_write_t</span> *req)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">write_req_t</span> *wr = (<span class="keyword">write_req_t</span>*) req;</span><br><span class="line">    <span class="built_in">free</span>(wr-&gt;buf.base);</span><br><span class="line">    <span class="built_in">free</span>(wr);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">alloc_buffer</span><span class="params">(<span class="keyword">uv_handle_t</span> *handle, <span class="keyword">size_t</span> suggested_size, <span class="keyword">uv_buf_t</span> *buf)</span> </span>&#123;</span><br><span class="line">  buf-&gt;base = <span class="built_in">malloc</span>(suggested_size);</span><br><span class="line">  buf-&gt;len = suggested_size;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">echo_write</span><span class="params">(<span class="keyword">uv_write_t</span> *req, <span class="keyword">int</span> status)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (status &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Write error %s\n"</span>, uv_err_name(status));</span><br><span class="line">    &#125;</span><br><span class="line">    free_write_req(req);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">echo_read</span><span class="params">(<span class="keyword">uv_stream_t</span> *client, <span class="keyword">ssize_t</span> nread, <span class="keyword">const</span> <span class="keyword">uv_buf_t</span> *buf)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (nread &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">write_req_t</span> *req = (<span class="keyword">write_req_t</span>*) <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">write_req_t</span>));</span><br><span class="line">        req-&gt;buf = uv_buf_init(buf-&gt;base, nread);</span><br><span class="line">        uv_write((<span class="keyword">uv_write_t</span>*) req, client, &amp;req-&gt;buf, <span class="number">1</span>, echo_write);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (nread &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (nread != UV_EOF)</span><br><span class="line">            <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Read error %s\n"</span>, uv_err_name(nread));</span><br><span class="line">        uv_close((<span class="keyword">uv_handle_t</span>*) client, <span class="literal">NULL</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">free</span>(buf-&gt;base);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">on_new_connection</span><span class="params">(<span class="keyword">uv_stream_t</span> *server, <span class="keyword">int</span> status)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (status == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="comment">// error!</span></span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">uv_pipe_t</span> *client = (<span class="keyword">uv_pipe_t</span>*) <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">uv_pipe_t</span>));</span><br><span class="line">    uv_pipe_init(loop, client, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span> (uv_accept(server, (<span class="keyword">uv_stream_t</span>*) client) == <span class="number">0</span>) &#123;</span><br><span class="line">        uv_read_start((<span class="keyword">uv_stream_t</span>*) client, alloc_buffer, echo_read);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        uv_close((<span class="keyword">uv_handle_t</span>*) client, <span class="literal">NULL</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">remove_sock</span><span class="params">(<span class="keyword">int</span> sig)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">uv_fs_t</span> req;</span><br><span class="line">    uv_fs_unlink(loop, &amp;req, <span class="string">"echo.sock"</span>, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    loop = uv_default_loop();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">uv_pipe_t</span> server;</span><br><span class="line">    uv_pipe_init(loop, &amp;server, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    signal(SIGINT, remove_sock);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> r;</span><br><span class="line">    <span class="keyword">if</span> ((r = uv_pipe_bind(&amp;server, <span class="string">"echo.sock"</span>))) &#123;</span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Bind error %s\n"</span>, uv_err_name(r));</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> ((r = uv_listen((<span class="keyword">uv_stream_t</span>*) &amp;server, <span class="number">128</span>, on_new_connection))) &#123;</span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Listen error %s\n"</span>, uv_err_name(r));</span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> uv_run(loop, UV_RUN_DEFAULT);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这堆结构体是什么？？？光这一堆指针就足够劝退了吧！尤其是需要进行回调，还涉及到了各种函数指针，简直是恶心到不能再恶心了。不过这也没办法，谁叫人家只是个C语言库呢。</p>
+<h2 id="绝处逢生"><a href="#绝处逢生" class="headerlink" title="绝处逢生"></a>绝处逢生</h2><p>幸而天无绝人之路，在关于<code>libuv</code>少的可怜的文档中，我发现了这个Wrapper:<a href="https://github.com/skypjack/uvw" target="_blank" rel="noopener">UVW</a></p>
+<blockquote>
+<p>uvw is a header-only, event based, tiny and easy to use libuv wrapper in modern C++.<br>The basic idea is to hide completely the C-ish interface of libuv behind a graceful C++ API. Currently, no uv_*_t data structure is actually exposed by the library.<br>Note that uvw stays true to the API of libuv and it doesn’t add anything to its interface. For the same reasons, users of the library must follow the same rules who are used to follow with libuv.<br>As an example, a handle should be initialized before any other operation and closed once it is no longer in use.</p>
+</blockquote>
+<p>字面意思，一个<code>header-only</code>的库，对<code>libuv</code>的C风格API进行了封装，并转换成了C++14的语法。看起来非常的香，但是吃起来就有些咯牙了——本来关于<code>libuv</code>的资料就非常之少，如果再使用了这个库的话，你能够获得的资料就更少了。<br>别无他法，只有按照它<code>doxygen</code>生成的文档结合它的单元测试一点点来啃了。<br>接下来我们的例子都来源于<a href="https://github.com/Gaojianli/Word-Clear/blob/master/Server/src/Server.cpp" target="_blank" rel="noopener">Server.cpp</a></p>
+<h3 id="创建循环"><a href="#创建循环" class="headerlink" title="创建循环"></a>创建循环</h3><p>在使用任何基于事件循环的功能之前，你得先有一个循环才行。得益于良好的封装，创建循环变得非常的简单，仅仅需要短短的一行：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> loop = uvw::Loop::getDefault();<span class="comment">//创建循环</span></span><br><span class="line">listen(*loop);<span class="comment">//绑定监听事件</span></span><br><span class="line">loop-&gt;run();<span class="comment">//运行循环</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="监听事件绑定"><a href="#监听事件绑定" class="headerlink" title="监听事件绑定"></a>监听事件绑定</h3><p><code>UVW</code>将<code>libuv</code>中几乎所有的对象（结构体）都封装到了<code>loop</code>对象之中，取用只需要调用<code>loop::resource&lt;T&gt;()</code>即可。因为我们主要需要绑定的是针对<code>socket</code>的监听，所以首先我们要创建一个<code>TCPHandle</code>：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;uvw::TCPHandle&gt; tcp = loop.resource&lt;uvw::TCPHandle&gt;();</span><br></pre></td></tr></table></figure></p>
+<p>由于是整个过程是异步的，我们无法在适当的时候释放这个handle，因此必须使用智能指针<code>shared_ptr</code>进行托管。</p>
+<p>创建好了Handle，就可以开始绑定事件了！但是在开始之前，要先提一个问题：<strong>还记得在Node.js里面是怎么绑定事件的吗?</strong><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">event.on(<span class="string">'someEvent'</span>, data =&gt;&#123;</span><br><span class="line">    <span class="comment">//do some thing</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>上述代码中<code>someEvent</code>是事件的名字，而第二个参数则是事件触发时将要执行的回调函数。有了这份基础，我们来理解<code>uvw</code>中的事件监听就非常容易了。<br>在<code>UVW</code>从，事件绑定主要有两种方法:<code>on</code>和<code>once</code>。前者就是普通的监听，后者除了只能触发一次之外，和前者并没有太大区别。<br><code>on</code>方法的原型长这样:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Connection&lt;E&gt; uvw::Emitter&lt; T &gt;::on (Listener&lt;E&gt; f)</span><br></pre></td></tr></table></figure></p>
+<p>如果看不懂上面那一堆模板的话，可以直接看这个例子:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tcp-&gt;on&lt;uvw::ErrorEvent&gt;([](<span class="keyword">const</span> uvw::ErrorEvent &amp; event, uvw::TCPHandle&amp;) &#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"Error occurred:"</span> &lt;&lt; event.what() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>在这个例子中，监听的事件是<code>uvw::ErrorEvent</code>，而后面那个lambda表达式就是所谓回调函数。这句话的功能就是在发生错误的时候打印出错误来。怎么样，和上面的Node.js是不是非常相似？顺带一提，这句话在Javascript中会这么写: <del>JS是万物之母!</del><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcp.on(<span class="string">"error"</span>,<span class="built_in">console</span>.log);</span><br></pre></td></tr></table></figure></p>
+<h3 id="连接事件绑定"><a href="#连接事件绑定" class="headerlink" title="连接事件绑定"></a>连接事件绑定</h3><p>那么，现在我们已经知道了如何绑定事件，那么就疯狂来绑定吧：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">tcp-&gt;on&lt;uvw::ListenEvent&gt;([](<span class="keyword">const</span> uvw::ListenEvent&amp;, uvw::TCPHandle &amp; srv) &#123;<span class="comment">//监听事件，当客户端连接时会触发</span></span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;uvw::TCPHandle&gt; client = srv.loop().resource&lt;uvw::TCPHandle&gt;();<span class="comment">//获取一个客户端的Handle</span></span><br><span class="line">		srv.accept(*client);</span><br><span class="line">#ifdef DEBUG <span class="comment">//调试模式下显示客户端连接信息和断开信息</span></span><br><span class="line">		uvw::Addr remote = client-&gt;peer();</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span></span><br><span class="line">			&lt;&lt; remote.ip &lt;&lt; <span class="string">":"</span> &lt;&lt; remote.port &lt;&lt; <span class="string">" Connected"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">		client-&gt;on&lt;uvw::CloseEvent&gt;([remote](<span class="keyword">const</span> uvw::CloseEvent&amp;, uvw::TCPHandle&amp;) &#123;<span class="comment">//连接关闭时触发的事件</span></span><br><span class="line">			<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Connection from "</span> &lt;&lt; remote.ip &lt;&lt; <span class="string">" closed."</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span></span><br><span class="line">				&lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">			&#125;);</span><br><span class="line">#endif <span class="comment">// DEBUG</span></span><br><span class="line">		client-&gt;on&lt;uvw::EndEvent&gt;([](<span class="keyword">const</span> uvw::EndEvent&amp;, uvw::TCPHandle &amp; client) &#123;</span><br><span class="line">			client.close();<span class="comment">//连接结束关闭连接</span></span><br><span class="line">			&#125;);</span><br><span class="line">		client-&gt;on&lt;uvw::ErrorEvent&gt;([](<span class="keyword">const</span> uvw::ErrorEvent &amp; event, uvw::TCPHandle &amp; client) &#123;</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"Error occurred:"</span> &lt;&lt; event.what() &lt;&lt; <span class="built_in">endl</span>;<span class="comment">//错误监听</span></span><br><span class="line">			client.close();</span><br><span class="line">			&#125;);</span><br><span class="line">		client-&gt;on&lt;uvw::DataEvent&gt;([](<span class="keyword">const</span> uvw::DataEvent &amp; event, uvw::TCPHandle &amp; client) &#123;<span class="comment">//接收到数据</span></span><br><span class="line">			<span class="keyword">if</span> (event.length == <span class="number">0</span>)</span><br><span class="line">				<span class="keyword">return</span>;</span><br><span class="line">			<span class="keyword">auto</span> temp = <span class="keyword">new</span> <span class="keyword">char</span>[event.length + <span class="number">1</span>];</span><br><span class="line">			memcpy_s(temp, event.length, event.data.get(), event.length);</span><br><span class="line">			temp[event.length] = <span class="string">'\0'</span>;<span class="comment">//向数据流尾部追加\0使之被截断为字符串</span></span><br><span class="line">			<span class="keyword">auto</span> response = handler::mainHandler(temp, client);<span class="comment">//移交请求给业务代码</span></span><br><span class="line">			<span class="keyword">auto</span> toWrite = <span class="keyword">new</span> <span class="keyword">char</span>[response.size()];</span><br><span class="line">			memcpy_s(toWrite, response.size(), response.c_str(), response.size());</span><br><span class="line">			client.tryWrite(toWrite, (<span class="keyword">unsigned</span>)response.size());<span class="comment">//copy后写回Client</span></span><br><span class="line">			<span class="keyword">delete</span>[] toWrite;</span><br><span class="line">			<span class="keyword">delete</span>[] temp;</span><br><span class="line">			&#125;);</span><br><span class="line">		client-&gt;read();</span><br><span class="line">		&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>上述的<code>DataEvent</code>也和Node.js中的<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">readerStream.on(<span class="string">'data'</span>, chunk =&gt; &#123;</span><br><span class="line">   data += chunk;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>非常相似，毕竟socket本质上也是文件描述符。总而言之，通过<code>UVW</code>我们便可将不熟悉的C++开发变成我们熟悉的Node后端开发，所谓<code>知己知彼百战不殆</code>，若不知彼将其化为知的“彼”即可。</p>
+<h3 id="绑定端口"><a href="#绑定端口" class="headerlink" title="绑定端口"></a>绑定端口</h3><p>当然，前面我们只是绑定好了相应的事件，还差最后一点微小的工作：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tcp-&gt;bind&lt;uvw::IPv6&gt;(<span class="string">"[::]"</span>, port);<span class="comment">//监听0.0.0.0:port和[::]:port</span></span><br><span class="line">tcp-&gt;listen();</span><br></pre></td></tr></table></figure></p>
+<p>值得注意的是：不同于Nginx，在<code>libuv</code>中监听IPv6端口即可同时完成对IPv4和IPv6的双栈监听，若要IPv6 Only还需要显式加入<code>TCPHandle::Bind::IPV6ONLY</code> Flag。</p>
+<h3 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h3><p>本文所有代码可以在这里下载：<a href="https://github.com/Gaojianli/Word-Clear" target="_blank" rel="noopener">https://github.com/Gaojianli/Word-Clear</a><br>事实证明，纵使是<code>libuv</code>这种库也并不是什么洪水猛兽。令和元年，站在巨人的肩膀上的我们面前，面前并不存在什么完全无法跨越的高峰，<strong>需要的仅仅是个契机</strong>。而所谓契机，在我看来仅仅是个打破自己惰性的借口罢了。<del>自己研究是不可能研究的，只有布置了作业才能去看看这样子</del><br>今日写在这里，引以为鉴。<br>では、諸君は。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Gaojianli</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.gaojianli.tk/2019/05/11/Libuv初探/" title="Libuv初探">https://blog.gaojianli.tk/2019/05/11/Libuv初探/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/编程/" rel="tag"># 编程</a>
+          
+            <a href="/tags/C-C/" rel="tag"># C/C++</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/15/即日起本站域名切换到gaojianli-me/" rel="next" title="即日起本站域名切换到gaojianli.me">
+                <i class="fa fa-chevron-left"></i> 即日起本站域名切换到gaojianli.me
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="post-block" id="gitalk-container" style="margin-top:10px"></div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Gaojianli" />
+            
+              <p class="site-author-name" itemprop="name">Gaojianli</p>
+              <p class="site-description motion-element" itemprop="description">一个不起眼的个人小站</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/Gaojianli" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:admin@gaojianli.tk" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://plus.google.com/116038373227315280525" target="_blank" title="Google"><i class="fa fa-fw fa-google"></i>Google</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/Gaojianlidesu" target="_blank" title="Twitter"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://byrio.org/" title="BYRIO" target="_blank">BYRIO</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.xice.cf/" title="Xice's Note" target="_blank">Xice's Note</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://beardic.cn/" title="Dict Xiong" target="_blank">Dict Xiong</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=27594382&auto=1&height=66"></iframe>
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从入门到放弃"><span class="nav-number">2.</span> <span class="nav-text">从入门到放弃</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#绝处逢生"><span class="nav-number">3.</span> <span class="nav-text">绝处逢生</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建循环"><span class="nav-number">3.1.</span> <span class="nav-text">创建循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#监听事件绑定"><span class="nav-number">3.2.</span> <span class="nav-text">监听事件绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接事件绑定"><span class="nav-number">3.3.</span> <span class="nav-text">连接事件绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绑定端口"><span class="nav-number">3.4.</span> <span class="nav-text">绑定端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结语"><span class="nav-number">3.5.</span> <span class="nav-text">结语</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gaojianli</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">39k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">1:05</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/reading_progress/reading_progress.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.0"></script>
+
+<script>
+  (function() {
+      var OriginTitile = document.title, titleTime;
+      document.addEventListener('visibilitychange', function() {
+          if (document.hidden) {
+              document.title = '揠□烫烫?洭锟斤拷嬽p祠?寋鈓□瑢??f';
+              clearTimeout(titleTime);
+          } else {
+              document.title = '(つェ⊂)咦？又好了!';
+              titleTime = setTimeout(function() {
+                  document.title = OriginTitile;
+              },2000);
+          }
+      });
+  })();
+</script>
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+    
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script type="text/javascript"> 
+        if($(".tag-cloud").length===0&&$(".page-home").length===0){
+            var gitalk = new Gitalk({
+                clientID: '885335d032aa6845f987', 
+                clientSecret: 'c928e0aaf80e0a91bc7a00c6c786e7a4d95d5643',
+                id: 'Libuv初探', 
+                repo: 'gaojianli.github.io',
+                owner: 'gaojianli',                     
+                admin: 'Gaojianli', 
+                distractionFreeMode: false,
+            }) 
+            gitalk.render('gitalk-container') 
+        }
+        else {
+            $("#gitalk-container").remove()
+        }
+        </script>  
+     
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+    
+  
+  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-bookmark@latest/bookmark.min.js"></script>
+  <script type="text/javascript">
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+          if(result)$(this).text('复制成功')
+          else $(this).text('复制失败')
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('复制')
+        }, 300)
+      }).append(e)
+    })
+  </script>
+
+
+</body>
+</html>

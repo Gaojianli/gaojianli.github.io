@@ -299,6 +299,182 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.gaojianli.tk/2019/05/11/Libuv初探/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gaojianli">
+      <meta itemprop="description" content="一个不起眼的个人小站">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="高渐离の屋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/11/Libuv初探/" itemprop="url">
+                  Libuv初探
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-11 15:35:08 / 修改时间：16:58:22" itemprop="dateCreated datePublished" datetime="2019-05-11T15:35:08+08:00">2019-05-11</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">7.3k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">12 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>作为一个Node.js玩家，<a href="http://libuv.org/" target="_blank" rel="noopener">libuv</a>的鼎鼎大名可谓是如雷贯耳。在我的印象中，libuv就是个“封装了ICOP/epoll等的超级牛逼的基于事件循环的库”，换句话说，就是“我知道你很牛逼，但是我啥都不知道”。<br>在生活中，有很多事情不是不能做，只是需要一个契机。有了这个契机，我就能有足够的动力去完成之。而我这学期的C++专业选修课大作业便给了我这个契机：</p>
+<blockquote>
+<p>题目三（10分）<br>在题目二的基础上，将游戏由本地单机，扩展为服务器多人游戏平台，使用客户端/服务器的方式，同一时间可以多人登录系统。将所有闯关者、出题者信息保存在服务器。<br>要求：<br>    必须在题目二基础上进行修改。<br>    使用socket进行通信。<br>    需要完成服务器端程序，以及客户端程序。客户端可以启动多个同时与服务器交互，要求服务器具有并发处理能力。</p>
+</blockquote>
+<h2 id="从入门到放弃"><a href="#从入门到放弃" class="headerlink" title="从入门到放弃"></a>从入门到放弃</h2><p>其实一开始，我曾经被<code>libuv</code>吓退过，究其原因就是那一大堆<code>uv_</code>开头的指针，而代码写出来大概是这个画风：<br><a href="https://github.com/nikhilm/uvbook/blob/master/code/pipe-echo-server/main.c" target="_blank" rel="noopener">Echo-Server</a><br></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/05/11/Libuv初探/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://blog.gaojianli.tk/2018/10/15/即日起本站域名切换到gaojianli-me/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1608,7 +1784,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-count">8</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1635,7 +1811,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">6</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1742,7 +1922,7 @@
     
       <span class="post-meta-item-text">站点总字数：</span>
     
-    <span title="站点总字数">32k</span>
+    <span title="站点总字数">39k</span>
   
 
   
@@ -1753,7 +1933,7 @@
     
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
     
-    <span title="站点阅读时长">53 分钟</span>
+    <span title="站点阅读时长">1:05</span>
   
 </div>
 
@@ -1954,6 +2134,8 @@
 
   
   
+    
+      
     
       
     

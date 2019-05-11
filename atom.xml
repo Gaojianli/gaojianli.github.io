@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://blog.gaojianli.tk/"/>
-  <updated>2018-10-15T12:50:09.184Z</updated>
+  <updated>2019-05-11T08:58:22.528Z</updated>
   <id>https://blog.gaojianli.tk/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Libuv初探</title>
+    <link href="https://blog.gaojianli.tk/2019/05/11/Libuv%E5%88%9D%E6%8E%A2/"/>
+    <id>https://blog.gaojianli.tk/2019/05/11/Libuv初探/</id>
+    <published>2019-05-11T07:35:08.000Z</published>
+    <updated>2019-05-11T08:58:22.528Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;作为一个Node.js玩家，&lt;a href=&quot;http://libuv.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;libuv&lt;/a&gt;的鼎鼎大名可谓是如雷贯耳。在我的印象中，libuv就是个“封装了ICOP/epoll等的超级牛逼的基于事件循环的库”，换句话说，就是“我知道你很牛逼，但是我啥都不知道”。&lt;br&gt;在生活中，有很多事情不是不能做，只是需要一个契机。有了这个契机，我就能有足够的动力去完成之。而我这学期的C++专业选修课大作业便给了我这个契机：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;题目三（10分）&lt;br&gt;在题目二的基础上，将游戏由本地单机，扩展为服务器多人游戏平台，使用客户端/服务器的方式，同一时间可以多人登录系统。将所有闯关者、出题者信息保存在服务器。&lt;br&gt;要求：&lt;br&gt;    必须在题目二基础上进行修改。&lt;br&gt;    使用socket进行通信。&lt;br&gt;    需要完成服务器端程序，以及客户端程序。客户端可以启动多个同时与服务器交互，要求服务器具有并发处理能力。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;从入门到放弃&quot;&gt;&lt;a href=&quot;#从入门到放弃&quot; class=&quot;headerlink&quot; title=&quot;从入门到放弃&quot;&gt;&lt;/a&gt;从入门到放弃&lt;/h2&gt;&lt;p&gt;其实一开始，我曾经被&lt;code&gt;libuv&lt;/code&gt;吓退过，究其原因就是那一大堆&lt;code&gt;uv_&lt;/code&gt;开头的指针，而代码写出来大概是这个画风：&lt;br&gt;&lt;a href=&quot;https://github.com/nikhilm/uvbook/blob/master/code/pipe-echo-server/main.c&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Echo-Server&lt;/a&gt;&lt;br&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://blog.gaojianli.tk/tags/%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="C/C++" scheme="https://blog.gaojianli.tk/tags/C-C/"/>
+    
+  </entry>
   
   <entry>
     <title>即日起本站域名切换到gaojianli.me</title>
