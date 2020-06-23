@@ -94,11 +94,13 @@
 <meta property="og:url" content="https://blog.gaojianli.me/2020/06/22/%E8%89%B0%E9%9A%BE%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%89%BE%E5%9B%9E%E8%BF%87%E7%A8%8B/index.html">
 <meta property="og:site_name" content="高渐离の屋">
 <meta property="og:description" content="起因一直以来，我的博客都是通过hexo本地生成，生成文件上传Github，服务器pull的方式进行部署的。这么久都没遇到什么太大的问题，博客的相关源代码也都放在了我的文档里。然在2019年10月的时候，我的Surface Book出现了屏幕和底座接触不良的情况，USB和键盘经常失去响应。考虑到保修即将在12月份失效，因此选择了送修。">
+<meta property="og:image" content="https://blog.gaojianli.me/2020/06/22/%E8%89%B0%E9%9A%BE%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%89%BE%E5%9B%9E%E8%BF%87%E7%A8%8B/success.png">
 <meta property="article:published_time" content="2020-06-22T18:26:35.000Z">
-<meta property="article:modified_time" content="2020-06-23T04:10:02.610Z">
+<meta property="article:modified_time" content="2020-06-23T04:16:58.643Z">
 <meta property="article:author" content="高渐离">
 <meta property="article:tag" content="博客">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.gaojianli.me/2020/06/22/%E8%89%B0%E9%9A%BE%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%89%BE%E5%9B%9E%E8%BF%87%E7%A8%8B/success.png">
 
 
 
@@ -306,7 +308,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-06-23T04:10:02+00:00">
+              <time title="更新于" itemprop="dateModified" datetime="2020-06-23T04:16:58+00:00">
                 2020-06-23
               </time>
             
@@ -345,7 +347,7 @@
 <p>在备份数据的时候，我精心备份了所有的游戏，照片和代码，却唯独跳过了“我的文档”。感谢QQ等软件把自己的数据放到我的文档里面（日你大坝），给我留下了“我的文档就是个存放软件数据的目录，没什么无关紧要的东西”这种错误印象。“<strong>不会真的有人把文档放到我的文档吧？不会吧，不会吧？</strong>”我这么想着，在仔细观察了一下我的文档的目录后只备份了一些游戏的存档后就送修了。</p>
 <p>然而，事实证明真的有人把东西放到“我的文档”，而且这个人就是我。天知道我在哪天整理文件的时候鬼迷心窍地把博客的源代码放到了“我的文档”。对于巨硬这种公司来说，送修自然意味着数据丢失。事实上我不但丢失了所有数据，连原有的划痕都被一并“修复”了，很大概率巨硬是直接给我换了一台设备，找回数据就是做梦。（另外本次送修还导致我更换了ssh私钥，错过了某加密货币的drop，直接损失</p>
 <p>说来惭愧，在送修之后我就再也没有抽出时间写博客，因此我竟然没有第一时间发现这一事情。直到今年2月在Telegram和群友吹b的时候突然想起来，才突然发现自己的博客已经GG了。由于重新整理非常费时费力，因此直到这几天才腾出时间来整理。</p>
-<h1 id="防范措施"><a href="#防范措施" class="headerlink" title="防范措施"></a>防范措施</h1><p>为了避免重蹈覆辙，最好的方法就是直接把源代码传到Git上，正好Github Action发布后还没用过，就来试试用Github Action来部署吧。 </p>
+<h1 id="防范措施"><a href="#防范措施" class="headerlink" title="防范措施"></a>防范措施</h1><p>为了避免重蹈覆辙，最好的方法就是直接把源代码传到Git上，正好Github Action发布后还没用过（一直以来都在用Gitlab pipeline)，就来试试用Github Action来部署吧。 </p>
 <p>首先生成一个Deply key</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &quot;823805669hehe@gmail.com&quot;</span><br></pre></td></tr></table></figure>
 <p>对于这种需求，当然不是只有我一个人，大家都喜欢薅微软的羊毛，这里已经有一个库了<a href="https://github.com/sma11black/hexo-action" target="_blank" rel="noopener">sma11black/hexo-action</a><br>添加到相应的编译后仓库里，在源代码文件夹里面新增<code>action.yml</code>:</p>
@@ -354,7 +356,12 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fatal: could not read Username for &#39;https:&#x2F;&#x2F;github.com&#39;: No such device or address</span><br></pre></td></tr></table></figure>
 <p>???这是什么问题？检查再三,我也确认我的确填写了这一字段，最终我找到了这个<a href="https://github.com/sma11black/hexo-action/issues/5" target="_blank" rel="noopener">issue</a>，其大意大概就是得用SSH的方式登录，行吧。修改<code>_config.yml</code>如下：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">'git'</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">git@github.com:Gaojianli/gaojianli.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
-<p>再次push上去看看：</p>
+<p>再次push上去看看：<br><img src="success.png" alt="成功push"><br>成功！</p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>我在<a href="/2019/05/11/Libuv%E5%88%9D%E6%8E%A2/" title="Libuv初探">Libuv初探</a>一文曾经写道：</p>
+<blockquote>
+<p>在生活中，有很多事情不是不能做，只是需要一个契机。有了这个契机，我就能有足够的动力去完成之。</p>
+</blockquote>
+<p>这次的博客丢失，也算是一次契机吧！第一次使用了Github Actions，同时也避免了数据的再次丢失，总的来说还是可喜可贺。接下来的就等一个Codespaces正式上线吧，以后连本地都不需要留存博客代码了，真正把hexo用成wordpress（笑）<br>では、諸君は。</p>
 
       
     </div>
@@ -597,7 +604,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#起因"><span class="nav-number">1.</span> <span class="nav-text">起因</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#防范措施"><span class="nav-number">2.</span> <span class="nav-text">防范措施</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#起因"><span class="nav-number">1.</span> <span class="nav-text">起因</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#防范措施"><span class="nav-number">2.</span> <span class="nav-text">防范措施</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结语"><span class="nav-number">3.</span> <span class="nav-text">结语</span></a></li></ol></div>
             
 
           </div>
