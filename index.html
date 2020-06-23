@@ -2,29 +2,24 @@
 
 
 
-
-
-
-
-
-
-
-
-
   
 
 
-<html class="theme-next gemini use-motion" lang="zh-CN">
+<html class="theme-next gemini use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
 
 
 
-
-
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
 
 
 
@@ -50,6 +45,10 @@
 
 
 
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
 
 
 
@@ -58,25 +57,45 @@
 
 <link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=6.4.0" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
 
 
-  <link rel="mask-icon" href="/images/logo.svg?v=6.4.0" color="#222">
-
-
-
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
 
 
 
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="高渐离の屋" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="一个不起眼的个人小站">
+<meta property="og:type" content="website">
+<meta property="og:title" content="高渐离の屋">
+<meta property="og:url" content="https://blog.gaojianli.me/index.html">
+<meta property="og:site_name" content="高渐离の屋">
+<meta property="og:description" content="一个不起眼的个人小站">
+<meta property="article:author" content="高渐离">
+<meta name="twitter:card" content="summary">
 
 
 
@@ -85,13 +104,15 @@
   var CONFIG = {
     root: '/',
     scheme: 'Gemini',
-    version: '6.4.0',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: false,
-    fastclick: false,
-    lazyload: false,
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
     algolia: {
       applicationID: '',
       apiKey: '',
@@ -103,39 +124,12 @@
 </script>
 
 
-  
+
+  <link rel="canonical" href="https://blog.gaojianli.me/"/>
 
 
 
 
-  <meta name="description" content="一个不起眼的个人小站">
-<meta name="keywords" content="blog">
-<meta property="og:type" content="website">
-<meta property="og:title" content="高渐离の屋">
-<meta property="og:url" content="https://blog.gaojianli.tk/index.html">
-<meta property="og:site_name" content="高渐离の屋">
-<meta property="og:description" content="一个不起眼的个人小站">
-<meta property="og:locale" content="zh-CN">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="高渐离の屋">
-<meta name="twitter:description" content="一个不起眼的个人小站">
-
-
-
-  <link rel="alternate" href="/atom.xml" title="高渐离の屋" type="application/atom+xml" />
-
-
-
-
-  <link rel="canonical" href="https://blog.gaojianli.tk/"/>
-
-
-
-<script type="text/javascript" id="page.configurations">
-  CONFIG.page = {
-    sidebar: "",
-  };
-</script>
 
   <title>高渐离の屋</title>
   
@@ -147,37 +141,9 @@
 
 
 
+<meta name="generator" content="Hexo 4.2.1"></head>
 
-  <noscript>
-  <style type="text/css">
-    .use-motion .motion-element,
-    .use-motion .brand,
-    .use-motion .menu-item,
-    .sidebar-inner,
-    .use-motion .post-block,
-    .use-motion .pagination,
-    .use-motion .comments,
-    .use-motion .post-header,
-    .use-motion .post-body,
-    .use-motion .collection-title { opacity: initial; }
-
-    .use-motion .logo,
-    .use-motion .site-title,
-    .use-motion .site-subtitle {
-      opacity: initial;
-      top: initial;
-    }
-
-    .use-motion {
-      .logo-line-before i { left: initial; }
-      .logo-line-after i { right: initial; }
-    }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -194,17 +160,19 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
+      <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">高渐离の屋</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-    
+      
+        <p class="site-subtitle">一个不起眼的个人小站</p>
+      
   </div>
 
   <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
+    <button>
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
@@ -212,50 +180,55 @@
   </div>
 </div>
 
-
-
 <nav class="site-nav">
+  
+
   
     <ul id="menu" class="menu">
       
         
-        
-        
-          
-          <li class="menu-item menu-item-home menu-item-active">
-    <a href="/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-about">
-    <a href="/about/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-tags">
-    <a href="/tags/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-archives">
-    <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
-  </li>
-
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
       
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
       
     </ul>
-  
-
   
 
   
@@ -263,23 +236,12 @@
 
 
 
-  
-
-
-
-</div>
+ </div>
     </header>
-
-    
-
 
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          
-            
-
-          
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
@@ -292,18 +254,16 @@
   
   
 
-  
-
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.gaojianli.tk/2019/05/11/Libuv初探/">
+    <link itemprop="mainEntityOfPage" href="https://blog.gaojianli.me/2020/06/22/%E8%89%B0%E9%9A%BE%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%89%BE%E5%9B%9E%E8%BF%87%E7%A8%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gaojianli">
-      <meta itemprop="description" content="一个不起眼的个人小站">
+      <meta itemprop="name" content="高渐离">
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
@@ -318,21 +278,11 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/05/11/Libuv初探/" itemprop="url">
-                  Libuv初探
-                </a>
-              
-            
-          </h1>
+                <a class="post-title-link" href="/2020/06/22/%E8%89%B0%E9%9A%BE%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%89%BE%E5%9B%9E%E8%BF%87%E7%A8%8B/" itemprop="url">艰难的博客找回过程</a></h1>
         
 
         <div class="post-meta">
           <span class="post-time">
-
-            
-            
-            
-
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -340,18 +290,25 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-
-              
-                
-              
-
-              <time title="创建时间：2019-05-11 15:35:08 / 修改时间：17:02:04" itemprop="dateCreated datePublished" datetime="2019-05-11T15:35:08+08:00">2019-05-11</time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-22T18:26:35+00:00">
+                2020-06-22
+              </time>
             
 
             
-              
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
               
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2020-06-23T04:10:02+00:00">
+                2020-06-23
+              </time>
             
           </span>
 
@@ -366,34 +323,6 @@
 
           
 
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">7.3k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">12 分钟</span>
-              
-            </div>
           
 
           
@@ -412,14 +341,10 @@
 
       
         
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>作为一个Node.js玩家，<a href="http://libuv.org/" target="_blank" rel="noopener">libuv</a>的鼎鼎大名可谓是如雷贯耳。在我的印象中，libuv就是个“封装了ICOP/epoll等的超级牛逼的基于事件循环的库”，换句话说，就是“我知道你很牛逼，但是我啥都不知道”。<br>在生活中，有很多事情不是不能做，只是需要一个契机。有了这个契机，我就能有足够的动力去完成之。而我这学期的C++专业选修课大作业便给了我这个契机：</p>
-<blockquote>
-<p>题目三（10分）<br>在题目二的基础上，将游戏由本地单机，扩展为服务器多人游戏平台，使用客户端/服务器的方式，同一时间可以多人登录系统。将所有闯关者、出题者信息保存在服务器。<br>要求：<br>    必须在题目二基础上进行修改。<br>    使用socket进行通信。<br>    需要完成服务器端程序，以及客户端程序。客户端可以启动多个同时与服务器交互，要求服务器具有并发处理能力。</p>
-</blockquote>
-<h2 id="从入门到放弃"><a href="#从入门到放弃" class="headerlink" title="从入门到放弃"></a>从入门到放弃</h2><p>其实一开始，我曾经被<code>libuv</code>吓退过，究其原因就是那一大堆<code>uv_</code>开头的指针，而代码写出来大概是这个画风：<br><a href="https://github.com/nikhilm/uvbook/blob/master/code/pipe-echo-server/main.c" target="_blank" rel="noopener">Echo-Server</a><br></p>
+          <h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>一直以来，我的博客都是通过hexo本地生成，生成文件上传Github，服务器pull的方式进行部署的。这么久都没遇到什么太大的问题，博客的相关源代码也都放在了我的文档里。然在2019年10月的时候，我的Surface Book出现了屏幕和底座接触不良的情况，USB和键盘经常失去响应。考虑到保修即将在12月份失效，因此选择了送修。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/05/11/Libuv初探/#more" rel="contents">
+            <a class="btn" href="/2020/06/22/%E8%89%B0%E9%9A%BE%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%89%BE%E5%9B%9E%E8%BF%87%E7%A8%8B/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -427,9 +352,6 @@
         
       
     </div>
-
-    
-
     
     
     
@@ -468,18 +390,16 @@
   
   
 
-  
-
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.gaojianli.tk/2018/10/15/即日起本站域名切换到gaojianli-me/">
+    <link itemprop="mainEntityOfPage" href="https://blog.gaojianli.me/2019/05/11/Libuv%E5%88%9D%E6%8E%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gaojianli">
-      <meta itemprop="description" content="一个不起眼的个人小站">
+      <meta itemprop="name" content="高渐离">
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
@@ -494,21 +414,11 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/10/15/即日起本站域名切换到gaojianli-me/" itemprop="url">
-                  即日起本站域名切换到gaojianli.me
-                </a>
-              
-            
-          </h1>
+                <a class="post-title-link" href="/2019/05/11/Libuv%E5%88%9D%E6%8E%A2/" itemprop="url">Libuv初探</a></h1>
         
 
         <div class="post-meta">
           <span class="post-time">
-
-            
-            
-            
-
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -516,18 +426,25 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-
-              
-                
-              
-
-              <time title="创建时间：2018-10-15 20:31:25 / 修改时间：20:50:09" itemprop="dateCreated datePublished" datetime="2018-10-15T20:31:25+08:00">2018-10-15</time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-11T15:35:08+00:00">
+                2019-05-11
+              </time>
             
 
             
-              
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
               
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2020-06-23T04:10:02+00:00">
+                2020-06-23
+              </time>
             
           </span>
 
@@ -543,33 +460,150 @@
           
 
           
-            <div class="post-symbolscount">
-              
 
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">422</span>
-              
+          
 
-              
-                <span class="post-meta-divider">|</span>
-              
+        </div>
+      </header>
+    
 
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>作为一个Node.js玩家，<a href="http://libuv.org/" target="_blank" rel="noopener">libuv</a>的鼎鼎大名可谓是如雷贯耳。在我的印象中，libuv就是个“封装了ICOP/epoll等的超级牛逼的基于事件循环的库”，换句话说，就是“我知道你很牛逼，但是我啥都不知道”。<br>在生活中，有很多事情不是不能做，只是需要一个契机。有了这个契机，我就能有足够的动力去完成之。而我这学期的C++专业选修课大作业便给了我这个契机：</p>
+<blockquote>
+<p>题目三（10分）<br>在题目二的基础上，将游戏由本地单机，扩展为服务器多人游戏平台，使用客户端/服务器的方式，同一时间可以多人登录系统。将所有闯关者、出题者信息保存在服务器。<br>要求：</p>
+<ul>
+<li>必须在题目二基础上进行修改。</li>
+<li>使用socket进行通信。</li>
+<li>需要完成服务器端程序，以及客户端程序。客户端可以启动多个同时与服务器交互，要求服务器具有并发处理能力。</li>
+</ul>
+</blockquote>
+<h1 id="从入门到放弃"><a href="#从入门到放弃" class="headerlink" title="从入门到放弃"></a>从入门到放弃</h1><p>其实一开始，我曾经被libuv吓退过，究其原因就是那一大堆<code>uv_</code>开头的指针，而代码写出来大概是这个画风：<br><a href="https://github.com/nikhilm/uvbook/blob/master/code/pipe-echo-server/main.c" target="_blank" rel="noopener">Echo-Server</a></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/05/11/Libuv%E5%88%9D%E6%8E%A2/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.gaojianli.me/2018/10/15/%E5%8D%B3%E6%97%A5%E8%B5%B7%E6%9C%AC%E7%AB%99%E5%9F%9F%E5%90%8D%E5%88%87%E6%8D%A2%E5%88%B0gaojianli-me/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="高渐离">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="高渐离の屋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
                 
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">1 分钟</span>
+                <a class="post-title-link" href="/2018/10/15/%E5%8D%B3%E6%97%A5%E8%B5%B7%E6%9C%AC%E7%AB%99%E5%9F%9F%E5%90%8D%E5%88%87%E6%8D%A2%E5%88%B0gaojianli-me/" itemprop="url">即日起本站域名切换到gaojianli.me</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
               
-            </div>
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-15T20:31:25+00:00">
+                2018-10-15
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2020-06-23T04:10:02+00:00">
+                2020-06-23
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
           
 
           
@@ -589,15 +623,12 @@
       
         
           
-            <p>一直以来，我都使用的是<a href="http://www.freenom.com/" target="_blank" rel="noopener">Freenom</a>提供的<code>.tk</code>免费域名，由于功能齐全且续费免费，自然是我区区一个穷学生的首选。虽然一直有小伙伴劝我切换到一个收费域名，而且烈士墙上被无故收走域名惨案的比比皆是。但我由于个人懒惰，在加上<strong>又不是不能用</strong>的人生信条，一直就用了下来。<br>但是就在前不久，<a href="https://blog.xice.cn" target="_blank" rel="noopener">潇</a>却经历了一次惨痛无比的域名回收事件，<code>Freenom</code>在没有任何征兆、事前通知的情况下删除了他的域名（xice.cf)，而再次注册已经提示要收费。而他的国内域名备案迟迟得不到批准，现阶段就连翻墙都存在困难。于我而言，这不啻前车之鉴。与其被黑心厂商突然收走域名，到时候再手忙脚乱地迁移，不如自己慢慢搬迁。而正好，<a href="https://education.github.com/pack" target="_blank" rel="noopener">Github</a>的Student developer pack包含了由<a href="https://nc.me/github/auth" target="_blank" rel="noopener">Namecheap</a>提供了免费的<code>.me</code>域名一年使用权，就打算先将就用着。因此现阶段不论是博客还是树莓派上的各种服务都会慢慢地搬迁，直至最终弃用<code>gaojianli.tk</code>这一不稳定要素。<br>では、諸君は。</p>
+            <p>一直以来，我都使用的是<a href="http://www.freenom.com/" target="_blank" rel="noopener">Freenom</a>提供的<code>.tk</code>免费域名，由于功能齐全且续费免费，自然是我区区一个穷学生的首选。虽然一直有小伙伴劝我切换到一个收费域名，而且烈士墙上被无故收走域名惨案的比比皆是。但我由于个人懒惰，在加上<strong>又不是不能用</strong>的人生信条，一直就用了下来。<br>但是就在前不久，<a href="https://blog.xice.wang/2018/10/23/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%97%9B%E5%A4%B1%E5%9F%9F%E5%90%8D%E7%9A%84%E7%BB%8F%E5%8E%86/" target="_blank" rel="noopener">潇</a>却经历了一次惨痛无比的域名回收事件，<code>Freenom</code>在没有任何征兆、事前通知的情况下删除了他的域名（xice.cf)，而再次注册已经提示要收费。而他的国内域名备案迟迟得不到批准，现阶段就连翻墙都存在困难。于我而言，这不啻前车之鉴。与其被黑心厂商突然收走域名，到时候再手忙脚乱地迁移，不如自己慢慢搬迁。而正好，Github的<a href="https://education.github.com/pack" target="_blank" rel="noopener">Student developer pack</a>包含了由<a href="https://nc.me/github/auth" target="_blank" rel="noopener">Namecheap</a>提供了免费的<code>.me</code>域名一年使用权，就打算先将就用着。因此现阶段不论是博客还是树莓派上的各种服务都会慢慢地搬迁，直至最终弃用<code>gaojianli.tk</code>这一不稳定要素。<br>では、諸君は。</p>
 
           
         
       
     </div>
-
-    
-
     
     
     
@@ -636,18 +667,16 @@
   
   
 
-  
-
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.gaojianli.tk/2018/09/16/树莓派添加温控风扇（二）/">
+    <link itemprop="mainEntityOfPage" href="https://blog.gaojianli.me/2018/09/16/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%B7%BB%E5%8A%A0%E6%B8%A9%E6%8E%A7%E9%A3%8E%E6%89%87%EF%BC%88%E4%BA%8C%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gaojianli">
-      <meta itemprop="description" content="一个不起眼的个人小站">
+      <meta itemprop="name" content="高渐离">
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
@@ -662,21 +691,11 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/09/16/树莓派添加温控风扇（二）/" itemprop="url">
-                  树莓派添加温控风扇（二）
-                </a>
-              
-            
-          </h1>
+                <a class="post-title-link" href="/2018/09/16/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%B7%BB%E5%8A%A0%E6%B8%A9%E6%8E%A7%E9%A3%8E%E6%89%87%EF%BC%88%E4%BA%8C%EF%BC%89/" itemprop="url">树莓派添加温控风扇（二）</a></h1>
         
 
         <div class="post-meta">
           <span class="post-time">
-
-            
-            
-            
-
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -684,18 +703,25 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-
-              
-                
-              
-
-              <time title="创建时间：2018-09-16 17:07:58 / 修改时间：21:39:32" itemprop="dateCreated datePublished" datetime="2018-09-16T17:07:58+08:00">2018-09-16</time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-16T17:07:58+00:00">
+                2018-09-16
+              </time>
             
 
             
-              
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
               
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2020-06-23T04:10:02+00:00">
+                2020-06-23
+              </time>
             
           </span>
 
@@ -710,34 +736,6 @@
 
           
 
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">5.1k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">8 分钟</span>
-              
-            </div>
           
 
           
@@ -756,16 +754,16 @@
 
       
         
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><a href="h/2018/09/16/树莓派添加温控风扇%EF%BC%88一%EF%BC%89/">上回</a>说到，对于arm64的系统来说，目前并没有一个库可以支持对GPIO的调用。那么接下来摆在我面前的就三条路：</p>
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><a href="/2018/09/16/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%B7%BB%E5%8A%A0%E6%B8%A9%E6%8E%A7%E9%A3%8E%E6%89%87%EF%BC%88%E4%B8%80%EF%BC%89/" title="上回">上回</a>说到，对于arm64的系统来说，目前并没有一个库可以支持对GPIO的调用。那么接下来摆在我面前的就三条路：
 <ol>
-<li>修改<code>setup.c</code>，让<code>cpuinfo</code>中包含相应的Hardware信息，随后重新编译内核</li>
+<li>修改setup.c，让cpuinfo中包含相应的Hardware信息，随后重新编译内核</li>
 <li>修改wiringPi源码</li>
 <li>放弃使用库</li>
 </ol>
-<h2 id="可行的方法"><a href="#可行的方法" class="headerlink" title="可行的方法"></a>可行的方法</h2><p>上面三个选项中，1和2显然是极其不现实的，因此我决定采用第三条路。在之前那个<a href="https://github.com/bamarni/pi64/issues/35" target="_blank" rel="noopener">issue</a>中，我看到了这样一种用法：<br></p>
+<h1 id="可行的方法"><a href="#可行的方法" class="headerlink" title="可行的方法"></a>可行的方法</h1><p>上面三个选项中，1和2显然是极其不现实的，因此我决定采用第三条路。在之前那个<a href="https://github.com/bamarni/pi64/issues/35" target="_blank" rel="noopener">issue</a>中，我看到了这样一种用法：</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/09/16/树莓派添加温控风扇（二）/#more" rel="contents">
+            <a class="btn" href="/2018/09/16/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%B7%BB%E5%8A%A0%E6%B8%A9%E6%8E%A7%E9%A3%8E%E6%89%87%EF%BC%88%E4%BA%8C%EF%BC%89/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -773,9 +771,6 @@
         
       
     </div>
-
-    
-
     
     
     
@@ -814,18 +809,16 @@
   
   
 
-  
-
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.gaojianli.tk/2018/09/16/树莓派添加温控风扇（一）/">
+    <link itemprop="mainEntityOfPage" href="https://blog.gaojianli.me/2018/09/16/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%B7%BB%E5%8A%A0%E6%B8%A9%E6%8E%A7%E9%A3%8E%E6%89%87%EF%BC%88%E4%B8%80%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gaojianli">
-      <meta itemprop="description" content="一个不起眼的个人小站">
+      <meta itemprop="name" content="高渐离">
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
@@ -840,21 +833,11 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/09/16/树莓派添加温控风扇（一）/" itemprop="url">
-                  树莓派添加温控风扇（一）
-                </a>
-              
-            
-          </h1>
+                <a class="post-title-link" href="/2018/09/16/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%B7%BB%E5%8A%A0%E6%B8%A9%E6%8E%A7%E9%A3%8E%E6%89%87%EF%BC%88%E4%B8%80%EF%BC%89/" itemprop="url">树莓派添加温控风扇（一）</a></h1>
         
 
         <div class="post-meta">
           <span class="post-time">
-
-            
-            
-            
-
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -862,30 +845,25 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-
-              
-                
-              
-
-              <time title="创建时间：2018-09-16 14:17:32" itemprop="dateCreated datePublished" datetime="2018-09-16T14:17:32+08:00">2018-09-16</time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-16T14:17:32+00:00">
+                2018-09-16
+              </time>
             
 
             
-              
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
               
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-09-18 10:59:35" itemprop="dateModified" datetime="2018-09-18T10:59:35+08:00">2018-09-18</time>
+                <span class="post-meta-item-text">更新于&#58;</span>
               
+              <time title="更新于" itemprop="dateModified" datetime="2020-06-23T04:10:02+00:00">
+                2020-06-23
+              </time>
             
           </span>
 
@@ -900,34 +878,6 @@
 
           
 
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">4.2k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">7 分钟</span>
-              
-            </div>
           
 
           
@@ -946,10 +896,10 @@
 
       
         
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前不久不知道树莓派抽什么风，风扇的噪音突然变得奇大无比，弄得潇叫苦连连。虽然我亲自去听了之后觉得声音远远比不上他的神舟和那台安装了FreeBSD的古董机，但毕竟有求于人，这样下去也不是个办法。稍加分析不难得出，风扇声音大是因为24小时常开导致了积灰和磨损，尤其是前者更是难以避免。而我树莓派大部分时候都处于闲置状态，风扇其实是没必要24小时上线的。那么，能不能让风扇按需启动呢？这样一来可以改善噪音问题，同时树莓派困扰许久的供电不足问题也能够得到相应的改善。<br></p>
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>前不久不知道树莓派抽什么风，风扇的噪音突然变得奇大无比，弄得潇叫苦连连。虽然我亲自去听了之后觉得声音远远比不上他的神舟和那台安装了FreeBSD的古董机，但毕竟有求于人，这样下去也不是个办法。稍加分析不难得出，风扇声音大是因为24小时常开导致了积灰和磨损，尤其是前者更是难以避免。而我树莓派大部分时候都处于闲置状态，风扇其实是没必要24小时上线的。那么，能不能让风扇按需启动呢？这样一来可以改善噪音问题，同时树莓派困扰许久的供电不足问题也能够得到相应的改善。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/09/16/树莓派添加温控风扇（一）/#more" rel="contents">
+            <a class="btn" href="/2018/09/16/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%B7%BB%E5%8A%A0%E6%B8%A9%E6%8E%A7%E9%A3%8E%E6%89%87%EF%BC%88%E4%B8%80%EF%BC%89/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -957,9 +907,6 @@
         
       
     </div>
-
-    
-
     
     
     
@@ -998,18 +945,16 @@
   
   
 
-  
-
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.gaojianli.tk/2018/07/24/为博客添加Gitalk评论插件/">
+    <link itemprop="mainEntityOfPage" href="https://blog.gaojianli.me/2018/07/24/%E4%B8%BA%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0Gitalk%E8%AF%84%E8%AE%BA%E6%8F%92%E4%BB%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gaojianli">
-      <meta itemprop="description" content="一个不起眼的个人小站">
+      <meta itemprop="name" content="高渐离">
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
@@ -1024,21 +969,11 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/24/为博客添加Gitalk评论插件/" itemprop="url">
-                  为博客添加Gitalk评论插件
-                </a>
-              
-            
-          </h1>
+                <a class="post-title-link" href="/2018/07/24/%E4%B8%BA%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0Gitalk%E8%AF%84%E8%AE%BA%E6%8F%92%E4%BB%B6/" itemprop="url">为博客添加Gitalk评论插件</a></h1>
         
 
         <div class="post-meta">
           <span class="post-time">
-
-            
-            
-            
-
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -1046,30 +981,25 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-
-              
-                
-              
-
-              <time title="创建时间：2018-07-24 13:09:03" itemprop="dateCreated datePublished" datetime="2018-07-24T13:09:03+08:00">2018-07-24</time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-24T13:09:03+00:00">
+                2018-07-24
+              </time>
             
 
             
-              
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
               
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-08-31 13:43:08" itemprop="dateModified" datetime="2018-08-31T13:43:08+08:00">2018-08-31</time>
+                <span class="post-meta-item-text">更新于&#58;</span>
               
+              <time title="更新于" itemprop="dateModified" datetime="2020-06-23T04:10:02+00:00">
+                2020-06-23
+              </time>
             
           </span>
 
@@ -1084,34 +1014,6 @@
 
           
 
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">5.6k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">9 分钟</span>
-              
-            </div>
           
 
           
@@ -1130,15 +1032,15 @@
 
       
         
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>一直以来都想要给自己的博客弄个评论系统，但是hexo作为一个静态博客，本身是不可能具有这种功能的，只能仰仗第三方插件。这方面的插件也非常多，比如disqus、vline等。但这些插件都存在或多或少问题，比如注册麻烦或者干脆国内不能访问。考虑到我家长城宽带的现实，必须选择一个在各地都能流畅访问的插件，这里我选择了<a href="https://github.com/gitalk/gitalk" target="_blank" rel="noopener">Gitalk</a>.</p>
-<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>先来看看官网的简介吧：</p>
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>一直以来都想要给自己的博客弄个评论系统，但是hexo作为一个静态博客，本身是不可能具有这种功能的，只能仰仗第三方插件。这方面的插件也非常多，比如disqus、vline等。但这些插件都存在或多或少问题，比如注册麻烦或者干脆国内不能访问。考虑到我家长城宽带的现实，必须选择一个在各地都能流畅访问的插件，这里我选择了<a href="https://github.com/gitalk/gitalk" target="_blank" rel="noopener">Gitalk</a>.</p>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>先来看看官网的简介吧：</p>
 <blockquote>
 <p>Gitalk is a modern comment component based on GitHub Issue and Preact.</p>
 </blockquote>
-<p>顾名思义，这是一个基于GitHub的issue功能构建的评论系统。为了部署方便，我的博客本身也是托管在GitHub上的，而且其CDN也遍布全球各地，即使是长城宽带也能保证访问。此外相信本文的绝大多数读者也都具有GitHub账号，这也省去了大家注册的麻烦。因此，从各种意义上来说，它都是一个理想的插件。<br></p>
+<p>顾名思义，这是一个基于GitHub的issue功能构建的评论系统。为了部署方便，我的博客本身也是托管在GitHub上的，而且其CDN也遍布全球各地，即使是长城宽带也能保证访问。此外相信本文的绝大多数读者也都具有GitHub账号，这也省去了大家注册的麻烦。因此，从各种意义上来说，它都是一个理想的插件。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/07/24/为博客添加Gitalk评论插件/#more" rel="contents">
+            <a class="btn" href="/2018/07/24/%E4%B8%BA%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0Gitalk%E8%AF%84%E8%AE%BA%E6%8F%92%E4%BB%B6/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1146,9 +1048,6 @@
         
       
     </div>
-
-    
-
     
     
     
@@ -1187,18 +1086,16 @@
   
   
 
-  
-
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.gaojianli.tk/2018/07/13/搭建自己的Git/">
+    <link itemprop="mainEntityOfPage" href="https://blog.gaojianli.me/2018/07/13/%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84Git/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gaojianli">
-      <meta itemprop="description" content="一个不起眼的个人小站">
+      <meta itemprop="name" content="高渐离">
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
@@ -1213,21 +1110,11 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/13/搭建自己的Git/" itemprop="url">
-                  搭建自己的Git
-                </a>
-              
-            
-          </h1>
+                <a class="post-title-link" href="/2018/07/13/%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84Git/" itemprop="url">搭建自己的Git</a></h1>
         
 
         <div class="post-meta">
           <span class="post-time">
-
-            
-            
-            
-
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -1235,30 +1122,25 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-
-              
-                
-              
-
-              <time title="创建时间：2018-07-13 14:44:25" itemprop="dateCreated datePublished" datetime="2018-07-13T14:44:25+08:00">2018-07-13</time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-13T14:44:25+00:00">
+                2018-07-13
+              </time>
             
 
             
-              
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
               
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-07-24 14:45:15" itemprop="dateModified" datetime="2018-07-24T14:45:15+08:00">2018-07-24</time>
+                <span class="post-meta-item-text">更新于&#58;</span>
               
+              <time title="更新于" itemprop="dateModified" datetime="2020-06-23T04:10:02+00:00">
+                2020-06-23
+              </time>
             
           </span>
 
@@ -1273,34 +1155,6 @@
 
           
 
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">11k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">18 分钟</span>
-              
-            </div>
           
 
           
@@ -1319,15 +1173,15 @@
 
       
         
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>事情的起因非常简单，得益于某位校长的功劳，我的网络访问Github奇慢无比，最近甚至出现了push失败的情况，我连博客都没法好好更新了！<del><b>（说的好像你更新得很多一样）</b></del><br>嘛，正好潇在给我孜孜不倦地推荐<a href="https://gitea.io" target="_blank" rel="noopener">Gitea</a>，我就来试试在树莓派上搭建一下吧。<br>首先我们来看官方文档：</p>
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>事情的起因非常简单，得益于某位校长的功劳，我的网络访问Github奇慢无比，最近甚至出现了push失败的情况，我连博客都没法好好更新了！<del><strong>（说的好像你更新得很多一样）</strong></del><br>嘛，正好潇在给我孜孜不倦地推荐<a href="https://gitea.io/" target="_blank" rel="noopener">Gitea</a>，我就来试试在树莓派上搭建一下吧。<br>首先我们来看官方文档：</p>
 <blockquote>
 <p>易安装<br>您除了可以根据操作系统平台通过 二进制运行，还可以通过 Docker 或 Vagrant，以及 包管理 安装。</p>
 </blockquote>
 <p>嚯，挺厉害嘛，那就图个省事，用Docker安装吧。然而这之后我才知道，这是地狱的开始。</p>
-<h2 id="Docker试探"><a href="#Docker试探" class="headerlink" title="Docker试探"></a>Docker试探</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>官方的教程非常的简单，<del>看起来就和能用一样</del><br></p>
+<h1 id="Docker试探"><a href="#Docker试探" class="headerlink" title="Docker试探"></a>Docker试探</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>官方的教程非常的简单，<del>看起来就和能用一样</del></p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/07/13/搭建自己的Git/#more" rel="contents">
+            <a class="btn" href="/2018/07/13/%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84Git/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1335,9 +1189,6 @@
         
       
     </div>
-
-    
-
     
     
     
@@ -1376,18 +1227,16 @@
   
   
 
-  
-
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.gaojianli.tk/2018/06/28/微软Insider-DevTour小记/">
+    <link itemprop="mainEntityOfPage" href="https://blog.gaojianli.me/2018/06/28/%E5%BE%AE%E8%BD%AFInsider-DevTour%E5%B0%8F%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gaojianli">
-      <meta itemprop="description" content="一个不起眼的个人小站">
+      <meta itemprop="name" content="高渐离">
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
@@ -1402,21 +1251,11 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/06/28/微软Insider-DevTour小记/" itemprop="url">
-                  微软Insider DevTour小记
-                </a>
-              
-            
-          </h1>
+                <a class="post-title-link" href="/2018/06/28/%E5%BE%AE%E8%BD%AFInsider-DevTour%E5%B0%8F%E8%AE%B0/" itemprop="url">微软Insider DevTour小记</a></h1>
         
 
         <div class="post-meta">
           <span class="post-time">
-
-            
-            
-            
-
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -1424,30 +1263,25 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-
-              
-                
-              
-
-              <time title="创建时间：2018-06-28 23:16:01" itemprop="dateCreated datePublished" datetime="2018-06-28T23:16:01+08:00">2018-06-28</time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-28T23:16:01+00:00">
+                2018-06-28
+              </time>
             
 
             
-              
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
               
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-07-24 14:43:48" itemprop="dateModified" datetime="2018-07-24T14:43:48+08:00">2018-07-24</time>
+                <span class="post-meta-item-text">更新于&#58;</span>
               
+              <time title="更新于" itemprop="dateModified" datetime="2020-06-23T04:10:02+00:00">
+                2020-06-23
+              </time>
             
           </span>
 
@@ -1462,34 +1296,6 @@
 
           
 
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">5.6k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">9 分钟</span>
-              
-            </div>
           
 
           
@@ -1508,15 +1314,15 @@
 
       
         
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前一阵子收到了微软发给所有的insider的邀请邮件，大意说是DevTour即将巡回到北京，欢迎参加云云。弱鸡表示从来没听过这个名字，吓得我赶紧百度了一下：</p>
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>前一阵子收到了微软发给所有的insider的邀请邮件，大意说是DevTour即将巡回到北京，欢迎参加云云。弱鸡表示从来没听过这个名字，吓得我赶紧百度了一下：</p>
 <blockquote>
 <p>每年，我们都将最新的技术带给全球的开发者。今年，我们通过与Windows、Windows Insider项目以及我们的开发者和内部人士的合作伙伴关系，将活动扩展到更多的城市。我们将介绍人工智能，最新的桌面开发，微软365，进步网络应用，开发者办公室，混合现实，Microsoft Graph，等等。此次巡回活动是开发者与来自微软总部雷德蒙德的领导和工程师以及地区行业领先和微软开发者MVPs和RDs相互直接交流的一次绝佳机会。</p>
 </blockquote>
-<p>概括一下大概就是5个字：<strong>大佬见面会</strong><br>然而不幸的是这一天恰好是我考高数的日子，以前处在偏远山区的我看见这类活动只能望汤兴叹，好容易在北京，怎么能就这样鸽了呢？于是乎赶紧发邮件问了一下能否下午到场，所幸得到了肯定的答复:</p>
-<h2 id="到达"><a href="#到达" class="headerlink" title="到达"></a>到达</h2><p>不得不吐槽沙河校区的偏远程度超乎想象，上午高数凉了（迫真）以后即使我以最快速度向会场赶，最终在会议开始前最后一刻才成功赶到。<br></p>
+<p>概括一下大概就是5个字：<strong>大佬见面会</strong><br>然而不幸的是这一天恰好是我考高数的日子，以前处在偏远山区的我看见这类活动只能望汤兴叹，好容易在北京，怎么能就这样鸽了呢？于是乎赶紧发邮件问了一下能否下午到场，所幸得到了肯定的答复。</p>
+<h1 id="到达"><a href="#到达" class="headerlink" title="到达"></a>到达</h1><p>不得不吐槽沙河校区的偏远程度超乎想象，上午高数凉了（迫真）以后即使我以最快速度向会场赶，最终在会议开始前最后一刻才成功赶到。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/06/28/微软Insider-DevTour小记/#more" rel="contents">
+            <a class="btn" href="/2018/06/28/%E5%BE%AE%E8%BD%AFInsider-DevTour%E5%B0%8F%E8%AE%B0/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1524,9 +1330,6 @@
         
       
     </div>
-
-    
-
     
     
     
@@ -1565,18 +1368,16 @@
   
   
 
-  
-
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.gaojianli.tk/2018/06/12/写在前面/">
+    <link itemprop="mainEntityOfPage" href="https://blog.gaojianli.me/2018/06/12/%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gaojianli">
-      <meta itemprop="description" content="一个不起眼的个人小站">
+      <meta itemprop="name" content="高渐离">
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
@@ -1591,21 +1392,11 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/06/12/写在前面/" itemprop="url">
-                  写在前面
-                </a>
-              
-            
-          </h1>
+                <a class="post-title-link" href="/2018/06/12/%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2/" itemprop="url">写在前面</a></h1>
         
 
         <div class="post-meta">
           <span class="post-time">
-
-            
-            
-            
-
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -1613,30 +1404,25 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-
-              
-                
-              
-
-              <time title="创建时间：2018-06-12 17:33:05" itemprop="dateCreated datePublished" datetime="2018-06-12T17:33:05+08:00">2018-06-12</time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-12T17:33:55+00:00">
+                2018-06-12
+              </time>
             
 
             
-              
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
               
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-07-24 14:43:53" itemprop="dateModified" datetime="2018-07-24T14:43:53+08:00">2018-07-24</time>
+                <span class="post-meta-item-text">更新于&#58;</span>
               
+              <time title="更新于" itemprop="dateModified" datetime="2020-06-23T04:10:02+00:00">
+                2020-06-23
+              </time>
             
           </span>
 
@@ -1651,34 +1437,6 @@
 
           
 
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">117</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">1 分钟</span>
-              
-            </div>
           
 
           
@@ -1698,15 +1456,12 @@
       
         
           
-            <p>思前想后，看见大家都有了，我还是开一个博客吧。<br>之前一直懒得弄的原因是担心自己没有动力去写文章。但是，怎么说呢，完事开头难，人家<a href="http://blog.xice.cf" target="_blank" rel="noopener">潇</a>都有了我怎么能没有呢！（笑）<br>也有这么一种不服气在里面就是了。<br>那就这样吧，希望能够坚持下去。<br>では、諸君は。</p>
+            <p>思前想后，看见大家都有了，我还是开一个博客吧。<br>之前一直懒得弄的原因是担心自己没有动力去写文章。但是，怎么说呢，完事开头难，人家潇都有了我怎么能没有呢！（笑）<br>也有这么一种不服气在里面就是了。<br>那就这样吧，希望能够坚持下去。<br>では、諸君は。</p>
 
           
         
       
     </div>
-
-    
-
     
     
     
@@ -1745,6 +1500,9 @@
           </div>
           
 
+
+          
+
         </div>
         
           
@@ -1771,57 +1529,39 @@
             
               <img class="site-author-image" itemprop="image"
                 src="/images/avatar.jpg"
-                alt="Gaojianli" />
+                alt="高渐离" />
             
-              <p class="site-author-name" itemprop="name">Gaojianli</p>
+              <p class="site-author-name" itemprop="name">高渐离</p>
               <p class="site-description motion-element" itemprop="description">一个不起眼的个人小站</p>
           </div>
 
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives/">
-                
-                    <span class="site-state-item-count">8</span>
-                    <span class="site-state-item-name">日志</span>
-                  </a>
-                </div>
-              
+          <nav class="site-state motion-element">
 
+            
+              <div class="site-state-item site-state-posts">
               
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
 
+            
+
+            
               
-                
-                
-                <div class="site-state-item site-state-tags">
-                  <a href="/tags/index.html">
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">8</span>
-                    <span class="site-state-item-name">标签</span>
-                  </a>
-                </div>
               
-            </nav>
-          
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
 
           
             <div class="feed-link motion-element">
@@ -1834,27 +1574,31 @@
 
           
             <div class="links-of-author motion-element">
-              
-                <span class="links-of-author-item">
-                  <a href="https://github.com/Gaojianli" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
-                  
-                </span>
-              
-                <span class="links-of-author-item">
-                  <a href="mailto:admin@gaojianli.tk" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
-                  
-                </span>
-              
-                <span class="links-of-author-item">
-                  <a href="https://plus.google.com/116038373227315280525" target="_blank" title="Google"><i class="fa fa-fw fa-google"></i>Google</a>
-                  
-                </span>
-              
-                <span class="links-of-author-item">
-                  <a href="https://twitter.com/Gaojianlidesu" target="_blank" title="Twitter"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
-                  
-                </span>
-              
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Gaojianli" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:admin@gaojianli.me" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/116038373227315280525" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i>Google</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/Gaojianlidesu" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
             </div>
           
 
@@ -1875,7 +1619,7 @@
                   </li>
                 
                   <li class="links-of-blogroll-item">
-                    <a href="https://blog.xice.cf/" title="Xice's Note" target="_blank">Xice's Note</a>
+                    <a href="https://blog.xice.wang/" title="Xice's Note" target="_blank">Xice's Note</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">
@@ -1885,11 +1629,8 @@
               </ul>
             </div>
           
-          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=27594382&auto=1&height=66"></iframe>
-          
-            
-          
-          
+
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" src="//music.163.com/outchain/player?type=2&amp;id=27594382&amp;auto=1&amp;height=66"></iframe>
 
         </div>
       </section>
@@ -1908,32 +1649,12 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
-  <span class="with-love" id="animate">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">Gaojianli</span>
+  <span class="author" itemprop="copyrightHolder">高渐离</span>
 
-  
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-area-chart"></i>
-    </span>
-    
-      <span class="post-meta-item-text">站点总字数：</span>
-    
-    <span title="站点总字数">39k</span>
-  
-
-  
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-coffee"></i>
-    </span>
-    
-      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    
-    <span title="站点阅读时长">1:05</span>
   
 </div>
 
@@ -1945,10 +1666,7 @@
 
 
 
-
-
         
-
 
 
 
@@ -1964,14 +1682,13 @@
       <div class="back-to-top">
         <i class="fa fa-arrow-up"></i>
         
+          <span id="scrollpercent"><span>0</span>%</span>
+        
       </div>
     
 
     
-	
-    
 
-    
   </div>
 
   
@@ -1990,9 +1707,7 @@
 
 
 
-
-
-
+  
 
 
   
@@ -2004,16 +1719,22 @@
 
 
 
-
-
-
-  
 
 
 
   
   
     <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
   
 
   
@@ -2028,21 +1749,21 @@
 
   
   
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
     <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
   
 
-  
-  
-    <script type="text/javascript" src="/lib/reading_progress/reading_progress.js"></script>
-  
-
 
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=6.4.0"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
 
-  <script type="text/javascript" src="/js/src/motion.js?v=6.4.0"></script>
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
 
 
 
@@ -2050,9 +1771,9 @@
   
 
 
-  <script type="text/javascript" src="/js/src/affix.js?v=6.4.0"></script>
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
 
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.0"></script>
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
 
 
 
@@ -2061,26 +1782,27 @@
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.0"></script>
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
 
-<script>
-  (function() {
-      var OriginTitile = document.title, titleTime;
-      document.addEventListener('visibilitychange', function() {
-          if (document.hidden) {
-              document.title = '揠□烫烫?洭锟斤拷嬽p祠?寋鈓□瑢??f';
-              clearTimeout(titleTime);
-          } else {
-              document.title = '(つェ⊂)咦？又好了!';
-              titleTime = setTimeout(function() {
-                  document.title = OriginTitile;
-              },2000);
-          }
-      });
-  })();
-</script>
+
 
   
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
 
 
 
@@ -2095,69 +1817,31 @@
 
 
 
-    
+
+
+    、
         <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
         <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
         <script type="text/javascript"> 
-        if($(".tag-cloud").length===0&&$(".page-home").length===0){
             var gitalk = new Gitalk({
                 clientID: '885335d032aa6845f987', 
                 clientSecret: 'c928e0aaf80e0a91bc7a00c6c786e7a4d95d5643',
                 id: '', 
                 repo: 'gaojianli.github.io',
                 owner: 'gaojianli',                     
-                admin: 'Gaojianli', 
+                admin: 'gaojianli', 
                 distractionFreeMode: false,
             }) 
             gitalk.render('gitalk-container') 
-        }
-        else {
-            $("#gitalk-container").remove()
-        }
         </script>  
      
 
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-  
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-  
 
   
 
 
-  
-  
+
+
 
   
 
@@ -2167,87 +1851,34 @@
 
   
   
-  
-    
-  
-  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-bookmark@latest/bookmark.min.js"></script>
-  <script type="text/javascript">
-  
-    bookmark.loadBookmark();
-  
-  </script>
-
 
   
-  <style>
-    .copy-btn {
-      display: inline-block;
-      padding: 6px 12px;
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 20px;
-      color: #333;
-      white-space: nowrap;
-      vertical-align: middle;
-      cursor: pointer;
-      background-color: #eee;
-      background-image: linear-gradient(#fcfcfc, #eee);
-      border: 1px solid #d5d5d5;
-      border-radius: 3px;
-      user-select: none;
-      outline: 0;
-    }
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
 
-    .highlight-wrap .copy-btn {
-      transition: opacity .3s ease-in-out;
-      opacity: 0;
-      padding: 2px 6px;
-      position: absolute;
-      right: 4px;
-      top: 8px;
-    }
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
 
-    .highlight-wrap:hover .copy-btn,
-    .highlight-wrap .copy-btn:focus {
-      opacity: 1
-    }
 
-    .highlight-wrap {
-      position: relative;
-    }
-  </style>
-  <script>
-    $('.highlight').each(function (i, e) {
-      var $wrap = $('<div>').addClass('highlight-wrap')
-      $(e).after($wrap)
-      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
-        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
-          return $(e).text()
-        }).toArray().join('\n')
-        var ta = document.createElement('textarea')
-        document.body.appendChild(ta)
-        ta.style.position = 'absolute'
-        ta.style.top = '0px'
-        ta.style.left = '0px'
-        ta.value = code
-        ta.select()
-        ta.focus()
-        var result = document.execCommand('copy')
-        document.body.removeChild(ta)
-        
-          if(result)$(this).text('复制成功')
-          else $(this).text('复制失败')
-        
-        $(this).blur()
-      })).on('mouseleave', function (e) {
-        var $b = $(this).find('.copy-btn')
-        setTimeout(function () {
-          $b.text('复制')
-        }, 300)
-      }).append(e)
-    })
-  </script>
+  
 
+  
 
 </body>
 </html>
