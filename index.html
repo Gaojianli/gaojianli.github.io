@@ -306,7 +306,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-10-23T07:30:25+00:00">
+              <time title="更新于" itemprop="dateModified" datetime="2020-10-23T07:37:03+00:00">
                 2020-10-23
               </time>
             
@@ -372,83 +372,19 @@
 
       
         
-          
-            <h1 id="起"><a href="#起" class="headerlink" title="起"></a>起</h1><p>前阵子，在Xice的推荐下，我入手了一个3位<code>.eu</code>域名<code>u2b.eu</code>。他作为一个老羊毛党了，给我推荐的域名价格自然也十分离谱，<a href="https://www.icdsoft.com/en/domains" target="_blank" rel="noopener">10年只要20刀</a>，反过来看看我正在使用的<code>gaojianli.me</code>，一年12刀的价格完美阐释了什么叫做没有对比就没有伤害。</p>
+          <h1 id="起"><a href="#起" class="headerlink" title="起"></a>起</h1><p>前阵子，在Xice的推荐下，我入手了一个3位<code>.eu</code>域名<code>u2b.eu</code>。他作为一个老羊毛党了，给我推荐的域名价格自然也十分离谱，<a href="https://www.icdsoft.com/en/domains" target="_blank" rel="noopener">10年只要20刀</a>，反过来看看我正在使用的<code>gaojianli.me</code>，一年12刀的价格完美阐释了什么叫做没有对比就没有伤害。</p>
 <blockquote>
 <p>值得注意的是，<code>.eu</code>的域名要求欧盟（前）成员国居民的身份才能注册，因此一开始想当然拿了美国人身份注册的我险些打水漂，所幸最后通过一张PS的燃气账单侥幸蒙混过去，可谓是十分惊险。</p>
 </blockquote>
 <p>虽然如此，作为冲动消费捡垃圾的典型，拿下了这个域名其实也不知道做什么。<strong>虽然不知道有什么用，但是太便宜了先买了吧。</strong>抱着这种思想我没少买奇奇怪怪的玩意儿，而这个三位的域名看起来也是这样一个“鸡肋”。说有用吧，虽然是3位域名，但是为了追求3位导致了其基本就是随机的字符串，含义不明；说没用那毕竟还是个3位的顶级域名，<del>还能谐音碰瓷Youtube</del>。</p>
 <p>在闲置了一阵子之后，姑且想到了一个用途，你不是短吗？那就来做个短网址系统吧！</p>
-<h1 id="承"><a href="#承" class="headerlink" title="承"></a>承</h1><p>在我印象中，短网址这种烂大街的东西有不少的开源实现，但是最近闲的也是闲的，与其用别人的，不如自己来造个轮子吧。</p>
-<h2 id="规划"><a href="#规划" class="headerlink" title="规划"></a>规划</h2><p>首先来规划一下项目，难得能自己做个东西，便想用尽可能用一些新技术，因此没有选择劳模Node.js，而是打算尝鲜下微软的<code>ASP .NET Core</code>，这东西据说能完美跨平台运行在Linux上，满足我的需求不是问题。</p>
-<p>因为要考虑到一个封装成API的可能，因此一定是前后端分离的架构。前端最初的时候是想尝试一下<a href="https://docs.microsoft.com/zh-cn/aspnet/core/mvc/views/razor?view=aspnetcore-3.1" target="_blank" rel="noopener">Razor</a>的，C#编译成wasm的方式还挺新颖的。但是写了2行就发现这东西是巨坑，因为它是！基！于！Bootstrap的！！这是多少年前的UI库了，组件全部用CSS来描述，写得十分痛苦和不便，果然火不起来是有理由的，还是老老实实Vue.js吧。</p>
-<p>在做这个的时候，恰逢Vue 3.X 出世，也本想尝试一下<a href="https://v3.vuejs.org/guide/composition-api-introduction.html#why-composition-api" target="_blank" rel="noopener">Composition API</a>配合<a href="https://github.com/vitejs/vite" target="_blank" rel="noopener">Vite</a>体验一把抛弃Webpack的感觉，<strong>然而</strong>，当我兴致冲冲搭建好了脚手架之后遇到了一个更严重问题：<strong>没有组件库</strong>。这连BootStrap都没有，更凄惨了！<del>写CSS是不可能写CSS的，这辈子也不可能手写的。</del> 最后，还是选择了劳模组合Vue2+Vuetify，也算是一大缺憾。</p>
-<p>在架构之前还是了解了一下网上的常见方案，在现有方案中有人提出了一些建议：</p>
-<blockquote>
-<p>看了楼主代码.没上缓存(热点 url),没处理同一 url 连续两次转换出现不同结果的情况</p>
-</blockquote>
-<p>对于上面的意见，分开来探讨一下吧：</p>
-<ul>
-<li>对于意见2，目前很多现存的短网址都不支持这种功能（例如<code>goo.gl</code>），其理由也非常简单：不同的用户每次提交的URL都是一次不同的业务，如果合并了难以完成统计，撤销等功能。同时还给添加徒增工作量，每次添加时都会进行一次全表查询，纵有索引也会极大地浪费性能。</li>
-<li>对于意见1，我的意见是请了解一下<a href="https://baike.baidu.com/item/%E8%BF%87%E6%97%A9%E4%BC%98%E5%8C%96/23734966?fr=aladdin" target="_blank" rel="noopener">这个</a>。现如今，是个项目就w无脑上集群、Redis，完全不顾是否真的有这个需求，私以为也是一种提前优化。对于单用户来说，由于短链接跳转使用的是HTTP 301 永久性转移(Permanently Moved)，第二次访问时会直接被浏览器所缓存；对于多用户来说，热点URL的概率同时被数百人访问的概率也非常低（每个人只需访问一次），更多的访问是离散的，增加Redis也不能增加太多性能。</li>
-</ul>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>因此，总结一下所选解决方案如下：</p>
-<table>
-<thead>
-<tr>
-<th align="left">分类</th>
-<th align="left">解决方案</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">后端</td>
-<td align="left">ASP .NET Core</td>
-</tr>
-<tr>
-<td align="left">数据库</td>
-<td align="left">MySQL</td>
-</tr>
-<tr>
-<td align="left">前端</td>
-<td align="left">Vue.js</td>
-</tr>
-<tr>
-<td align="left">组件库</td>
-<td align="left"><a href="https://vuetifyjs.com/" target="_blank" rel="noopener">Vuetify</a></td>
-</tr>
-<tr>
-<td align="left">缓存</td>
-<td align="left">无</td>
-</tr>
-</tbody></table>
-<h1 id="转"><a href="#转" class="headerlink" title="转"></a>转</h1><h2 id="新时代的ASP初体验"><a href="#新时代的ASP初体验" class="headerlink" title="新时代的ASP初体验"></a>新时代的ASP初体验</h2><p>既然冒着踩坑的风险选择了<br>长久以来，提到ASP我想到的都是一众<code>.asp``.aspx</code>结尾的网站，广泛分布在各大机关单位学校中，伴随着的关键词还有：卡，慢，IE6，<del>大马</del>等,，但是在实际开发中微软着实给我了一个惊喜，非复吴下阿软矣。</p>
-<p>在实际的开发体验中，ASP.NET开发体验比我预想中的好得多，得益于宇宙第一IDE的加持，代码模板非常齐全，可以直接<code>Controller</code>为单位新建代码，以<code>Controller</code>的前缀命名的路由避免了写一大坨<code>router.js</code>，通过<code>Attribute</code>的传参更是免去了一大堆类似<code>var a=request.body.a</code>这种提取参数的代码。</p>
-<p>从设计模式上来说，数据库的访问应该与<code>Controller</code>分离，实现封装、解耦。但是得益于LINQ的强大威力，数据库的访问被压缩到了一行语句，考虑到本项目复杂度，此时再进行封装反而有过度设计的嫌疑了，因此直接LINQ写到<code>Controller</code>里算了。如下是实现短网址跳转的代码，可见不论是查询数据库还是中URL中传参都是十分简洁的：</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">HttpGet(<span class="meta-string">"&#123;shorten&#125;"</span>)</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Forward</span>(<span class="params"><span class="keyword">string</span> shorten, [FromServices] UrlContext dbContext</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> longUrl = <span class="keyword">from</span> urls <span class="keyword">in</span> dbContext.Urls</span><br><span class="line">                    <span class="keyword">where</span> urls.shortUrl == shorten</span><br><span class="line">                    <span class="keyword">select</span> urls.longUrl;</span><br><span class="line">    <span class="keyword">if</span> (longUrl.Count() == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        Response.Redirect(Configuration.GetSection(<span class="string">"SiteSettings"</span>)[<span class="string">"homePage"</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        Response.Redirect(longUrl.Single());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>总而言之，ASP.NET Core我相当看好，尽管是微软的技术所以前景不容乐观，各位开发者还是学习Java前途更加光明。但是作为简单的项目来说其比Koa完善，同时配置比Java的Spring方便（不用写XML真是人间之鉴），Nuget还能直接高速访问不用代理，好处真是太多了。我花了2天时间通过自己摸索+VS的自动提示便基本熟悉了此框架并完成了此项目（有够简单就是了），换做是Spring上手应该很难这么快的吧。</p>
-<h2 id="短网址Hash算法"><a href="#短网址Hash算法" class="headerlink" title="短网址Hash算法"></a>短网址Hash算法</h2><p>关于这个网上也有很多讨论了，我对比后选择了“62进制法”。其核心是将长网址存入数据库后获得一个id，将id从10进制转换为62进制字符串，再加上一些随机字符串防止碰撞，最后得到缩短后的地址。</p>
-<p>由于我直接将id设置为MySQL里的自增字段，因此连随机字符串都不需要了，直接把id拿来用就行了，反正不会碰撞。进制转换代码是我从网上抄的Java代码改写的，<s>众所周知C#曾经有个名字叫J++</s>：</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">char</span>[] alphaBet = &#123; <span class="string">'q'</span>, <span class="string">'w'</span>, <span class="string">'e'</span>, <span class="string">'r'</span>, <span class="string">'t'</span>, <span class="string">'y'</span>, <span class="string">'u'</span>, <span class="string">'i'</span>, <span class="string">'o'</span>, <span class="string">'p'</span>, <span class="string">'a'</span>, <span class="string">'s'</span>, <span class="string">'d'</span>, <span class="string">'f'</span>, <span class="string">'g'</span>, <span class="string">'h'</span>, <span class="string">'j'</span>, <span class="string">'k'</span>, <span class="string">'l'</span>, <span class="string">'z'</span>, <span class="string">'x'</span>, <span class="string">'c'</span>, <span class="string">'v'</span>, <span class="string">'b'</span>, <span class="string">'n'</span>, <span class="string">'m'</span>, <span class="string">'0'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>, <span class="string">'5'</span>, <span class="string">'6'</span>, <span class="string">'7'</span>, <span class="string">'8'</span>, <span class="string">'9'</span>, <span class="string">'Q'</span>, <span class="string">'W'</span>, <span class="string">'E'</span>, <span class="string">'R'</span>, <span class="string">'T'</span>, <span class="string">'Y'</span>, <span class="string">'U'</span>, <span class="string">'I'</span>, <span class="string">'O'</span>, <span class="string">'P'</span>, <span class="string">'A'</span>, <span class="string">'S'</span>, <span class="string">'D'</span>, <span class="string">'F'</span>, <span class="string">'G'</span>, <span class="string">'H'</span>, <span class="string">'J'</span>, <span class="string">'K'</span>, <span class="string">'L'</span>, <span class="string">'Z'</span>, <span class="string">'X'</span>, <span class="string">'C'</span>, <span class="string">'V'</span>, <span class="string">'B'</span>, <span class="string">'N'</span>, <span class="string">'M'</span> &#125;;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">string</span> <span class="title">getShorted</span>(<span class="params"><span class="keyword">long</span> id</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> rest = id;</span><br><span class="line">    Stack&lt;<span class="keyword">char</span>&gt; stack = <span class="keyword">new</span> Stack&lt;<span class="keyword">char</span>&gt;();</span><br><span class="line">    StringBuilder result = <span class="keyword">new</span> StringBuilder(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">while</span> (rest != <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        stack.Push(alphaBet[rest - (rest / <span class="number">62</span>) * <span class="number">62</span>]);</span><br><span class="line">        rest = rest / <span class="number">62</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (; stack.Count() != <span class="number">0</span>;)</span><br><span class="line">    &#123;</span><br><span class="line">        result.Append(stack.Pop());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result.ToString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<h1 id="合"><a href="#合" class="headerlink" title="合"></a>合</h1><p>至于前端部分就是普普通通的Vue.js应用，没什么好说的。写完之后编译、部署一气呵成，成果如下，欢迎体验：</p>
-<ul>
-<li>前端页面： <a href="https://short.u2b.eu" target="_blank" rel="noopener">https://short.u2b.eu</a></li>
-<li>缩短网址格式：<code>https://u2b.eu/{short}</code> ，例如<a href="https://u2b.eu/i" target="_blank" rel="noopener">https://u2b.eu/i</a>对应<a href="https://www.zhihu.com/" target="_blank" rel="noopener">知乎</a></li>
-</ul>
-<p>值得注意的是Debian 10源中的<code>Mariadb</code>是链接<code>yaSSL</code>编译的，不支持TLS1.2及以上版本，在.NET Core 3.0以上版本的runtime上会报错，其解决方法是安装<code>Mariadb</code>官方源中的版本，其使用OpenSSL编译可以正常支持高版本TLS。</p>
-<p>では、諸君は。</p>
-<h1 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h1><h2 id="项目源代码"><a href="#项目源代码" class="headerlink" title="项目源代码"></a>项目源代码</h2><ul>
-<li>后端：<a href="https://github.com/Gaojianli/UrlShorter" target="_blank" rel="noopener">https://github.com/Gaojianli/UrlShorter</a></li>
-<li>前端：<a href="https://github.com/Gaojianli/UrlShorter-web" target="_blank" rel="noopener">https://github.com/Gaojianli/UrlShorter-web</a></li>
-</ul>
-<h2 id="Codespaces"><a href="#Codespaces" class="headerlink" title="Codespaces"></a>Codespaces</h2><p>由于偷懒，本文没有使用常规的VSCode写作，而是直接使用了Github的在线VSCode：<a href="https://github.com/features/codespaces/" target="_blank" rel="noopener">Codespaces</a>，虽然很早我就排到了Codespaces的使用权，但是实际使用这是第一次，这里就顺便谈谈感想。</p>
-<p>先说优点吧，其本质上是一个Ubuntu 18.04的容器，分配了1c4g的资源，里面运行了<code>vscode remote server</code>，然后浏览器远程连接之。好处是可以不用克隆代码和折腾Git，随到随写，哪怕是iPad也可以随时随地编程。</p>
-<p><strong>但是</strong>，理想很美好，现实很骨感，实际体验那叫一个差。后悔，总之就是非常后悔，除了随时随地的掉线（2秒掉一次）外，延迟也难以忍受。输入可能有优化和提前渲染，输入的时候完全体会不到延迟，但是一旦要编辑那就是噩梦。<strong>每次退格键</strong>都要触发一次服务器通讯，大概延迟在2s左右，在这等待期间如果你移动了光标，不好意思，你的删除内容会马上跳转到现光标所在位置上，导致意外删除。换言之，你的所有操作并不是按顺序进入队列中，而是按照js的微任务执行顺序来操作。好家伙，同步的文本编辑任务在它这里变成异步了，因此每当网络波动你就不得不停下来，等待操作执行完毕，以免发生意外操作。</p>
-<p>关于这个功能，我觉得要么是大陆网络的问题，要么就只是个体验版，白嫖要什么自行车。猜想Github实际设计应该是让企业self hosted，然后再在内网中使用吧。</p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/10/23/%E6%90%AD%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%9F%AD%E7%BD%91%E5%9D%80%E7%B3%BB%E7%BB%9F/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -542,7 +478,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-10-23T07:30:25+00:00">
+              <time title="更新于" itemprop="dateModified" datetime="2020-10-23T07:37:03+00:00">
                 2020-10-23
               </time>
             
@@ -709,7 +645,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-10-23T07:30:25+00:00">
+              <time title="更新于" itemprop="dateModified" datetime="2020-10-23T07:37:03+00:00">
                 2020-10-23
               </time>
             
@@ -885,7 +821,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-10-23T07:30:25+00:00">
+              <time title="更新于" itemprop="dateModified" datetime="2020-10-23T07:37:03+00:00">
                 2020-10-23
               </time>
             
@@ -1048,7 +984,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-10-23T07:30:25+00:00">
+              <time title="更新于" itemprop="dateModified" datetime="2020-10-23T07:37:03+00:00">
                 2020-10-23
               </time>
             
@@ -1221,7 +1157,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-10-23T07:30:25+00:00">
+              <time title="更新于" itemprop="dateModified" datetime="2020-10-23T07:37:03+00:00">
                 2020-10-23
               </time>
             
@@ -1388,7 +1324,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-10-23T07:30:25+00:00">
+              <time title="更新于" itemprop="dateModified" datetime="2020-10-23T07:37:03+00:00">
                 2020-10-23
               </time>
             
@@ -1560,7 +1496,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-10-23T07:30:25+00:00">
+              <time title="更新于" itemprop="dateModified" datetime="2020-10-23T07:37:03+00:00">
                 2020-10-23
               </time>
             
@@ -1732,7 +1668,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-10-23T07:30:25+00:00">
+              <time title="更新于" itemprop="dateModified" datetime="2020-10-23T07:37:03+00:00">
                 2020-10-23
               </time>
             
@@ -1904,7 +1840,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-10-23T07:30:25+00:00">
+              <time title="更新于" itemprop="dateModified" datetime="2020-10-23T07:37:03+00:00">
                 2020-10-23
               </time>
             
