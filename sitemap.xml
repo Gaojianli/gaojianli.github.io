@@ -2,13 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://blog.gaojianli.me/2020/06/22/%E8%89%B0%E9%9A%BE%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%89%BE%E5%9B%9E%E8%BF%87%E7%A8%8B/</loc>
-    
-    <lastmod>2021-01-15</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.gaojianli.me/about/index.html</loc>
     
     <lastmod>2021-01-15</lastmod>
@@ -23,7 +16,7 @@
   </url>
   
   <url>
-    <loc>https://blog.gaojianli.me/2018/09/16/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%B7%BB%E5%8A%A0%E6%B8%A9%E6%8E%A7%E9%A3%8E%E6%89%87%EF%BC%88%E4%BA%8C%EF%BC%89/</loc>
+    <loc>https://blog.gaojianli.me/2020/06/22/%E8%89%B0%E9%9A%BE%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%89%BE%E5%9B%9E%E8%BF%87%E7%A8%8B/</loc>
     
     <lastmod>2021-01-15</lastmod>
     
@@ -51,21 +44,14 @@
   </url>
   
   <url>
-    <loc>https://blog.gaojianli.me/2018/06/28/%E5%BE%AE%E8%BD%AFInsider-DevTour%E5%B0%8F%E8%AE%B0/</loc>
+    <loc>https://blog.gaojianli.me/2018/09/16/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%B7%BB%E5%8A%A0%E6%B8%A9%E6%8E%A7%E9%A3%8E%E6%89%87%EF%BC%88%E4%BA%8C%EF%BC%89/</loc>
     
     <lastmod>2021-01-15</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.gaojianli.me/2019/05/11/Libuv%E5%88%9D%E6%8E%A2/</loc>
-    
-    <lastmod>2021-01-15</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.gaojianli.me/2018/07/24/%E4%B8%BA%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0Gitalk%E8%AF%84%E8%AE%BA%E6%8F%92%E4%BB%B6/</loc>
+    <loc>https://blog.gaojianli.me/2020/12/04/%E5%86%99%E5%9C%A8%E4%B8%AD%E5%9B%BD%E5%AE%AA%E6%B3%95%E6%97%A5/</loc>
     
     <lastmod>2021-01-15</lastmod>
     
@@ -86,7 +72,21 @@
   </url>
   
   <url>
-    <loc>https://blog.gaojianli.me/2020/12/04/%E5%86%99%E5%9C%A8%E4%B8%AD%E5%9B%BD%E5%AE%AA%E6%B3%95%E6%97%A5/</loc>
+    <loc>https://blog.gaojianli.me/2018/06/28/%E5%BE%AE%E8%BD%AFInsider-DevTour%E5%B0%8F%E8%AE%B0/</loc>
+    
+    <lastmod>2021-01-15</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.gaojianli.me/2019/05/11/Libuv%E5%88%9D%E6%8E%A2/</loc>
+    
+    <lastmod>2021-01-15</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.gaojianli.me/2018/07/24/%E4%B8%BA%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0Gitalk%E8%AF%84%E8%AE%BA%E6%8F%92%E4%BB%B6/</loc>
     
     <lastmod>2021-01-15</lastmod>
     

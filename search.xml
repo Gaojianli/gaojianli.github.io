@@ -94,21 +94,6 @@
       </tags>
   </entry>
   <entry>
-    <title>写在前面</title>
-    <url>/2018/06/12/%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2/</url>
-    <content><![CDATA[<p>思前想后，看见大家都有了，我还是开一个博客吧。<br>之前一直懒得弄的原因是担心自己没有动力去写文章。但是，怎么说呢，完事开头难，人家潇都有了我怎么能没有呢！（笑）<br>也有这么一种不服气在里面就是了。<br>那就这样吧，希望能够坚持下去。<br>では、諸君は。</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>即日起本站域名切换到gaojianli.me</title>
-    <url>/2018/10/15/%E5%8D%B3%E6%97%A5%E8%B5%B7%E6%9C%AC%E7%AB%99%E5%9F%9F%E5%90%8D%E5%88%87%E6%8D%A2%E5%88%B0gaojianli-me/</url>
-    <content><![CDATA[<p>一直以来，我都使用的是<a href="http://www.freenom.com/" target="_blank" rel="noopener">Freenom</a>提供的<code>.tk</code>免费域名，由于功能齐全且续费免费，自然是我区区一个穷学生的首选。虽然一直有小伙伴劝我切换到一个收费域名，而且烈士墙上被无故收走域名惨案的比比皆是。但我由于个人懒惰，在加上<strong>又不是不能用</strong>的人生信条，一直就用了下来。<br>但是就在前不久，<a href="https://blog.xice.wang/2018/10/23/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%97%9B%E5%A4%B1%E5%9F%9F%E5%90%8D%E7%9A%84%E7%BB%8F%E5%8E%86/" target="_blank" rel="noopener">潇</a>却经历了一次惨痛无比的域名回收事件，<code>Freenom</code>在没有任何征兆、事前通知的情况下删除了他的域名（xice.cf)，而再次注册已经提示要收费。而他的国内域名备案迟迟得不到批准，现阶段就连翻墙都存在困难。于我而言，这不啻前车之鉴。与其被黑心厂商突然收走域名，到时候再手忙脚乱地迁移，不如自己慢慢搬迁。而正好，Github的<a href="https://education.github.com/pack" target="_blank" rel="noopener">Student developer pack</a>包含了由<a href="https://nc.me/github/auth" target="_blank" rel="noopener">Namecheap</a>提供了免费的<code>.me</code>域名一年使用权，就打算先将就用着。因此现阶段不论是博客还是树莓派上的各种服务都会慢慢地搬迁，直至最终弃用<code>gaojianli.tk</code>这一不稳定要素。<br>では、諸君は。</p>
-]]></content>
-      <tags>
-        <tag>博客</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>写在中国宪法日</title>
     <url>/2020/12/04/%E5%86%99%E5%9C%A8%E4%B8%AD%E5%9B%BD%E5%AE%AA%E6%B3%95%E6%97%A5/</url>
     <content><![CDATA[<blockquote class="blockquote-center">
@@ -131,6 +116,21 @@
 ]]></content>
       <tags>
         <tag>杂谈</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>写在前面</title>
+    <url>/2018/06/12/%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2/</url>
+    <content><![CDATA[<p>思前想后，看见大家都有了，我还是开一个博客吧。<br>之前一直懒得弄的原因是担心自己没有动力去写文章。但是，怎么说呢，完事开头难，人家潇都有了我怎么能没有呢！（笑）<br>也有这么一种不服气在里面就是了。<br>那就这样吧，希望能够坚持下去。<br>では、諸君は。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>即日起本站域名切换到gaojianli.me</title>
+    <url>/2018/10/15/%E5%8D%B3%E6%97%A5%E8%B5%B7%E6%9C%AC%E7%AB%99%E5%9F%9F%E5%90%8D%E5%88%87%E6%8D%A2%E5%88%B0gaojianli-me/</url>
+    <content><![CDATA[<p>一直以来，我都使用的是<a href="http://www.freenom.com/" target="_blank" rel="noopener">Freenom</a>提供的<code>.tk</code>免费域名，由于功能齐全且续费免费，自然是我区区一个穷学生的首选。虽然一直有小伙伴劝我切换到一个收费域名，而且烈士墙上被无故收走域名惨案的比比皆是。但我由于个人懒惰，在加上<strong>又不是不能用</strong>的人生信条，一直就用了下来。<br>但是就在前不久，<a href="https://blog.xice.wang/2018/10/23/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%97%9B%E5%A4%B1%E5%9F%9F%E5%90%8D%E7%9A%84%E7%BB%8F%E5%8E%86/" target="_blank" rel="noopener">潇</a>却经历了一次惨痛无比的域名回收事件，<code>Freenom</code>在没有任何征兆、事前通知的情况下删除了他的域名（xice.cf)，而再次注册已经提示要收费。而他的国内域名备案迟迟得不到批准，现阶段就连翻墙都存在困难。于我而言，这不啻前车之鉴。与其被黑心厂商突然收走域名，到时候再手忙脚乱地迁移，不如自己慢慢搬迁。而正好，Github的<a href="https://education.github.com/pack" target="_blank" rel="noopener">Student developer pack</a>包含了由<a href="https://nc.me/github/auth" target="_blank" rel="noopener">Namecheap</a>提供了免费的<code>.me</code>域名一年使用权，就打算先将就用着。因此现阶段不论是博客还是树莓派上的各种服务都会慢慢地搬迁，直至最终弃用<code>gaojianli.tk</code>这一不稳定要素。<br>では、諸君は。</p>
+]]></content>
+      <tags>
+        <tag>博客</tag>
       </tags>
   </entry>
   <entry>
