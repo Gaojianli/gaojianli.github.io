@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
@@ -50,7 +50,7 @@
 <meta property="og:image" content="https://blog.gaojianli.me/2018/06/28/%E5%BE%AE%E8%BD%AFInsider-DevTour%E5%B0%8F%E8%AE%B0/ml5.jpg">
 <meta property="og:image" content="https://blog.gaojianli.me/2018/06/28/%E5%BE%AE%E8%BD%AFInsider-DevTour%E5%B0%8F%E8%AE%B0/faq.jpg">
 <meta property="article:published_time" content="2018-06-28T23:16:01.000Z">
-<meta property="article:modified_time" content="2021-01-15T05:25:00.581Z">
+<meta property="article:modified_time" content="2021-01-15T05:45:53.397Z">
 <meta property="article:author" content="高渐离">
 <meta property="article:tag" content="讲座">
 <meta property="article:tag" content="微软">
@@ -139,25 +139,25 @@
 
 
 <nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
+  <ul id="menu" class="menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+    <a href="/" rel="section"><i class="fa fa-fw fa-fa fa-home"></i>首页</a>
 
   </li>
         <li class="menu-item menu-item-about">
 
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-fa fa-user"></i>关于</a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-fa fa-tags"></i>标签</a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-fa fa-archive"></i>归档</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -236,7 +236,7 @@
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
+                <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
@@ -244,23 +244,23 @@
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
+                  <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-15 05:25:00" itemprop="dateModified" datetime="2021-01-15T05:25:00+00:00">2021-01-15</time>
+                <time title="修改时间：2021-01-15 05:45:53" itemprop="dateModified" datetime="2021-01-15T05:45:53+00:00">2021-01-15</time>
               </span>
 
           <br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
+                <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
               <span>5.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
+                <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               <span>5 分钟</span>
@@ -326,10 +326,8 @@
 </ul>
 <p>毕竟，那句话咋说的来着？</p>
 <blockquote class="blockquote-center">
-            <i class="fa fa-quote-left"></i>
             <p><span style="font-size:3em">又不是不能用</span> </p>
 
-            <i class="fa fa-quote-right"></i>
           </blockquote>
 <h1 id="Microsoft-Graph"><a href="#Microsoft-Graph" class="headerlink" title="Microsoft Graph"></a>Microsoft Graph</h1><p>这个我觉得是今天下午的重中之重了，由Justin Liu给我们带来。虽然错过了上午的PWA有点可惜，不过听了这个便已经不虚此行了，你看我手都抖得不能自已了:</p>
 <p><img src="graph1.jpg" alt="激动得手抖"><br>那么什么是MS Graph呢？Graph是微软提供的一组用于获取基于微软各项服务中产生的各种数据的api（挺绕口的），通俗地说就是你在使用微软各项服务的时侯他收集了你的隐私，然后提供了一些接口让你能够利用这个数据。我们评判一个数据提供方最主要的指标就是数据数量以及质量，那么，这个数据量究竟有多大呢，微软给了张图:<br><img src="(graph2.jpg" alt="Graph数据量"><br>可以看到这个数据量是非常可观的，来源也非常广泛，例如Office365、Outlook、Onedrive，甚至Windows 10的Timeline。可以说，只要你使用过微软相关的云服务，你就都会有记录下来。那么究竟有那些数据呢？<br>API主要分为两类，User和Activity。前者包含的主要是用户的基本信息以及人脉信息，可以获取例如我的工作伙伴，我的照片，我的邮箱等个人信息，API以/me打头，后接简单的单词，通过GET或者POST发送请求，(2020年6月22日Update：就是Restful API)然后服务器返回JSON，如图所示：<br><img src="graph3.jpg" alt="Graph API返回的是JSON数据"><br>相信看到这里，有些小伙伴心里面已经有一些应用场景了，如果没有的话请再看下面这张图：<br><img src="graph4.jpg" alt="模板渲染+组件化"><br>是不是觉得挺眼熟？没错，前端中常见的组件化数据绑定和模板渲染！这简直是为Vue.js这种数据绑定的框架量身定制的，有这些API做个个人dashboard或者智能助理完全不是问题。<br>值得注意的是，这里官方给的Demo是追踪日历变化，在会议时长占比超过80%的时候自动提示，其关于人脉方面的API数据来源则是Office Teams，因此对于没有使用Office 365的小伙伴来说，这部分功能算是废了。不过尽管如此，剩下的API也依旧让人兴奋。<br>Microsoft Graph除了获取数据的API外，还提供了一些动作性API用于执行发送邮件等主动操作，主要通过POST访问，例如下面这个自动文档审批工作流：<br><img src="graph5.jpg" alt="自动文档审批工作流"><br>前面我提到了组件化和数据绑定，微软也提出了一种新型控件（暂时姑且这么叫）<a href="https://adaptivecards.io/" target="_blank" rel="noopener">Adaptive Card</a><br><img src="graph6.jpg" alt="Adaptive"><br>这是一种可适应性的卡片数据交换方式，或者应该叫可适应模板。之所以被称为可适应，是因为它采用json方式传入数据，而根据应用场景的不同可以渲染成不同的样子，例如小娜消息，Skype消息，Windows Timeline等等，亦即“一份数据，万种表现”。<br>前面提到了Graph的API还有Activity这一大类，其全名是Activity &amp; Device，从名字上我们可以看出，这一类主要是偏向用户对设备的使用，而不是依赖于某个软件<br><img src="graph7.jpg" alt="Activity 类API更加倾向于实体设备"><br>通过这组API我们可获取到Windows上的应用使用情况，推送Timeline消息，向特定设备推送消息等。随后，Justin展示了如何在Windows10 1803上自定义显示TImeline消息，支持对标题、显示信息甚至背景实施自定义。<br><img src="graph8.jpg" alt="使用Activity API"></p>
@@ -361,10 +359,39 @@
     <a href="https://blog.gaojianli.me/2018/06/28/%E5%BE%AE%E8%BD%AFInsider-DevTour%E5%B0%8F%E8%AE%B0/" title="微软Insider DevTour小记">https://blog.gaojianli.me/2018/06/28/微软Insider-DevTour小记/</a>
   </li>
   <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-cn" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
   </li>
 </ul>
 </div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/Gaojianlidesu">
+            <span class="icon">
+              <i class="fa fa-fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
 
 
       <footer class="post-footer">
@@ -475,22 +502,20 @@
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <a href="https://github.com/Gaojianli" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Gaojianli" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+        <a href="https://github.com/Gaojianli" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Gaojianli" rel="noopener" target="_blank"><i class="fa fa-fw fa-fab fa-github"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="mailto:admin@gaojianli.me" title="E-Mail → mailto:admin@gaojianli.me" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+        <a href="mailto:admin@gaojianli.me" title="E-Mail → mailto:admin@gaojianli.me" rel="noopener" target="_blank"><i class="fa fa-fw fa-fab fa-envelope"></i>E-Mail</a>
       </span>
       <span class="links-of-author-item">
-        <a href="https://plus.google.com/116038373227315280525" title="Google → https:&#x2F;&#x2F;plus.google.com&#x2F;116038373227315280525" rel="noopener" target="_blank"><i class="fab fa-google fa-fw"></i>Google</a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="https://twitter.com/Gaojianlidesu" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;Gaojianlidesu" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+        <a href="https://twitter.com/Gaojianlidesu" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;Gaojianlidesu" rel="noopener" target="_blank"><i class="fa fa-fw fa-fab fa-twitter"></i>Twitter</a>
       </span>
   </div>
 
 
   <div class="links-of-blogroll motion-element">
-    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
       Links
     </div>
     <ul class="links-of-blogroll-list">
@@ -530,12 +555,12 @@
   &copy; 
   <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
-    <i class="fa fa-heart"></i>
+    <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">高渐离</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
-      <i class="fa fa-chart-area"></i>
+      <i class="fa fa-area-chart"></i>
     </span>
     <span title="站点总字数">43k</span>
     <span class="post-meta-divider">|</span>
