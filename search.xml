@@ -94,8 +94,8 @@
       </tags>
   </entry>
   <entry>
-    <title>从零开始搭建NAS——硬件选购</title>
-    <url>/2022/08/22/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E6%90%AD%E5%BB%BANAS%E2%80%94%E2%80%94%E7%A1%AC%E4%BB%B6%E9%80%89%E8%B4%AD/</url>
+    <title>从零开始搭建NAS——硬件选购与装机</title>
+    <url>/2022/08/20/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E6%90%AD%E5%BB%BANAS%E2%80%94%E2%80%94%E7%A1%AC%E4%BB%B6%E9%80%89%E8%B4%AD%E4%B8%8E%E8%A3%85%E6%9C%BA/</url>
     <content><![CDATA[<h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>今年7月对于老二次元来说，是一个不寻常的夏天。除了酷热的高温之外，还有不断重复着延期——被举报——再延期的循环的漫展。在赛博二次元中，也有一个大事情：B站今年7月购买番剧数量是0！这标志着持续多年的番剧正版化运动正式回到原点，众多B站大会员喜提年度大怨种称号。那么，对于赛博时代的好青年，应该怎么看番呢？</p>
 <a id="more"></a>
 <p>我个人回退到了RSS+BT的原始方案。在<a href="https://acg.rip/" target="_blank" rel="noopener">ACT.RIP</a>上订阅想看的番剧，然后使用qbittorrent自动下载，完成之后再使用tgbot给我发个消息：<br><img src="1.png" alt="机器人发送消息"></p>
@@ -236,6 +236,10 @@
 <p>接下来略过一些残酷的ITX装机过程，让我们快进到结束吧！<br><img src="9.jpg" alt="成品"><br>可以看到装好之后还是相当紧凑的。</p>
 <h2 id="硬盘"><a href="#硬盘" class="headerlink" title="硬盘"></a>硬盘</h2><p>关于NAS的硬盘选购，公说公有理，婆说婆有理，我在这里就不多做评价了。不过大家对比故障率之后得出的一致结论是：别买希捷。</p>
 <p>其他不管是HC550还是HC530都是不错的硬盘，但是HC550的噪音恶名昭著，在听信一个知乎回答说东芝更加安静之后，我最终选择了4块东芝的<code>MG08ACA16TE</code>，容量为16TB。</p>
+<h2 id="关于系统"><a href="#关于系统" class="headerlink" title="关于系统"></a>关于系统</h2><p>因为想直接使用一个简单的成品系统，同时又不想使用国产灵车群晖，我便选择了大名鼎鼎的FreeNAS（现已改名TrueNAS）。安装系统非常快速，操作界面也十分清晰，三下五除二搞定了RAIDZ的配置，再把NAS的万兆网口和PC连接起来，基本就算大功告成了。<br>（主板识别有问题，识别成了4650GE）<br><img src="10.jpg" alt="CPU"><br><img src="11.jpg" alt="网口"></p>
+<p>TrueNAS Core不同于其他常见NAS系统，其底层基于的是FreeBSD。幸好TrueNAS的UI还算完善（才怪），加上我有一些BSD的使用经验，因此使用没有遇到特别大的问题。BSD的Jail和LXC非常类似，区别只是没有Dockerfile，需要手动安装而已。不过对于NAS这种不需要大规模部署的场景，反而更加适合私人定制。花了1个下午搞定了qbittrorent和nginx的安装，再从老盒子同步完数据，NAS的安装就差不多搞一段了了。</p>
+<p>では、諸君は。</p>
+<h3 id="8月22日-Update："><a href="#8月22日-Update：" class="headerlink" title="8月22日 Update："></a>8月22日 Update：</h3><p>我错了，我根本不懂FreeBSD。这傻逼系统，狗都不用，具体请看下一篇文章。</p>
 ]]></content>
       <tags>
         <tag>电子文玩</tag>
