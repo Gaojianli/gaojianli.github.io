@@ -238,6 +238,7 @@
 <p>其他不管是HC550还是HC530都是不错的硬盘，但是HC550的噪音恶名昭著，在听信一个知乎回答说东芝更加安静之后，我最终选择了4块东芝的<code>MG08ACA16TE</code>，容量为16TB。</p>
 <h2 id="关于系统"><a href="#关于系统" class="headerlink" title="关于系统"></a>关于系统</h2><p>因为想直接使用一个简单的成品系统，同时又不想使用国产灵车群晖，我便选择了大名鼎鼎的FreeNAS（现已改名TrueNAS）。安装系统非常快速，操作界面也十分清晰，三下五除二搞定了RAIDZ的配置，再把NAS的万兆网口和PC连接起来，基本就算大功告成了。<br>（主板识别有问题，识别成了4650GE）<br><img src="10.jpg" alt="CPU"><br><img src="11.jpg" alt="网口"></p>
 <p>TrueNAS Core不同于其他常见NAS系统，其底层基于的是FreeBSD。幸好TrueNAS的UI还算完善（才怪），加上我有一些BSD的使用经验，因此使用没有遇到特别大的问题。BSD的Jail和LXC非常类似，区别只是没有Dockerfile，需要手动安装而已。不过对于NAS这种不需要大规模部署的场景，反而更加适合私人定制。花了1个下午搞定了qbittrorent和nginx的安装，再从老盒子同步完数据，NAS的安装就差不多搞一段了了。</p>
+<h1 id="最终效果图"><a href="#最终效果图" class="headerlink" title="最终效果图"></a>最终效果图</h1><p>最后放一个效果图<br><img src="12.jpg" alt="效果图"><br>(关于硬盘提手的问题，真的不是20年前的塑料老化了！是龙哥建议的奶米黄，至于旧不旧，龙哥说不旧，是光线问题，那大家就当他是光线问题吧）<br><img src="13.jpg" alt="龙哥说不旧"></p>
 <p>では、諸君は。</p>
 <h3 id="8月22日-Update："><a href="#8月22日-Update：" class="headerlink" title="8月22日 Update："></a>8月22日 Update：</h3><p>我错了，我根本不懂FreeBSD。这傻逼系统，狗都不用，具体请看下一篇文章。</p>
 ]]></content>
