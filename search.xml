@@ -94,6 +94,155 @@
       </tags>
   </entry>
   <entry>
+    <title>从零开始搭建NAS——硬件选购</title>
+    <url>/2022/08/22/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E6%90%AD%E5%BB%BANAS%E2%80%94%E2%80%94%E7%A1%AC%E4%BB%B6%E9%80%89%E8%B4%AD/</url>
+    <content><![CDATA[<h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>今年7月对于老二次元来说，是一个不寻常的夏天。除了酷热的高温之外，还有不断重复着延期——被举报——再延期的循环的漫展。在赛博二次元中，也有一个大事情：B站今年7月购买番剧数量是0！这标志着持续多年的番剧正版化运动正式回到原点，众多B站大会员喜提年度大怨种称号。那么，对于赛博时代的好青年，应该怎么看番呢？</p>
+<a id="more"></a>
+<p>我个人回退到了RSS+BT的原始方案。在<a href="https://acg.rip/" target="_blank" rel="noopener">ACT.RIP</a>上订阅想看的番剧，然后使用qbittorrent自动下载，完成之后再使用tgbot给我发个消息：<br><img src="1.png" alt="机器人发送消息"></p>
+<p>我之前的设备其实是一个赛扬3867U的一体机盒子，装了Archlinux，里面上了一块2.5英寸的笔记本硬盘，连NAS都算不上。然而就这么小个身躯里面却承载着FreeRadius、qbittorrent、jellyfin等多种服务，考虑到单盘的现状和笔记本硬盘的可靠性，实在是有一些灵。但是它工作，而且工作得非常好，十天半个月不关机毫无问题，每次关机都是我主动滚系统导致的。但是随着各种小姐姐，番剧的累积，我的下载盒子空间逐渐变得捉襟见肘：<img src="2.png" alt="空间不够了！">)这个问题就很难通过软件进行优化了。这个时候我又恰好好看到了AZ的<a href="https://www.bilibili.com/video/BV1Ja411Y7ZB" target="_blank" rel="noopener">视频</a>，考虑到Insta恐怖的素材体积（1天录满128G），在仔细地咨询了一下经验之后，遂决定自己也搞一个。</p>
+<h2 id="为什么不考虑群晖"><a href="#为什么不考虑群晖" class="headerlink" title="为什么不考虑群晖"></a>为什么不考虑群晖</h2><p>一个字，贵！这个价格就配一个赛扬（ARM），真心不值得。</p>
+<h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><p>首先列了一下我的需求：</p>
+<ol>
+<li>体积不能太大，不能超过MATX</li>
+<li>需要上RAID，因此盘位至少需要4块</li>
+<li>我想体验一下ZFS</li>
+<li>直接上NAS系统，不想折腾从零开始安装软件了</li>
+<li>我要安装Jellyfin，因此要能解码4k<br>首先关于3，网上一直有一个说法是ZFS必须使用ECC内存，否则有可能会<a href="https://jrs-s.net/2015/02/03/will-zfs-and-non-ecc-ram-kill-your-data/" target="_blank" rel="noopener">丢失所有数据</a>，稍微咨询了一下群友也得到了肯定的结论：<img src="4.png" alt="肯定的结论">，那么就必须把ECC纳入考虑之中了。</li>
+</ol>
+<h1 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h1><h2 id="机箱选择"><a href="#机箱选择" class="headerlink" title="机箱选择"></a>机箱选择</h2><p>4盘位的机箱其实可选项并没有很多，AZ建议我看看银欣，万由的机箱，或者干脆星际蜗牛。乔思伯N1由于太长，直接出局；星际蜗牛虽然符合我的需求，但是太丑，而且据说风扇噪音很大；最后我相中了万由410，尺寸<code>263*195*197</code>，支持使用flex电源，风扇据说也比较安静。走闲鱼400块钱拿下来，比较划算。<br>值得一提的是万由410使用了一个巨傻逼的类肤涂层前面板，时间一长就特别黏，堪称吸灰神器。幸好龙哥(<a href="https://www.makiras.work/" target="_blank" rel="noopener">Makiras</a>，包院士门徒，未来的中国半导体扛把子)愿意免费帮我改一下颜色，于是我便下单了一大堆喷漆和机箱直接邮给了他。</p>
+<h2 id="硬件配置"><a href="#硬件配置" class="headerlink" title="硬件配置"></a>硬件配置</h2><p>搞定了机箱，接下来就是其他硬件了。由于要使用ECC，因此其实选择相当有限。在艰难的两天挑选过程中，我几乎翻遍了全网所有的相关文章，最终确定了两种方案：</p>
+<h3 id="Intel"><a href="#Intel" class="headerlink" title="Intel"></a>Intel</h3><p>在随意的翻找Intel Ark的过程中，我无意中发现12代Intel全系支持ECC，尤其是大小核心的设计，对于NAS这种负载来说非常合适。粗略地翻找之后，我便看上了<a href="https://www.intel.cn/content/www/cn/zh/products/sku/132224/intel-core-i312100te-processor-12m-cache-up-to-4-00-ghz/specifications.html" target="_blank" rel="noopener">i3-12100TE</a>这一CPU：4核8线程的设计，ECC内存的支持，35W的TDP，UDH730的核芯显卡都堪称完美。<br>但是，Intel CPU对于ECC的支持问题从来不是在CPU上，而是在主板。民用级别的芯片组，无论是H610还是Z690<em>均</em>不支持ECC，要想用ECC？对不起，请去使用W680芯片组。对于NAS这种尺寸，使用W680芯片组的主板不说绝对没有，也不超过2块。幸好华擎始终是爱世人的，这种奇葩规格的板子还真让我<a href="https://baijiahao.baidu.com/s?id=1727195949244610641&wfr=spider&for=pc" target="_blank" rel="noopener">找到一块</a>。<br>仔细一看不得不说，这个板子是真的奇葩：首先上哪儿去找SO-DIMM的ECC内存就是个大坑，其次只有两个SATA接口，要想拓展只能使用宝贵的PCIE插槽。不过这些都是小问题，真正的致命问题是：<strong>买！不！到！</strong><img src="5.jpeg" alt="根本买不到"></p>
+<p>我翻遍了国内外购物网站包括亚马逊都没找到哪里能买到这块主板。不管你的板子多么牛逼，如果是空气板那一切都是零。既然12代Intel的主板买不到，就只能退而求其次了。Intel的i3系列似乎一直都有那么几个子型号支持ECC，在一通搜索之后我最终确定了<code>i3-10100T+W470</code>的方案，整体配置单如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">配件名称</th>
+<th align="left">型号</th>
+<th align="left">单价</th>
+<th align="left">数量</th>
+<th align="left">合计</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">CPU</td>
+<td align="left">i3-10100T</td>
+<td align="left">745</td>
+<td align="left">1</td>
+<td align="left">745</td>
+</tr>
+<tr>
+<td align="left">主板</td>
+<td align="left">超微X12SCV W480E</td>
+<td align="left">2550</td>
+<td align="left">1</td>
+<td align="left">2550</td>
+</tr>
+<tr>
+<td align="left">内存</td>
+<td align="left">三星 16GB DDR4 2666 SO-DIMM ECC</td>
+<td align="left">450</td>
+<td align="left">2</td>
+<td align="left">900</td>
+</tr>
+<tr>
+<td align="left">电源</td>
+<td align="left">海韵SSP-250SUB</td>
+<td align="left">355</td>
+<td align="left">1</td>
+<td align="left">355</td>
+</tr>
+<tr>
+<td align="left">机箱</td>
+<td align="left">万由410（闲鱼）</td>
+<td align="left">450</td>
+<td align="left">1</td>
+<td align="left">450</td>
+</tr>
+<tr>
+<td align="left">合计</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">5000</td>
+</tr>
+</tbody></table>
+<p>我觉得不管怎么说这个配置单也是相当荒谬的，这个主板也太TM贵了，这还没算上硬盘的钱就超过5000了。这个CPU在这个板子上真就吕布骑狗。</p>
+<h3 id="AMD"><a href="#AMD" class="headerlink" title="AMD"></a>AMD</h3><p>Intel不成，就只能来看看AMD了。首先好消息是AMD全系支持ECC，普通消费级主板也能支持ECC内存的使用；坏消息是由于我拥有核显的需求，因此只能考虑APU，而<strong>Ryzen APU必须是Pro版本才支持ECC</strong>。不过这个不是什么大问题，Pro的APU也没有特别昂贵。在挑选的过程中，我很大程度上参考了<a href="https://zhuanlan.zhihu.com/p/467669331" target="_blank" rel="noopener">这篇文章</a>，在这里表示感谢。AMD方案的整体配置单如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">配件名称</th>
+<th align="left">型号</th>
+<th align="left">单价</th>
+<th align="left">数量</th>
+<th align="left">合计</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">CPU</td>
+<td align="left">Ryzen R3 Pro 4350G 闲鱼</td>
+<td align="left">648</td>
+<td align="left">1</td>
+<td align="left">648</td>
+</tr>
+<tr>
+<td align="left">主板</td>
+<td align="left">华擎 B450 gaming-itx 闲鱼</td>
+<td align="left">568</td>
+<td align="left">1</td>
+<td align="left">568</td>
+</tr>
+<tr>
+<td align="left">内存</td>
+<td align="left">三星 16GB DDR4 ECC</td>
+<td align="left">440</td>
+<td align="left">2</td>
+<td align="left">800</td>
+</tr>
+<tr>
+<td align="left">电源</td>
+<td align="left">海韵SSP-250SUB</td>
+<td align="left">355</td>
+<td align="left">1</td>
+<td align="left">355</td>
+</tr>
+<tr>
+<td align="left">网卡</td>
+<td align="left">TP-Link TL-NT521</td>
+<td align="left">409</td>
+<td align="left">1</td>
+<td align="left">409</td>
+</tr>
+<tr>
+<td align="left">机箱</td>
+<td align="left">万由410（闲鱼）</td>
+<td align="left">450</td>
+<td align="left">1</td>
+<td align="left">650</td>
+</tr>
+<tr>
+<td align="left">合计</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">3310</td>
+</tr>
+</tbody></table>
+<p>这个价格就友好许多了，于是最终决定采用这个方案。当然由于实际操作中没有买到<code>4350G</code>，最后800块钱收了一个<code>R5 Pro 4400GE</code>，升级到6核12线程；TDP还降到了35W，还算不错。</p>
+<h1 id="组装"><a href="#组装" class="headerlink" title="组装"></a>组装</h1><p>上周一，龙哥告诉我机箱的涂装已经完成，我下单的其他配件也陆陆续续开始发货。最终周四的时候所有配件到齐了，动手开始！</p>
+<h2 id="插曲"><a href="#插曲" class="headerlink" title="插曲"></a>插曲</h2><p>然而其实在开始之前就遇到了一个非常傻逼的问题，这个机箱打不开！我卸下四颗螺丝之后不管我怎么操作这个机箱就是纹丝不动，在网上查找了一大堆教程之后终于找到了一个打开的方法：<a href="https://b23.tv/3DfWywA" target="_blank" rel="noopener">https://b23.tv/3DfWywA</a> (请看4分55秒)。<img src="6.jpg" alt="机箱的颜色还是很不错的"></p>
+<h2 id="组装-1"><a href="#组装-1" class="headerlink" title="组装"></a>组装</h2><p>总之最后在一通操作之后，虽然成功化身手肿治虫，还是打开了这个机箱。<br>先来看看CPU，毫无疑问这个CPU肯定是二手的，上面还有一些油渍。不过CPU这种东西反正也不会坏，也没人会用这东西来挖矿，应该问题不大。<img src="7.jpg" alt="CPU"></p>
+<p>接下来是主板，其实这是我第一次见到华擎的主板，不得不说体积是真的小。另外这里有个教训，就是购买这种二手主板前一定要叫卖家刷好BIOS，不然点不亮就悲剧了。<img src="8.jpg" alt="主板"></p>
+<p>接下来略过一些残酷的ITX装机过程，让我们快进到结束吧！<br><img src="9.jpg" alt="成品"><br>可以看到装好之后还是相当紧凑的。</p>
+<h2 id="硬盘"><a href="#硬盘" class="headerlink" title="硬盘"></a>硬盘</h2><p>关于NAS的硬盘选购，公说公有理，婆说婆有理，我在这里就不多做评价了。不过大家对比故障率之后得出的一致结论是：别买希捷。</p>
+<p>其他不管是HC550还是HC530都是不错的硬盘，但是HC550的噪音恶名昭著，在听信一个知乎回答说东芝更加安静之后，我最终选择了4块东芝的<code>MG08ACA16TE</code>，容量为16TB。</p>
+]]></content>
+      <tags>
+        <tag>电子文玩</tag>
+        <tag>消费电子</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>写在中国宪法日</title>
     <url>/2020/12/04/%E5%86%99%E5%9C%A8%E4%B8%AD%E5%9B%BD%E5%AE%AA%E6%B3%95%E6%97%A5/</url>
     <content><![CDATA[<blockquote class="blockquote-center">
@@ -422,22 +571,6 @@
 ]]></content>
       <tags>
         <tag>树莓派</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>自己当ISP——搭建DN42网络</title>
-    <url>/2022/06/21/%E8%87%AA%E5%B7%B1%E5%BD%93ISP%E2%80%94%E2%80%94%E6%90%AD%E5%BB%BADN42%E7%BD%91%E7%BB%9C/</url>
-    <content><![CDATA[<h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>事情的万恶之源还是Xice的一句安利：<br><img src="%E8%B5%B7%E5%9B%A0.png" alt="起因"><br>接着便甩过来一篇<a href="https://lantian.pub/article/modify-website/dn42-experimental-network-2020.lantian/" target="_blank" rel="noopener">博客</a>，由此我也得以知晓这个DN42究竟为何物：</p>
-<blockquote>
-<p>DN42 全称 Decentralized Network 42（42 号去中心网络），是一个大型、去中心化的 VPN 网络。但是与其它传统 VPN 不同的是，DN42 本身不提供 VPN 出口服务，即不提供规避网络审查、流媒体解锁等类似服务。相反，DN42 的目的是模拟一个互联网。它使用了大量在目前互联网骨干上应用的技术（例如 BGP 和递归 DNS），可以很好地模拟一个真实的网络环境。就像在真实互联网中一样，你要扮演一个 ISP（互联网服务提供商），注册自己的个人信息，ASN 号码，IPv4 和 IPv6 的地址池，并且使用 BGP 在自己的服务器上广播它们。你还要和其它的用户联系，和他们做 Peering（对接），一步步进入完整的 DN42 网络。</p>
-</blockquote>
-<p>注册自己的AS？听起来好像有点意思，在此之前我只知晓你群人均有一个AS号，完全没想过这东西是怎么搞的，机会难得，那就来试试吧！</p>
-<a id="more"></a>
-
-]]></content>
-      <tags>
-        <tag>DN42</tag>
-        <tag>网络</tag>
       </tags>
   </entry>
   <entry>
