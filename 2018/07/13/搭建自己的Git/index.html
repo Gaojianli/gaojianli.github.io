@@ -28,7 +28,7 @@
 <meta property="og:description" content="前言事情的起因非常简单，得益于某位校长的功劳，我的网络访问Github奇慢无比，最近甚至出现了push失败的情况，我连博客都没法好好更新了！（说的好像你更新得很多一样）嘛，正好潇在给我孜孜不倦地推荐Gitea，我就来试试在树莓派上搭建一下吧。首先我们来看官方文档：  易安装您除了可以根据操作系统平台通过 二进制运行，还可以通过 Docker 或 Vagrant，以及 包管理 安装。  嚯，挺厉害嘛">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-07-13T14:44:25.000Z">
-<meta property="article:modified_time" content="2022-12-04T13:26:06.003Z">
+<meta property="article:modified_time" content="2022-12-04T13:34:45.340Z">
 <meta property="article:author" content="高渐离">
 <meta property="article:tag" content="树莓派">
 <meta property="article:tag" content="Web">
@@ -225,7 +225,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-12-04 13:26:06" itemprop="dateModified" datetime="2022-12-04T13:26:06+00:00">2022-12-04</time>
+                <time title="修改时间：2022-12-04 13:34:45" itemprop="dateModified" datetime="2022-12-04T13:34:45+00:00">2022-12-04</time>
               </span>
 
           <br>
@@ -573,5 +573,18 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
 });
 </script>
 
-</body>
+
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(r){r.imageLazyLoadSetting.processImages=t;var e=r.imageLazyLoadSetting.isSPA,n=r.imageLazyLoadSetting.preloadRatio||1,c=a();function a(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(){e&&(c=a());for(var t,o=0;o<c.length;o++)0<=(t=(t=c[o]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(r.innerHeight*n||document.documentElement.clientHeight*n)&&function(){var t,e,n,a,i=c[o];e=function(){c=c.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(n=new Image,a=t.getAttribute("data-original"),n.onload=function(){t.src=a,t.removeAttribute("data-original"),e&&e()},t.src!==a&&(n.src=a))}()}function i(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",i),r.addEventListener("resize",i),r.addEventListener("orientationchange",i)}(this);</script></body>
 </html>
