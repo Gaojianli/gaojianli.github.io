@@ -94,11 +94,98 @@
       </tags>
   </entry>
   <entry>
+    <title>从零开始搭建NAS——坑爹的TrueNAS</title>
+    <url>/2022/12/04/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E6%90%AD%E5%BB%BANAS%E2%80%94%E2%80%94%E5%9D%91%E7%88%B9%E7%9A%84TrueNAS/</url>
+    <content><![CDATA[<p>距离<a href="https://blog.gaojianli.me/2022/08/20/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E6%90%AD%E5%BB%BANAS%E2%80%94%E2%80%94%E7%A1%AC%E4%BB%B6%E9%80%89%E8%B4%AD%E4%B8%8E%E8%A3%85%E6%9C%BA/">上一篇文章</a>其实已经过了有一阵子了，本来预计是想要很快写出第二篇的，但是由于各种各样的原因就一直拖了下去。</p>
+<p>嗯，没错，我其实是在测试NAS的稳定性，一定不是太懒的原因。截止到今天（2022-12-4），NAS已经连续运行53天了，在之前因为更新系统等原因不可避免重启了一两次，一直以来确实没出什么大问题。</p>
+<a id="more"></a>
+<p><img src="1.png" alt="还是相当稳定的"></p>
+<h1 id="坑爹的TrueNAS-Core"><a href="#坑爹的TrueNAS-Core" class="headerlink" title="坑爹的TrueNAS Core"></a>坑爹的TrueNAS Core</h1><p><a href="https://blog.gaojianli.me/2022/08/20/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E6%90%AD%E5%BB%BANAS%E2%80%94%E2%80%94%E7%A1%AC%E4%BB%B6%E9%80%89%E8%B4%AD%E4%B8%8E%E8%A3%85%E6%9C%BA/#8%E6%9C%8822%E6%97%A5-Update%EF%BC%9A">上次</a>在文章末尾我提到说，我被TrueNAS Core狠狠地坑了一把。</p>
+<p>TrueNAS是基于FreeBSD构建的操作系统，而作为皇城根下有通天纹的系统，自然是不屑于使用Docker的。FreeBSD自有<code>jails</code>系统。</p>
+<blockquote>
+<p>FreeBSD jail，一种操作系统层虚拟化技术，在FreeBSD操作系统中运作。利用这个技术，FreeBSD的系统管理者，可以创造出几个小型的软件系统，这些软件系统被称为监狱（jails）</p>
+</blockquote>
+<p>作为Docker的老前辈，平心而论，<code>jails</code>在2000年是具有非常划时代意义的新技术，而现有的容器技术例如LXC或者Docker，也或多或少收到了他的启发。然而今年是2022年，jails在当然的应用环境下已经显得力不从心。直接操作<code>jails</code>非常繁琐，因此TrueNAS提供了一个工具<code>iocage</code>，将<code>jails</code>操作简化成了类似<code>docker</code>的操作，还算方便。</p>
+<h2 id="网络坑"><a href="#网络坑" class="headerlink" title="网络坑"></a>网络坑</h2><p>jails的网络基于BPF实现，作为eBPF的前身，jails可以提供3种网络模式：</p>
+<ul>
+<li>DCHP。这个模式下的jail类似虚拟机，容器直接从DHCP服务获取IP地址，从网络拓扑上可以将jail视为独立设备。</li>
+<li>端口绑定。直接使用宿主机的网络端口，类似<code>docker</code>的<code>host</code>模式，区别是前者只能使用一张网卡，而<code>docker</code>的<code>host</code>可以使用所有网卡。</li>
+<li>nat。类似Docker最常用的模式，使用端口转发。</li>
+</ul>
+<p>乍一看好像没什么问题？直接模仿Docker无脑nat模式不就完了吗，该有的都有不是吗？让我们再来看看我需要部署的服务列表：</p>
+<table>
+<thead>
+<tr>
+<th align="left">服务</th>
+<th align="left">功能</th>
+<th align="left">需要的端口</th>
+<th align="left">结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Aria2</td>
+<td align="left">下载</td>
+<td align="left">6800</td>
+<td align="left">OK，下载不支持IPv6</td>
+</tr>
+<tr>
+<td align="left">FreeRadius</td>
+<td align="left">Wifi 鉴权</td>
+<td align="left">1812</td>
+<td align="left">OK</td>
+</tr>
+<tr>
+<td align="left">Qbittorrent</td>
+<td align="left">BT下载</td>
+<td align="left">51413</td>
+<td align="left">不支持IPv6</td>
+</tr>
+<tr>
+<td align="left">Emby</td>
+<td align="left">媒体服务器</td>
+<td align="left">不重要</td>
+<td align="left">不支持IPv6，不支持硬件加速</td>
+</tr>
+</tbody></table>
+<p>可以看到，在最重要的两个下载功能中，端口转发均明确表示不支持IPv6（本来V6设计就不是给你NAT的）。此外，由于每个<code>jail</code>都有自己的IP，众多服务也无法使用一个反向代理统一起来。</p>
+<h2 id="驱动坑"><a href="#驱动坑" class="headerlink" title="驱动坑"></a>驱动坑</h2><p>虽然我使用的是一块zen2的R5 4400G，在这个zen4的年代来看已经不新了。但是很遗憾，他的显卡对于FreeBSD来说还是太新了，新到只有在最新的FreeBSD 13.1才堪堪提供了支持。而很遗憾的是，TrueNAS Core的底层版本是13.0，并且直接在宿主系统上更新包是不受支持的。于是接下来我就开始了徒劳且痛苦的尝试。</p>
+<p>首先是尝试更新内核版本，既然<code>freebsd-update</code>不能使用，那我就编译更新内核好了。下载好了内核源码之后，又突然发现宿主系统没有<code>cc</code>编译器。这也难不到我，创建一个新的jail，在里面安装编译器等工具，随后再将内核源代码挂载进去完成编译即可。</p>
+<p>但是这么做的风险极高，首先是因为没有回滚的机会，TrueNAS Core的系统更新不能用了，此外自己编译内核也非常的灵。而事实上，当我编译完成新的内核后，虽然他识别出了我的GPU，但是运行<code>vainfo</code>依旧会报错，也不知道原因是什么。</p>
+<p>另外由于TrueNAS Core和TrueNAS Scale共享一个名字，因此你能搜到的所有文档基本上都是TrueNAS Scale的，没文档的小众系统，我认为继续在上面投入是不值得的，早日弃暗投明吧。</p>
+<h1 id="迁移到SCALE"><a href="#迁移到SCALE" class="headerlink" title="迁移到SCALE"></a>迁移到SCALE</h1><p>TrueNAS由于系统盘也使用了ZFS，因此可以非常轻松的再多个操作系统之间迁移，回滚等操作：<br><img src="2.png" alt="一个启动盘上可以有多个OS"><br>只不过毕竟是从BSD迁移到Linux，配置文件还是有不兼容的部分，因此从Core迁移至Scale被定义为不可逆的过程。</p>
+<p>更新过程也非常简单，和路由器刷机差不多。直接去<a href="https://www.truenas.com/download-truenas-scale/" target="_blank" rel="noopener">网站</a>的“手动下载”一项中找到<code>.update</code>文件下载，随后在NAS的手动更新中应用即可：<br><img src="4.png" alt="下载Update文件"> <img src="3.png" alt="手动更新"></p>
+<p>更新完后重启，再手动修改一些配置，就顺利变成Linux了！</p>
+<h2 id="SCALE"><a href="#SCALE" class="headerlink" title="SCALE"></a>SCALE</h2><p>更新到了SCALE后，由于是熟悉的Linux，文档也众多于是接下来的流程非常的顺滑，顺利解决了我的问题。めでたしめでたし!  </p>
+<p>如果你以为是这样，那就太naive了。</p>
+<p>世界上怎么会有这么好的事情呢。虽然TrueNAS SCALE确实用了Docker，但是又没完全用。别忘了人家名字里面有个<code>scale</code>，这个<code>scale</code>体现在哪里呢？没错，他给你整了个K8S，你可以用多个NAS组成一个K8S集群，实现动态扩容，负载均衡等等功能……</p>
+<p>有病吧！<img src="ybb.png" alt="ybb"></p>
+<p>虽然我每天都在用K8S（指自劫云），也喜欢搞起夜级的东西，但是这并不代表我要在家里面整个K8S啊！这东西我曾经尝试安装过，浪费了两天两夜最后还是没装好。<code>kubectl</code>那么多参数我从来就没整明白过。</p>
+<p>不过幸好TrueNAS还是给你提供了一个GUI的，可以通过GUI管理容器的启停扩容。不过我只是简单的尝试了一下就把他抛弃了：<br><img src="5.png" alt="端口号不让低于9000"><br>我的8443怎么办？<br>经过在网上的一通搜索，似乎不是只有我一个人遇到了这个问题：<a href="https://www.truenas.com/community/threads/containers-minimum-node-port-9000.90679/" target="_blank" rel="noopener">Containers: Minimum node port 9000?</a>。但是很可惜，这个问题是K8S带来的，我没有任何办法修改： </p>
+<blockquote>
+<p>According to the Jira ticket, and <a href="https://oteemo.com/2017/12/12/think-nodeport-kubernetes/" target="_blank" rel="noopener">https://oteemo.com/2017/12/12/think-nodeport-kubernetes/</a>, this isn’t a limitation with Scale, but with upstream Kubernetes k8s. Since the Scale applications deploy via Helm charts, they inherit the upstream k8s limits. However, I don’t see anything preventing you from running a container via Docker outside k8s.</p>
+</blockquote>
+<p>那我就只能按照建议，直接起Docker容器咯。<br>另外由于部署了K8S环境，因此系统的虚拟网卡也被搞得一团乱麻，我们熟悉的<code>docker0</code>消失了，取而代之的是一大堆<code>kube-bridge</code>,<code>kube-dummy-if</code>,<code>dummy0</code>的网卡。直接用<code>docker run</code>命令起来的容器会直接没有网卡上不了网，但是我到此已经精疲力竭，没有心思去研究怎么把k8s的网卡挂载进入容器（多半也不支持），于是干脆直接<code>--net=host</code>了。</p>
+<p>由于更新系统后这一大堆docker容器都会丢失，因此我又专门将启动的命令写到一个脚本里面，这样更新系统的时候可以快速恢复：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat restore_docker.sh </span><br><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="comment"># qbittorrent</span></span><br><span class="line">docker run -d --restart=always --net=host --name qbittorrent -v /mnt/main/Docker/qbittorrent/config:/config -v /mnt/main/User/BT:/downloads -e SavePath=/downloads -e TempPath=/downloads -e HOME=/config -e WEBUI_PORT=3560 linuxserver/qbittorrent:latest </span><br><span class="line"><span class="comment"># nginx</span></span><br><span class="line">docker run -d --restart=always --name nginx --net=host -v /mnt/main/Docker/nginx/nginx:/etc/nginx -v /mnt/main/Docker/nginx/www:/www -v /mnt/main/Docker/nginx/modules:/modules nginx:stable-alpine</span><br><span class="line"><span class="comment"># aria2</span></span><br><span class="line">docker run -d --restart=always --name=aria2 --net=host -v /mnt/main/Docker/aria2/config:/config -v /mnt/main/User/Common\ Download:/downloads gaojianli2333/aria2</span><br><span class="line"><span class="comment"># freeradius</span></span><br><span class="line">docker run -d --restart=always --net=host --name radius -v /mnt/main/Docker/freeradius/raddb:/opt/etc/raddb freeradius/freeradius-server:3.2.0-alpine</span><br></pre></td></tr></table></figure>
+<p><code>gaojianli2333/aria2</code>容器是我自己打包的，Dockerfile如下：</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">FROM</span> alpine:latest</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apk add --no-cache aria2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [<span class="string">"aria2c"</span>,<span class="string">"--conf=/config/aria2.conf"</span>]</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这样看来还真是可笑，不管是Core还是Scale，提供的容器系统最后都没有用上，最终还是回归到了手工管理Docker上。只是这样NAS系统提供的功能其实就只有ZFS和报警功能了，如果你不用ZFS或者你可以手操ZFS，那你完全可以用裸的Linux比如Ubunut或者Arch，不必硬凹NAS系统。Scale提供的K8S功能不能说完全没用，但是对于我的需求来说显然太过多余了，不过群晖等系统提供的Docker多半也有各种各样的问题（例如IPv6）。</p>
+<h2 id="硬件变化"><a href="#硬件变化" class="headerlink" title="硬件变化"></a>硬件变化</h2><p>另外在这几个月中，我的NAS也做了一些硬件上的改动。我的主板提供了一根PCIE X16的插槽，而这一插槽长期被X4的<code>TL-NT521</code>占用未免有点可惜。因此我将其替换成了一张<code>X540-T2</code>的FLR卡，并搭配拆分卡弄出了2个额外的M2。<br><img src="6.jpg" alt="拆分卡"><br>这一套下来竟然只要200块，显得花400买全新TPLink的自己好像是个傻子，洋垃圾万岁！于是我又用卖掉<code>TL-NT521</code>换的钱添加了一张垃圾SSD，作为阵列的L2 ARC使用，目前来看整体命中率还是挺高的。<br><img src="7.png" alt="命中率"><br>剩下那个槽位因为我本身内存不足，因此再添置缓存也没有多大意义，或许以后可以考虑插一个M2转SATA的卡，加点硬盘。</p>
+<p>では、諸君は。</p>
+]]></content>
+      <tags>
+        <tag>电子文玩</tag>
+        <tag>消费电子</tag>
+        <tag>NAS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>从零开始搭建NAS——硬件选购与装机</title>
     <url>/2022/08/20/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E6%90%AD%E5%BB%BANAS%E2%80%94%E2%80%94%E7%A1%AC%E4%BB%B6%E9%80%89%E8%B4%AD%E4%B8%8E%E8%A3%85%E6%9C%BA/</url>
     <content><![CDATA[<h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>今年7月对于老二次元来说，是一个不寻常的夏天。除了酷热的高温之外，还有不断重复着延期——被举报——再延期的循环的漫展。在赛博二次元中，也有一个大事情：B站今年7月购买番剧数量是0！这标志着持续多年的番剧正版化运动正式回到原点，众多B站大会员喜提年度大怨种称号。那么，对于赛博时代的好青年，应该怎么看番呢？</p>
 <a id="more"></a>
-<p>我个人回退到了RSS+BT的原始方案。在<a href="https://acg.rip/" target="_blank" rel="noopener">ACT.RIP</a>上订阅想看的番剧，然后使用qbittorrent自动下载，完成之后再使用tgbot给我发个消息：<br><img src="1.png" alt="机器人发送消息"></p>
+<p>我个人回退到了RSS+BT的原始方案。在<a href="https://acg.rip/" target="_blank" rel="noopener">ACG.RIP</a>上订阅想看的番剧，然后使用qbittorrent自动下载，完成之后再使用tgbot给我发个消息：<br><img src="1.png" alt="机器人发送消息"></p>
 <p>我之前的设备其实是一个赛扬3867U的一体机盒子，装了Archlinux，里面上了一块2.5英寸的笔记本硬盘，连NAS都算不上。然而就这么小个身躯里面却承载着FreeRadius、qbittorrent、jellyfin等多种服务，考虑到单盘的现状和笔记本硬盘的可靠性，实在是有一些灵。但是它工作，而且工作得非常好，十天半个月不关机毫无问题，每次关机都是我主动滚系统导致的。但是随着各种小姐姐，番剧的累积，我的下载盒子空间逐渐变得捉襟见肘：<img src="2.png" alt="空间不够了！">)这个问题就很难通过软件进行优化了。这个时候我又恰好好看到了AZ的<a href="https://www.bilibili.com/video/BV1Ja411Y7ZB" target="_blank" rel="noopener">视频</a>，考虑到Insta恐怖的素材体积（1天录满128G），在仔细地咨询了一下经验之后，遂决定自己也搞一个。</p>
 <h2 id="为什么不考虑群晖"><a href="#为什么不考虑群晖" class="headerlink" title="为什么不考虑群晖"></a>为什么不考虑群晖</h2><p>一个字，贵！这个价格就配一个赛扬（ARM），真心不值得。</p>
 <h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><p>首先列了一下我的需求：</p>
@@ -240,11 +327,12 @@
 <p>TrueNAS Core不同于其他常见NAS系统，其底层基于的是FreeBSD。幸好TrueNAS的UI还算完善（才怪），加上我有一些BSD的使用经验，因此使用没有遇到特别大的问题。BSD的Jail和LXC非常类似，区别只是没有Dockerfile，需要手动安装而已。不过对于NAS这种不需要大规模部署的场景，反而更加适合私人定制。花了1个下午搞定了qbittrorent和nginx的安装，再从老盒子同步完数据，NAS的安装就差不多搞一段了了。</p>
 <h1 id="最终效果图"><a href="#最终效果图" class="headerlink" title="最终效果图"></a>最终效果图</h1><p>最后放一个效果图<br><img src="12.jpg" alt="效果图"><br>(关于硬盘提手的问题，真的不是20年前的塑料老化了！是龙哥建议的奶米黄，至于旧不旧，龙哥说不旧，是光线问题，那大家就当他是光线问题吧）<br><img src="13.jpg" alt="龙哥说不旧"></p>
 <p>では、諸君は。</p>
-<h3 id="8月22日-Update："><a href="#8月22日-Update：" class="headerlink" title="8月22日 Update："></a>8月22日 Update：</h3><p>我错了，我根本不懂FreeBSD。这傻逼系统，狗都不用，具体请看下一篇文章。</p>
+<h3 id="8月22日-Update："><a href="#8月22日-Update：" class="headerlink" title="8月22日 Update："></a>8月22日 Update：</h3><p>我错了，我根本不懂FreeBSD。这傻逼系统，狗都不用，具体请看下一篇<a href="https://blog.gaojinali.me/2022/12/04/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E6%90%AD%E5%BB%BANAS%E2%80%94%E2%80%94%E5%9D%91%E7%88%B9%E7%9A%84TrueNAS/#more" target="_blank" rel="noopener">文章</a>。</p>
 ]]></content>
       <tags>
         <tag>电子文玩</tag>
         <tag>消费电子</tag>
+        <tag>NAS</tag>
       </tags>
   </entry>
   <entry>

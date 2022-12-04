@@ -40,10 +40,11 @@
 <meta property="og:image" content="https://blog.gaojianli.me/2022/08/20/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E6%90%AD%E5%BB%BANAS%E2%80%94%E2%80%94%E7%A1%AC%E4%BB%B6%E9%80%89%E8%B4%AD%E4%B8%8E%E8%A3%85%E6%9C%BA/12.jpg">
 <meta property="og:image" content="https://blog.gaojianli.me/2022/08/20/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E6%90%AD%E5%BB%BANAS%E2%80%94%E2%80%94%E7%A1%AC%E4%BB%B6%E9%80%89%E8%B4%AD%E4%B8%8E%E8%A3%85%E6%9C%BA/13.jpg">
 <meta property="article:published_time" content="2022-08-20T15:28:21.000Z">
-<meta property="article:modified_time" content="2022-08-22T14:29:07.701Z">
+<meta property="article:modified_time" content="2022-12-04T13:26:05.699Z">
 <meta property="article:author" content="高渐离">
 <meta property="article:tag" content="电子文玩">
 <meta property="article:tag" content="消费电子">
+<meta property="article:tag" content="NAS">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://blog.gaojianli.me/2022/08/20/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E6%90%AD%E5%BB%BANAS%E2%80%94%E2%80%94%E7%A1%AC%E4%BB%B6%E9%80%89%E8%B4%AD%E4%B8%8E%E8%A3%85%E6%9C%BA/1.png">
 
@@ -237,7 +238,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-08-22 14:29:07" itemprop="dateModified" datetime="2022-08-22T14:29:07+00:00">2022-08-22</time>
+                <time title="修改时间：2022-12-04 13:26:05" itemprop="dateModified" datetime="2022-12-04T13:26:05+00:00">2022-12-04</time>
               </span>
 
           <br>
@@ -267,7 +268,7 @@
       
         <h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>今年7月对于老二次元来说，是一个不寻常的夏天。除了酷热的高温之外，还有不断重复着延期——被举报——再延期的循环的漫展。在赛博二次元中，也有一个大事情：B站今年7月购买番剧数量是0！这标志着持续多年的番剧正版化运动正式回到原点，众多B站大会员喜提年度大怨种称号。那么，对于赛博时代的好青年，应该怎么看番呢？</p>
 <a id="more"></a>
-<p>我个人回退到了RSS+BT的原始方案。在<a href="https://acg.rip/" target="_blank" rel="noopener">ACT.RIP</a>上订阅想看的番剧，然后使用qbittorrent自动下载，完成之后再使用tgbot给我发个消息：<br><img src="1.png" alt="机器人发送消息"></p>
+<p>我个人回退到了RSS+BT的原始方案。在<a href="https://acg.rip/" target="_blank" rel="noopener">ACG.RIP</a>上订阅想看的番剧，然后使用qbittorrent自动下载，完成之后再使用tgbot给我发个消息：<br><img src="1.png" alt="机器人发送消息"></p>
 <p>我之前的设备其实是一个赛扬3867U的一体机盒子，装了Archlinux，里面上了一块2.5英寸的笔记本硬盘，连NAS都算不上。然而就这么小个身躯里面却承载着FreeRadius、qbittorrent、jellyfin等多种服务，考虑到单盘的现状和笔记本硬盘的可靠性，实在是有一些灵。但是它工作，而且工作得非常好，十天半个月不关机毫无问题，每次关机都是我主动滚系统导致的。但是随着各种小姐姐，番剧的累积，我的下载盒子空间逐渐变得捉襟见肘：<img src="2.png" alt="空间不够了！">)这个问题就很难通过软件进行优化了。这个时候我又恰好好看到了AZ的<a href="https://www.bilibili.com/video/BV1Ja411Y7ZB" target="_blank" rel="noopener">视频</a>，考虑到Insta恐怖的素材体积（1天录满128G），在仔细地咨询了一下经验之后，遂决定自己也搞一个。</p>
 <h2 id="为什么不考虑群晖"><a href="#为什么不考虑群晖" class="headerlink" title="为什么不考虑群晖"></a>为什么不考虑群晖</h2><p>一个字，贵！这个价格就配一个赛扬（ARM），真心不值得。</p>
 <h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><p>首先列了一下我的需求：</p>
@@ -409,7 +410,7 @@
 <p>TrueNAS Core不同于其他常见NAS系统，其底层基于的是FreeBSD。幸好TrueNAS的UI还算完善（才怪），加上我有一些BSD的使用经验，因此使用没有遇到特别大的问题。BSD的Jail和LXC非常类似，区别只是没有Dockerfile，需要手动安装而已。不过对于NAS这种不需要大规模部署的场景，反而更加适合私人定制。花了1个下午搞定了qbittrorent和nginx的安装，再从老盒子同步完数据，NAS的安装就差不多搞一段了了。</p>
 <h1 id="最终效果图"><a href="#最终效果图" class="headerlink" title="最终效果图"></a>最终效果图</h1><p>最后放一个效果图<br><img src="12.jpg" alt="效果图"><br>(关于硬盘提手的问题，真的不是20年前的塑料老化了！是龙哥建议的奶米黄，至于旧不旧，龙哥说不旧，是光线问题，那大家就当他是光线问题吧）<br><img src="13.jpg" alt="龙哥说不旧"></p>
 <p>では、諸君は。</p>
-<h3 id="8月22日-Update："><a href="#8月22日-Update：" class="headerlink" title="8月22日 Update："></a>8月22日 Update：</h3><p>我错了，我根本不懂FreeBSD。这傻逼系统，狗都不用，具体请看下一篇文章。</p>
+<h3 id="8月22日-Update："><a href="#8月22日-Update：" class="headerlink" title="8月22日 Update："></a>8月22日 Update：</h3><p>我错了，我根本不懂FreeBSD。这傻逼系统，狗都不用，具体请看下一篇<a href="https://blog.gaojinali.me/2022/12/04/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E6%90%AD%E5%BB%BANAS%E2%80%94%E2%80%94%E5%9D%91%E7%88%B9%E7%9A%84TrueNAS/#more" target="_blank" rel="noopener">文章</a>。</p>
 
     </div>
 
@@ -438,6 +439,7 @@
           <div class="post-tags">
               <a href="/tags/%E7%94%B5%E5%AD%90%E6%96%87%E7%8E%A9/" rel="tag"># 电子文玩</a>
               <a href="/tags/%E6%B6%88%E8%B4%B9%E7%94%B5%E5%AD%90/" rel="tag"># 消费电子</a>
+              <a href="/tags/NAS/" rel="tag"># NAS</a>
           </div>
 
         
@@ -449,7 +451,10 @@
     <a href="/2020/12/04/%E5%86%99%E5%9C%A8%E4%B8%AD%E5%9B%BD%E5%AE%AA%E6%B3%95%E6%97%A5/" rel="prev" title="写在中国宪法日">
       <i class="fa fa-chevron-left"></i> 写在中国宪法日
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022/12/04/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E6%90%AD%E5%BB%BANAS%E2%80%94%E2%80%94%E5%9D%91%E7%88%B9%E7%9A%84TrueNAS/" rel="next" title="从零开始搭建NAS——坑爹的TrueNAS">
+      从零开始搭建NAS——坑爹的TrueNAS <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -525,14 +530,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -571,6 +576,9 @@
         <li class="links-of-blogroll-item">
           <a href="https://marycly.github.io/" title="https:&#x2F;&#x2F;marycly.github.io&#x2F;" rel="noopener" target="_blank">程序员玛丽的星海方舟</a>
         </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sh.alynx.one/" title="https:&#x2F;&#x2F;sh.alynx.one&#x2F;" rel="noopener" target="_blank">喵's StackHarbor</a>
+        </li>
     </ul>
   </div>
 
@@ -602,12 +610,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">47k</span>
+    <span title="站点总字数">51k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">42 分钟</span>
+    <span title="站点阅读时长">46 分钟</span>
 </div>
 
         
