@@ -23,20 +23,6 @@
   </url>
   
   <url>
-    <loc>https://blog.gaojianli.me/2020/10/23/%E6%90%AD%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%9F%AD%E7%BD%91%E5%9D%80%E7%B3%BB%E7%BB%9F/</loc>
-    
-    <lastmod>2022-12-05</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.gaojianli.me/2018/07/13/%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84Git/</loc>
-    
-    <lastmod>2022-12-05</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.gaojianli.me/2018/09/16/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%B7%BB%E5%8A%A0%E6%B8%A9%E6%8E%A7%E9%A3%8E%E6%89%87%EF%BC%88%E4%B8%80%EF%BC%89/</loc>
     
     <lastmod>2022-12-05</lastmod>
@@ -45,6 +31,20 @@
   
   <url>
     <loc>https://blog.gaojianli.me/2018/09/16/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%B7%BB%E5%8A%A0%E6%B8%A9%E6%8E%A7%E9%A3%8E%E6%89%87%EF%BC%88%E4%BA%8C%EF%BC%89/</loc>
+    
+    <lastmod>2022-12-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.gaojianli.me/2020/10/23/%E6%90%AD%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%9F%AD%E7%BD%91%E5%9D%80%E7%B3%BB%E7%BB%9F/</loc>
+    
+    <lastmod>2022-12-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.gaojianli.me/2018/07/13/%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84Git/</loc>
     
     <lastmod>2022-12-05</lastmod>
     
@@ -130,6 +130,13 @@
   </url>
   
   <url>
+    <loc>https://blog.gaojianli.me/tags/%E5%8D%9A%E5%AE%A2/</loc>
+    <lastmod>2022-12-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.gaojianli.me/tags/%E7%94%B5%E5%AD%90%E6%96%87%E7%8E%A9/</loc>
     <lastmod>2022-12-05</lastmod>
     <changefreq>daily</changefreq>
@@ -145,13 +152,6 @@
   
   <url>
     <loc>https://blog.gaojianli.me/tags/NAS/</loc>
-    <lastmod>2022-12-05</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.gaojianli.me/tags/%E5%8D%9A%E5%AE%A2/</loc>
     <lastmod>2022-12-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
