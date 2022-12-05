@@ -170,7 +170,7 @@
 <p><code>gaojianli2333/aria2</code>容器是我自己打包的，Dockerfile如下：</p>
 <figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">FROM</span> alpine:latest</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apk add --no-cache aria2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [<span class="string">"aria2c"</span>,<span class="string">"--conf=/config/aria2.conf"</span>]</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="内存使用"><a href="#内存使用" class="headerlink" title="内存使用"></a>内存使用</h2><p>在切换到Scale之后，NAS可用内存明显变少了，表现为图表中“Services“部分所占内存明显增多。也就是说，本就并不充裕（我没钱做到1T1G的内存配置）的ZFS专用内存更少了。</p>
+<h2 id="内存使用"><a href="#内存使用" class="headerlink" title="内存使用"></a>内存使用</h2><p>在切换到Scale之后，NAS可用内存明显变少了，表现为图表中“Services“部分所占内存明显增多。也就是说，本就并不充裕（我没钱做到1T1G的内存配置）的ZFS专用内存更少了，而这有可能是Linux内核本身不如BSD精简的原因，也有可能是那个K8S的锅。</p>
 <p>更加雪上加霜的是，不知道是不是OpenZFS 2.0的配置问题，系统默认只会使用12G的内存用作ZFS Cache，这和Core版本中空闲内存（也就是“Free”的部分）几乎为零形成了鲜明的对比。</p>
 <p>为了解决这个问题，我还必须在<code>Init Script</code>中加上<code>echo 30064771072 &gt; /sys/module/zfs/parameters/zfs_arc_max</code>这么一句来强迫ZFS使用尽可能多的内存。</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这样看来还真是可笑，不管是Core还是Scale，提供的容器系统最后都没有用上，最终还是回归到了手工管理Docker上。只是这样NAS系统提供的功能其实就只有ZFS和报警功能了，如果你不用ZFS或者你可以手操ZFS，那你完全可以用裸的Linux比如Ubunut或者Arch，不必硬凹NAS系统。Scale提供的K8S功能不能说完全没用，但是对于我的需求来说显然太过多余了，不过群晖等系统提供的Docker多半也有各种各样的问题（例如IPv6）。</p>
