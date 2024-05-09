@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"blog.gaojianli.me","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"gitalk","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"blog.gaojianli.me","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"gitalk","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="一个不起眼的个人小站">
@@ -223,7 +223,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-05-09 20:27:04" itemprop="dateModified" datetime="2024-05-09T20:27:04+08:00">2024-05-09</time>
+                <time title="修改时间：2024-05-10 03:04:14" itemprop="dateModified" datetime="2024-05-10T03:04:14+08:00">2024-05-10</time>
               </span>
 
           <br>
@@ -232,7 +232,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5k</span>
+              <span>5.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -251,12 +251,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>一直以来都想要给自己的博客弄个评论系统，但是hexo作为一个静态博客，本身是不可能具有这种功能的，只能仰仗第三方插件。这方面的插件也非常多，比如disqus、vline等。但这些插件都存在或多或少问题，比如注册麻烦或者干脆国内不能访问。考虑到我家长城宽带的现实，必须选择一个在各地都能流畅访问的插件，这里我选择了<a href="https://github.com/gitalk/gitalk" target="_blank" rel="noopener">Gitalk</a>.</p>
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>一直以来都想要给自己的博客弄个评论系统，但是 hexo 作为一个静态博客，本身是不可能具有这种功能的，只能仰仗第三方插件。这方面的插件也非常多，比如 disqus、vline 等。但这些插件都存在或多或少问题，比如注册麻烦或者干脆国内不能访问。考虑到我家长城宽带的现实，必须选择一个在各地都能流畅访问的插件，这里我选择了<a href="https://github.com/gitalk/gitalk" target="_blank" rel="noopener">Gitalk</a>.</p>
 <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>先来看看官网的简介吧：</p>
 <blockquote>
 <p>Gitalk is a modern comment component based on GitHub Issue and Preact.</p>
 </blockquote>
-<p>顾名思义，这是一个基于GitHub的issue功能构建的评论系统。为了部署方便，我的博客本身也是托管在GitHub上的，而且其CDN也遍布全球各地，即使是长城宽带也能保证访问。此外相信本文的绝大多数读者也都具有GitHub账号，这也省去了大家注册的麻烦。因此，从各种意义上来说，它都是一个理想的插件。</p>
+<p>顾名思义，这是一个基于 GitHub 的 issue 功能构建的评论系统。为了部署方便，我的博客本身也是托管在 GitHub 上的，而且其 CDN 也遍布全球各地，即使是长城宽带也能保证访问。此外相信本文的绝大多数读者也都具有 GitHub 账号，这也省去了大家注册的麻烦。因此，从各种意义上来说，它都是一个理想的插件。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2018/07/24/%E4%B8%BA%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0Gitalk%E8%AF%84%E8%AE%BA%E6%8F%92%E4%BB%B6/#more" rel="contents">
@@ -314,7 +314,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-05-09 20:27:05" itemprop="dateModified" datetime="2024-05-09T20:27:05+08:00">2024-05-09</time>
+                <time title="修改时间：2024-05-10 03:04:14" itemprop="dateModified" datetime="2024-05-10T03:04:14+08:00">2024-05-10</time>
               </span>
 
           <br>
@@ -342,12 +342,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>事情的起因非常简单，得益于某位校长的功劳，我的网络访问Github奇慢无比，最近甚至出现了push失败的情况，我连博客都没法好好更新了！<del><strong>（说的好像你更新得很多一样）</strong></del><br>嘛，正好潇在给我孜孜不倦地推荐<a href="https://gitea.io/" target="_blank" rel="noopener">Gitea</a>，我就来试试在树莓派上搭建一下吧。<br>首先我们来看官方文档：</p>
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>事情的起因非常简单，得益于某位校长的功劳，我的网络访问 Github 奇慢无比，最近甚至出现了 push 失败的情况，我连博客都没法好好更新了！<del><strong>（说的好像你更新得很多一样）</strong></del><br>嘛，正好潇在给我孜孜不倦地推荐<a href="https://gitea.io/" target="_blank" rel="noopener">Gitea</a>，我就来试试在树莓派上搭建一下吧。<br>首先我们来看官方文档：</p>
 <blockquote>
 <p>易安装<br>您除了可以根据操作系统平台通过 二进制运行，还可以通过 Docker 或 Vagrant，以及 包管理 安装。</p>
 </blockquote>
-<p>嚯，挺厉害嘛，那就图个省事，用Docker安装吧。然而这之后我才知道，这是地狱的开始。</p>
-<h1 id="Docker试探"><a href="#Docker试探" class="headerlink" title="Docker试探"></a>Docker试探</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>官方的教程非常的简单，<del>看起来就和能用一样</del></p>
+<p>嚯，挺厉害嘛，那就图个省事，用 Docker 安装吧。然而这之后我才知道，这是地狱的开始。</p>
+<h1 id="Docker-试探"><a href="#Docker-试探" class="headerlink" title="Docker 试探"></a>Docker 试探</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>官方的教程非常的简单，<del>看起来就和能用一样</del></p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2018/07/13/%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84Git/#more" rel="contents">
@@ -405,7 +405,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-05-09 20:27:04" itemprop="dateModified" datetime="2024-05-09T20:27:04+08:00">2024-05-09</time>
+                <time title="修改时间：2024-05-10 03:04:14" itemprop="dateModified" datetime="2024-05-10T03:04:14+08:00">2024-05-10</time>
               </span>
 
           <br>
@@ -433,11 +433,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>前一阵子收到了微软发给所有的insider的邀请邮件，大意说是DevTour即将巡回到北京，欢迎参加云云。弱鸡表示从来没听过这个名字，吓得我赶紧百度了一下：</p>
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>前一阵子收到了微软发给所有的 insider 的邀请邮件，大意说是 DevTour 即将巡回到北京，欢迎参加云云。弱鸡表示从来没听过这个名字，吓得我赶紧百度了一下：</p>
 <blockquote>
-<p>每年，我们都将最新的技术带给全球的开发者。今年，我们通过与Windows、Windows Insider项目以及我们的开发者和内部人士的合作伙伴关系，将活动扩展到更多的城市。我们将介绍人工智能，最新的桌面开发，微软365，进步网络应用，开发者办公室，混合现实，Microsoft Graph，等等。此次巡回活动是开发者与来自微软总部雷德蒙德的领导和工程师以及地区行业领先和微软开发者MVPs和RDs相互直接交流的一次绝佳机会。</p>
+<p>每年，我们都将最新的技术带给全球的开发者。今年，我们通过与 Windows、Windows Insider 项目以及我们的开发者和内部人士的合作伙伴关系，将活动扩展到更多的城市。我们将介绍人工智能，最新的桌面开发，微软 365，进步网络应用，开发者办公室，混合现实，Microsoft Graph，等等。此次巡回活动是开发者与来自微软总部雷德蒙德的领导和工程师以及地区行业领先和微软开发者 MVPs 和 RDs 相互直接交流的一次绝佳机会。</p>
 </blockquote>
-<p>概括一下大概就是5个字：<strong>大佬见面会</strong><br>然而不幸的是这一天恰好是我考高数的日子，以前处在偏远山区的我看见这类活动只能望汤兴叹，好容易在北京，怎么能就这样鸽了呢？于是乎赶紧发邮件问了一下能否下午到场，所幸得到了肯定的答复。</p>
+<p>概括一下大概就是 5 个字：<strong>大佬见面会</strong><br>然而不幸的是这一天恰好是我考高数的日子，以前处在偏远山区的我看见这类活动只能望汤兴叹，好容易在北京，怎么能就这样鸽了呢？于是乎赶紧发邮件问了一下能否下午到场，所幸得到了肯定的答复。</p>
 <h1 id="到达"><a href="#到达" class="headerlink" title="到达"></a>到达</h1><p>不得不吐槽沙河校区的偏远程度超乎想象，上午高数凉了（迫真）以后即使我以最快速度向会场赶，最终在会议开始前最后一刻才成功赶到。</p>
           <!--noindex-->
             <div class="post-button">
@@ -496,7 +496,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-05-09 20:27:04" itemprop="dateModified" datetime="2024-05-09T20:27:04+08:00">2024-05-09</time>
+                <time title="修改时间：2024-05-10 03:04:14" itemprop="dateModified" datetime="2024-05-10T03:04:14+08:00">2024-05-10</time>
               </span>
 
           <br>
@@ -618,7 +618,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -691,12 +691,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">55k</span>
+    <span title="站点总字数">61k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">50 分钟</span>
+    <span title="站点阅读时长">55 分钟</span>
 </div>
 
         
@@ -714,6 +714,9 @@
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 
@@ -726,6 +729,65 @@
 
 
 <script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
 
 
 
@@ -750,23 +812,12 @@
 
 
 
+    <div id="pjax">
   
 
   
 
 
-
-        <style>
-            [bg-lazy] {
-                background-image: none !important;
-                background-color: #eee !important;
-            }
-        </style>
-        <script>
-            window.imageLazyLoadSetting = {
-                isSPA: false,
-                preloadRatio: 1,
-                processImages: null,
-            };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(r){r.imageLazyLoadSetting.processImages=t;var e=r.imageLazyLoadSetting.isSPA,n=r.imageLazyLoadSetting.preloadRatio||1,c=a();function a(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(){e&&(c=a());for(var t,o=0;o<c.length;o++)0<=(t=(t=c[o]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(r.innerHeight*n||document.documentElement.clientHeight*n)&&function(){var t,e,n,a,i=c[o];e=function(){c=c.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(n=new Image,a=t.getAttribute("data-original"),n.onload=function(){t.src=a,t.removeAttribute("data-original"),e&&e()},t.src!==a&&(n.src=a))}()}function i(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",i),r.addEventListener("resize",i),r.addEventListener("orientationchange",i)}(this);</script></body>
+    </div>
+</body>
 </html>

@@ -17,23 +17,23 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"blog.gaojianli.me","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"gitalk","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"blog.gaojianli.me","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"gitalk","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="起因一直以来，我的博客都是通过hexo本地生成，生成文件上传Github，服务器pull的方式进行部署的。这么久都没遇到什么太大的问题，博客的相关源代码也都放在了我的文档里。然在2019年10月的时候，我的Surface Book出现了屏幕和底座接触不良的情况，USB和键盘经常失去响应。考虑到保修即将在12月份失效，因此选择了送修。">
+  <meta name="description" content="起因一直以来，我的博客都是通过 hexo 本地生成，生成文件上传 Github，服务器 pull 的方式进行部署的。这么久都没遇到什么太大的问题，博客的相关源代码也都放在了我的文档里。然在 2019 年 10 月的时候，我的 Surface Book 出现了屏幕和底座接触不良的情况，USB 和键盘经常失去响应。考虑到保修即将在 12 月份失效，因此选择了送修。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="艰难的博客找回过程">
 <meta property="og:url" content="https://blog.gaojianli.me/2020/06/22/%E8%89%B0%E9%9A%BE%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%89%BE%E5%9B%9E%E8%BF%87%E7%A8%8B/index.html">
 <meta property="og:site_name" content="高渐离の屋">
-<meta property="og:description" content="起因一直以来，我的博客都是通过hexo本地生成，生成文件上传Github，服务器pull的方式进行部署的。这么久都没遇到什么太大的问题，博客的相关源代码也都放在了我的文档里。然在2019年10月的时候，我的Surface Book出现了屏幕和底座接触不良的情况，USB和键盘经常失去响应。考虑到保修即将在12月份失效，因此选择了送修。">
+<meta property="og:description" content="起因一直以来，我的博客都是通过 hexo 本地生成，生成文件上传 Github，服务器 pull 的方式进行部署的。这么久都没遇到什么太大的问题，博客的相关源代码也都放在了我的文档里。然在 2019 年 10 月的时候，我的 Surface Book 出现了屏幕和底座接触不良的情况，USB 和键盘经常失去响应。考虑到保修即将在 12 月份失效，因此选择了送修。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==">
+<meta property="og:image" content="https://blog.gaojianli.me/2020/06/22/%E8%89%B0%E9%9A%BE%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%89%BE%E5%9B%9E%E8%BF%87%E7%A8%8B/success.png">
 <meta property="article:published_time" content="2020-06-22T10:26:35.000Z">
-<meta property="article:modified_time" content="2024-05-09T12:27:05.016Z">
+<meta property="article:modified_time" content="2024-05-09T19:04:15.000Z">
 <meta property="article:author" content="高渐离">
 <meta property="article:tag" content="博客">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==">
+<meta name="twitter:image" content="https://blog.gaojianli.me/2020/06/22/%E8%89%B0%E9%9A%BE%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%89%BE%E5%9B%9E%E8%BF%87%E7%A8%8B/success.png">
 
 <link rel="canonical" href="https://blog.gaojianli.me/2020/06/22/%E8%89%B0%E9%9A%BE%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%89%BE%E5%9B%9E%E8%BF%87%E7%A8%8B/">
 
@@ -225,7 +225,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-05-09 20:27:05" itemprop="dateModified" datetime="2024-05-09T20:27:05+08:00">2024-05-09</time>
+                <time title="修改时间：2024-05-10 03:04:15" itemprop="dateModified" datetime="2024-05-10T03:04:15+08:00">2024-05-10</time>
               </span>
 
           <br>
@@ -253,26 +253,31 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>一直以来，我的博客都是通过hexo本地生成，生成文件上传Github，服务器pull的方式进行部署的。这么久都没遇到什么太大的问题，博客的相关源代码也都放在了我的文档里。然在2019年10月的时候，我的Surface Book出现了屏幕和底座接触不良的情况，USB和键盘经常失去响应。考虑到保修即将在12月份失效，因此选择了送修。</p>
+        <h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>一直以来，我的博客都是通过 hexo 本地生成，生成文件上传 Github，服务器 pull 的方式进行部署的。这么久都没遇到什么太大的问题，博客的相关源代码也都放在了我的文档里。然在 2019 年 10 月的时候，我的 Surface Book 出现了屏幕和底座接触不良的情况，USB 和键盘经常失去响应。考虑到保修即将在 12 月份失效，因此选择了送修。</p>
 <a id="more"></a>
-<p>在备份数据的时候，我精心备份了所有的游戏，照片和代码，却唯独跳过了“我的文档”。感谢QQ等软件把自己的数据放到我的文档里面（日你大坝），给我留下了“我的文档就是个存放软件数据的目录，没什么无关紧要的东西”这种错误印象。“<strong>不会真的有人把文档放到我的文档吧？不会吧，不会吧？</strong>”我这么想着，在仔细观察了一下我的文档的目录后只备份了一些游戏的存档后就送修了。</p>
-<p>然而，事实证明真的有人把东西放到“我的文档”，而且这个人就是我。天知道我在哪天整理文件的时候鬼迷心窍地把博客的源代码放到了“我的文档”。对于巨硬这种公司来说，送修自然意味着数据丢失。事实上我不但丢失了所有数据，连原有的划痕都被一并“修复”了，很大概率巨硬是直接给我换了一台设备，找回数据就是做梦。（另外本次送修还导致我更换了ssh私钥，错过了某加密货币的drop，直接损失</p>
-<p>说来惭愧，在送修之后我就再也没有抽出时间写博客，因此我竟然没有第一时间发现这一事情。直到今年2月在Telegram和群友吹b的时候突然想起来，才突然发现自己的博客已经GG了。由于重新整理非常费时费力，因此直到这几天才腾出时间来整理。</p>
-<h1 id="防范措施"><a href="#防范措施" class="headerlink" title="防范措施"></a>防范措施</h1><p>为了避免重蹈覆辙，最好的方法就是直接把源代码传到Git上，正好Github Action发布后还没用过（一直以来都在用Gitlab pipeline)，就来试试用Github Action来部署吧。 </p>
-<p>首先生成一个Deply key</p>
+
+<p>在备份数据的时候，我精心备份了所有的游戏，照片和代码，却唯独跳过了“我的文档”。感谢 QQ 等软件把自己的数据放到我的文档里面（日你大坝），给我留下了“我的文档就是个存放软件数据的目录，没什么无关紧要的东西”这种错误印象。“<strong>不会真的有人把文档放到我的文档吧？不会吧，不会吧？</strong>”我这么想着，在仔细观察了一下我的文档的目录后只备份了一些游戏的存档后就送修了。</p>
+<p>然而，事实证明真的有人把东西放到“我的文档”，而且这个人就是我。天知道我在哪天整理文件的时候鬼迷心窍地把博客的源代码放到了“我的文档”。对于巨硬这种公司来说，送修自然意味着数据丢失。事实上我不但丢失了所有数据，连原有的划痕都被一并“修复”了，很大概率巨硬是直接给我换了一台设备，找回数据就是做梦。（另外本次送修还导致我更换了 ssh 私钥，错过了某加密货币的 drop，直接损失</p>
+<p>说来惭愧，在送修之后我就再也没有抽出时间写博客，因此我竟然没有第一时间发现这一事情。直到今年 2 月在 Telegram 和群友吹 b 的时候突然想起来，才突然发现自己的博客已经 GG 了。由于重新整理非常费时费力，因此直到这几天才腾出时间来整理。</p>
+<h1 id="防范措施"><a href="#防范措施" class="headerlink" title="防范措施"></a>防范措施</h1><p>为了避免重蹈覆辙，最好的方法就是直接把源代码传到 Git 上，正好 Github Action 发布后还没用过（一直以来都在用 Gitlab pipeline)，就来试试用 Github Action 来部署吧。</p>
+<p>首先生成一个 Deply key</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &quot;823805669hehe@gmail.com&quot;</span><br></pre></td></tr></table></figure>
+
 <p>对于这种需求，当然不是只有我一个人，大家都喜欢薅微软的羊毛，这里已经有一个库了<a href="https://github.com/sma11black/hexo-action" target="_blank" rel="noopener">sma11black/hexo-action</a><br>添加到相应的编译后仓库里，在源代码文件夹里面新增<code>action.yml</code>:</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Deploy</span> <span class="comment"># workflow name</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="string">[push]</span> <span class="comment"># 触发事件</span></span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">build:</span> <span class="comment"># job1 id</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span> <span class="comment"># 运行环境为最新版 Ubuntu</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">A</span> <span class="string">job</span> <span class="string">to</span> <span class="string">deploy</span> <span class="string">blog.</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Checkout</span> <span class="comment"># step1 获取源码</span></span><br><span class="line">      <span class="attr">uses:</span> <span class="string">actions/checkout@v1</span> <span class="comment"># 使用 actions/checkout@v1</span></span><br><span class="line">      <span class="attr">with:</span> <span class="comment"># 条件</span></span><br><span class="line">        <span class="attr">submodules:</span> <span class="literal">true</span> <span class="comment"># Checkout private submodules(themes or something else). 当有子模块时切换分支？</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Caching dependencies to speed up workflows. (GitHub will remove any cache entries that have not been accessed in over 7 days.) 缓存压缩 node_modules，不用每次下载，使用时解压，可以加快工作流的执行过程，超过 7 天没有使用将删除压缩包。</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Cache</span> <span class="string">node</span> <span class="string">modules</span> <span class="comment"># step2</span></span><br><span class="line">      <span class="attr">uses:</span> <span class="string">actions/cache@v1</span></span><br><span class="line">      <span class="attr">id:</span> <span class="string">cache</span></span><br><span class="line">      <span class="attr">with:</span></span><br><span class="line">        <span class="attr">path:</span> <span class="string">node_modules</span></span><br><span class="line">        <span class="attr">key:</span> <span class="string">$&#123;&#123;</span> <span class="string">runner.os</span> <span class="string">&#125;&#125;-node-$&#123;&#123;</span> <span class="string">hashFiles('**/package-lock.json')</span> <span class="string">&#125;&#125;</span></span><br><span class="line">        <span class="attr">restore-keys:</span> <span class="string">|</span></span><br><span class="line">          <span class="string">$&#123;&#123;</span> <span class="string">runner.os</span> <span class="string">&#125;&#125;-node-</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">Dependencies</span> <span class="comment"># step3 name</span></span><br><span class="line">      <span class="attr">if:</span> <span class="string">steps.cache.outputs.cache-hit</span> <span class="string">!=</span> <span class="string">'true'</span> <span class="comment"># 如果变量 cache-hit 不等于 true</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">npm</span> <span class="string">install</span> <span class="comment"># 安装 node modules 相关依赖</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Deploy hexo blog website.</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Deploy</span> <span class="comment"># step4</span></span><br><span class="line">      <span class="attr">id:</span> <span class="string">deploy</span></span><br><span class="line">      <span class="attr">uses:</span> <span class="string">sma11black/hexo-action@v1.0.1</span></span><br><span class="line">      <span class="attr">with:</span></span><br><span class="line">        <span class="attr">deploy_key:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.DEPLOY_KEY</span> <span class="string">&#125;&#125;</span></span><br><span class="line">        <span class="attr">user_name:</span> <span class="string">Gaojianli</span></span><br><span class="line">        <span class="attr">user_email:</span> <span class="string">823805669hehe@gmail.com</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Get</span> <span class="string">the</span> <span class="string">output</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">        <span class="string">echo</span> <span class="string">"$<span class="template-variable">&#123;&#123; steps.deploy.outputs.notify &#125;&#125;</span>"</span></span><br></pre></td></tr></table></figure>
-<p>接下来push上去看看效果吧：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Deploy</span> <span class="comment"># workflow name</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span> <span class="string">[push]</span> <span class="comment"># 触发事件</span></span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">build:</span> <span class="comment"># job1 id</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span> <span class="comment"># 运行环境为最新版 Ubuntu</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">A</span> <span class="string">job</span> <span class="string">to</span> <span class="string">deploy</span> <span class="string">blog.</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Checkout</span> <span class="comment"># step1 获取源码</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">actions/checkout@v1</span> <span class="comment"># 使用 actions/checkout@v1</span></span><br><span class="line">        <span class="attr">with:</span> <span class="comment"># 条件</span></span><br><span class="line">          <span class="attr">submodules:</span> <span class="literal">true</span> <span class="comment"># Checkout private submodules(themes or something else). 当有子模块时切换分支？</span></span><br><span class="line"></span><br><span class="line">      <span class="comment"># Caching dependencies to speed up workflows. (GitHub will remove any cache entries that have not been accessed in over 7 days.) 缓存压缩 node_modules，不用每次下载，使用时解压，可以加快工作流的执行过程，超过 7 天没有使用将删除压缩包。</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Cache</span> <span class="string">node</span> <span class="string">modules</span> <span class="comment"># step2</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">actions/cache@v1</span></span><br><span class="line">        <span class="attr">id:</span> <span class="string">cache</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">path:</span> <span class="string">node_modules</span></span><br><span class="line">          <span class="attr">key:</span> <span class="string">$&#123;&#123;</span> <span class="string">runner.os</span> <span class="string">&#125;&#125;-node-$&#123;&#123;</span> <span class="string">hashFiles('**/package-lock.json')</span> <span class="string">&#125;&#125;</span></span><br><span class="line">          <span class="attr">restore-keys:</span> <span class="string">|</span></span><br><span class="line">            <span class="string">$&#123;&#123;</span> <span class="string">runner.os</span> <span class="string">&#125;&#125;-node-</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">Dependencies</span> <span class="comment"># step3 name</span></span><br><span class="line">        <span class="attr">if:</span> <span class="string">steps.cache.outputs.cache-hit</span> <span class="string">!=</span> <span class="string">'true'</span> <span class="comment"># 如果变量 cache-hit 不等于 true</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">npm</span> <span class="string">install</span> <span class="comment"># 安装 node modules 相关依赖</span></span><br><span class="line"></span><br><span class="line">      <span class="comment"># Deploy hexo blog website.</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Deploy</span> <span class="comment"># step4</span></span><br><span class="line">        <span class="attr">id:</span> <span class="string">deploy</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">sma11black/hexo-action@v1.0.1</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">deploy_key:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.DEPLOY_KEY</span> <span class="string">&#125;&#125;</span></span><br><span class="line">          <span class="attr">user_name:</span> <span class="string">Gaojianli</span></span><br><span class="line">          <span class="attr">user_email:</span> <span class="string">823805669hehe@gmail.com</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Get</span> <span class="string">the</span> <span class="string">output</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">          <span class="string">echo</span> <span class="string">"$<span class="template-variable">&#123;&#123; steps.deploy.outputs.notify &#125;&#125;</span>"</span></span><br></pre></td></tr></table></figure>
+
+<p>接下来 push 上去看看效果吧：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fatal: could not read Username for &#39;https:&#x2F;&#x2F;github.com&#39;: No such device or address</span><br></pre></td></tr></table></figure>
-<p>???这是什么问题？检查再三,我也确认我的确填写了这一字段，最终我找到了这个<a href="https://github.com/sma11black/hexo-action/issues/5" target="_blank" rel="noopener">issue</a>，其大意大概就是得用SSH的方式登录，行吧。修改<code>_config.yml</code>如下：</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">'git'</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">git@github.com:Gaojianli/gaojianli.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
-<p>再次push上去看看：<br><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="success.png" alt="成功push"><br>成功！</p>
+
+<p>???这是什么问题？检查再三,我也确认我的确填写了这一字段，最终我找到了这个<a href="https://github.com/sma11black/hexo-action/issues/5" target="_blank" rel="noopener">issue</a>，其大意大概就是得用 SSH 的方式登录，行吧。修改<code>_config.yml</code>如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">"git"</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">git@github.com:Gaojianli/gaojianli.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
+
+<p>再次 push 上去看看：<br><img data-src="success.png" alt="成功push"><br>成功！</p>
 <h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>我在<a href="/2019/05/11/Libuv%E5%88%9D%E6%8E%A2/" title="Libuv初探">Libuv初探</a>一文曾经写道：</p>
 <blockquote>
 <p>在生活中，有很多事情不是不能做，只是需要一个契机。有了这个契机，我就能有足够的动力去完成之。</p>
 </blockquote>
-<p>这次的博客丢失，也算是一次契机吧！第一次使用了Github Actions，同时也避免了数据的再次丢失，总的来说还是可喜可贺。接下来的就等一个Codespaces正式上线吧，以后连本地都不需要留存博客代码了，真正把hexo用成wordpress（笑）<br>では、諸君は。</p>
+<p>这次的博客丢失，也算是一次契机吧！第一次使用了 Github Actions，同时也避免了数据的再次丢失，总的来说还是可喜可贺。接下来的就等一个 Codespaces 正式上线吧，以后连本地都不需要留存博客代码了，真正把 hexo 用成 wordpress（笑）<br>では、諸君は。</p>
 
     </div>
 
@@ -397,7 +402,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -470,12 +475,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">55k</span>
+    <span title="站点总字数">61k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">50 分钟</span>
+    <span title="站点阅读时长">55 分钟</span>
 </div>
 
         
@@ -493,6 +498,9 @@
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 
@@ -505,6 +513,65 @@
 
 
 <script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
 
 
 
@@ -529,6 +596,7 @@
 
 
 
+    <div id="pjax">
   
 
   
@@ -553,18 +621,6 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
 });
 </script>
 
-
-        <style>
-            [bg-lazy] {
-                background-image: none !important;
-                background-color: #eee !important;
-            }
-        </style>
-        <script>
-            window.imageLazyLoadSetting = {
-                isSPA: false,
-                preloadRatio: 1,
-                processImages: null,
-            };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(r){r.imageLazyLoadSetting.processImages=t;var e=r.imageLazyLoadSetting.isSPA,n=r.imageLazyLoadSetting.preloadRatio||1,c=a();function a(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(){e&&(c=a());for(var t,o=0;o<c.length;o++)0<=(t=(t=c[o]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(r.innerHeight*n||document.documentElement.clientHeight*n)&&function(){var t,e,n,a,i=c[o];e=function(){c=c.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(n=new Image,a=t.getAttribute("data-original"),n.onload=function(){t.src=a,t.removeAttribute("data-original"),e&&e()},t.src!==a&&(n.src=a))}()}function i(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",i),r.addEventListener("resize",i),r.addEventListener("orientationchange",i)}(this);</script></body>
+    </div>
+</body>
 </html>

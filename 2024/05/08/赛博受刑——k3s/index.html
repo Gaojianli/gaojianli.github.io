@@ -17,32 +17,48 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"blog.gaojianli.me","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"gitalk","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"blog.gaojianli.me","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"gitalk","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="起因最近家里的小主机在经过重重苦难之后，终于正式寿终正寝，遂应老爹要求给家里装了一台 NAS。考虑到家里的体积要求和噪音要求，我最终选择了 3D 打印的 QNAS4，具体介绍可以看司波图这一期视频：国人设计开源 NAS 机箱，我愿称之为最佳! 我采用的配置方案为 i3-N105 + 32G，配了 4 块 HC330 10T 用作存储，2 块 SATA SSD 分别用于装系统和 L2ARC。 考虑到">
+  <meta name="description" content="引言 K1 意为侍奴，数字 1 像一个站立的人。K2 意为跪奴，数字 2 如一个跪着的人。K3 意为刑奴或 sp 奴，数字 3 像一个屁股。……K9 意为狗奴，源于英文 canine（犬的）。  喜欢 K3S 的人多半是有点 M 成分在里面，给人推荐 K3S 的人多半是有点 S 的成分在里面。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="赛博受刑——k3s">
 <meta property="og:url" content="https://blog.gaojianli.me/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/index.html">
 <meta property="og:site_name" content="高渐离の屋">
-<meta property="og:description" content="起因最近家里的小主机在经过重重苦难之后，终于正式寿终正寝，遂应老爹要求给家里装了一台 NAS。考虑到家里的体积要求和噪音要求，我最终选择了 3D 打印的 QNAS4，具体介绍可以看司波图这一期视频：国人设计开源 NAS 机箱，我愿称之为最佳! 我采用的配置方案为 i3-N105 + 32G，配了 4 块 HC330 10T 用作存储，2 块 SATA SSD 分别用于装系统和 L2ARC。 考虑到">
+<meta property="og:description" content="引言 K1 意为侍奴，数字 1 像一个站立的人。K2 意为跪奴，数字 2 如一个跪着的人。K3 意为刑奴或 sp 奴，数字 3 像一个屁股。……K9 意为狗奴，源于英文 canine（犬的）。  喜欢 K3S 的人多半是有点 M 成分在里面，给人推荐 K3S 的人多半是有点 S 的成分在里面。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==">
-<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==">
-<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==">
-<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==">
-<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==">
-<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==">
+<meta property="og:image" content="https://blog.gaojianli.me/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/lost_doc.png">
+<meta property="og:image" content="https://blog.gaojianli.me/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/add_catalog.png">
+<meta property="og:image" content="https://blog.gaojianli.me/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/clusterissuer.png">
+<meta property="og:image" content="https://blog.gaojianli.me/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/traefik.png">
+<meta property="og:image" content="https://blog.gaojianli.me/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/storage_qbt.png">
+<meta property="og:image" content="https://blog.gaojianli.me/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/ingress_host.png">
+<meta property="og:image" content="https://blog.gaojianli.me/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/qbt_integration.png">
+<meta property="og:image" content="https://blog.gaojianli.me/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/qbt_webui.png">
+<meta property="og:image" content="https://blog.gaojianli.me/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/syncthing_ingress.png">
+<meta property="og:image" content="https://blog.gaojianli.me/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/traefik_strip_prefix.png">
+<meta property="og:image" content="https://blog.gaojianli.me/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/syncthing_middlewares.png">
+<meta property="og:image" content="https://blog.gaojianli.me/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/syncthing_webui.png">
+<meta property="og:image" content="https://blog.gaojianli.me/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/homepage_config.png">
+<meta property="og:image" content="https://blog.gaojianli.me/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/homepage_main.png">
+<meta property="og:image" content="https://blog.gaojianli.me/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/log_view.png">
+<meta property="og:image" content="https://blog.gaojianli.me/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/photoprism_pvc.jpg">
+<meta property="og:image" content="https://blog.gaojianli.me/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/no_storageclass.jpg">
+<meta property="og:image" content="https://blog.gaojianli.me/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/install_storage_class.jpg">
+<meta property="og:image" content="https://blog.gaojianli.me/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/has_storage_class.jpg">
+<meta property="og:image" content="https://blog.gaojianli.me/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/strange_key.png">
+<meta property="og:image" content="https://blog.gaojianli.me/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/widget_of_qbt.png">
 <meta property="article:published_time" content="2024-05-08T17:02:48.000Z">
-<meta property="article:modified_time" content="2024-05-09T12:27:05.016Z">
+<meta property="article:modified_time" content="2024-05-09T19:04:15.000Z">
 <meta property="article:author" content="高渐离">
 <meta property="article:tag" content="消费电子">
 <meta property="article:tag" content="NAS">
+<meta property="article:tag" content="K3S">
 <meta property="article:tag" content="云原生">
 <meta property="article:tag" content="TrueNAS Scale">
 <meta property="article:tag" content="K8S">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==">
+<meta name="twitter:image" content="https://blog.gaojianli.me/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/lost_doc.png">
 
 <link rel="canonical" href="https://blog.gaojianli.me/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/">
 
@@ -226,10 +242,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-05-09 01:02:48 / 修改时间：20:27:05" itemprop="dateCreated datePublished" datetime="2024-05-09T01:02:48+08:00">2024-05-09</time>
+              <time title="创建时间：2024-05-09 01:02:48" itemprop="dateCreated datePublished" datetime="2024-05-09T01:02:48+08:00">2024-05-09</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-05-10 03:04:15" itemprop="dateModified" datetime="2024-05-10T03:04:15+08:00">2024-05-10</time>
+              </span>
 
           <br>
             <span class="post-meta-item" title="本文字数">
@@ -237,14 +259,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.3k</span>
+              <span>9.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
+              <span>9 分钟</span>
             </span>
 
         </div>
@@ -256,27 +278,31 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>最近家里的小主机在经过重重苦难之后，终于正式寿终正寝，遂应老爹要求给家里装了一台 NAS。考虑到家里的体积要求和噪音要求，我最终选择了 3D 打印的 QNAS4，具体介绍可以看司波图这一期视频：<a href="https://www.bilibili.com/video/BV1gy4y1o7w" target="_blank" rel="noopener">国人设计开源 NAS 机箱，我愿称之为最佳!</a></p>
+        <h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><blockquote>
+<p>K1 意为侍奴，数字 1 像一个站立的人。<br>K2 意为跪奴，数字 2 如一个跪着的人。<br><strong>K3 意为刑奴或 sp 奴，数字 3 像一个屁股。</strong><br>……<br>K9 意为狗奴，源于英文 canine（犬的）。</p>
+</blockquote>
+<p>喜欢 K3S 的人多半是有点 M 成分在里面，给人推荐 K3S 的人多半是有点 S 的成分在里面。</p>
+<a id="more"></a>
+
+<h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>最近家里的小主机在经过重重苦难之后，终于正式寿终正寝，遂应老爹要求给家里装了一台 NAS。考虑到家里的体积要求和噪音要求，我最终选择了 3D 打印的 QNAS4，具体介绍可以看司波图这一期视频：<a href="https://www.bilibili.com/video/BV1gy4y1o7w" target="_blank" rel="noopener">国人设计开源 NAS 机箱，我愿称之为最佳!</a></p>
 <p>我采用的配置方案为 i3-N105 + 32G，配了 4 块 HC330 10T 用作存储，2 块 SATA SSD 分别用于装系统和 L2ARC。</p>
 <p>考虑到这台 NAS 最终是需要寄回家中，因此我并没有采用 TrueNAS Core，而是使用了更为“阳间”的 TrueNAS Scale，而这，也是一切苦难的开始。</p>
-<h1 id="缘起-Scale"><a href="#缘起-Scale" class="headerlink" title="缘起 Scale"></a>缘起 Scale</h1><p>其实，我在很久之前就已经尝试过 Scale，当时的闹得很不愉快，具体可以看<a href="/2022/12/04/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E6%90%AD%E5%BB%BANAS%E2%80%94%E2%80%94%E5%9D%91%E7%88%B9%E7%9A%84TrueNAS/#%E8%BF%81%E7%A7%BB%E5%88%B0SCALE">这篇文章</a>。当时我的解决方案是直接<code>docker --net=host</code>一把梭。但是很可惜，在如今的 TrueNAS Scale 中，这种方法已经变得不可能。</p>
+<h1 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h1><p>其实，我在很久之前就已经尝试过 Scale，当时的闹得很不愉快，具体可以看<a href="/2022/12/04/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E6%90%AD%E5%BB%BANAS%E2%80%94%E2%80%94%E5%9D%91%E7%88%B9%E7%9A%84TrueNAS/#%E8%BF%81%E7%A7%BB%E5%88%B0SCALE">这篇文章</a>。当时我的解决方案是直接<code>docker --net=host</code>一把梭。但是很可惜，在如今的 TrueNAS Scale 中，这种方法已经变得不可能。</p>
 <blockquote>
 <p>It has been communicated clearly that containerd will be used as the container engine and that means that docker may not be required at any point in the future.</p>
 </blockquote>
 <p>大意就是为了响应 K8S 与 Docker 的脱钩（改为使用 containerd ），Scale 也将不再搭载 Docker 引擎。这下就没办法了，虽然我还有虚拟机这最后一条路，但是作为一个完美主义者，虚拟机这种浪费资源的行径是万万不能接受的！没办法，只能来硬着头皮啃一下之前一点不愿意了解的 K8S 了，毕竟人总是要跳出舒适圈的，<strong>逃离平庸的重力</strong>。</p>
-<a id="more"></a>
-
 <h2 id="安装-TrueCharts"><a href="#安装-TrueCharts" class="headerlink" title="安装 TrueCharts"></a>安装 TrueCharts</h2><p>在动手之前，我自然也看了许多的教程，相应地也了解到，官方自带镜像源中的软件数量是远远不够的。幸好一个第三方软件源<code>TrueCharts</code>提供了许多常用软件的支持，并在此之上搭建了一整套相对完善的软件生态。官网指路 ☞：<a href="https://truecharts.org/scale/" target="_blank" rel="noopener">https://truecharts.org/scale/</a></p>
-<p>另外要吐槽一下，也不知道是网站重构还是怎么的，Google 搜到的<code>TrueCharts</code>文档大部分都是失效的，点进去 404，需要自己去上面的文档目录里面手动搜索，非常恶心：<br><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="lost_doc.png" alt="文档失效"></p>
-<p>添加目录非常简单，只需要在应用管理面页面点击<code>探索应用程序</code>-<code>管理目录</code>-<code>添加</code>即可，按照下图方式填写即可：<br><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="add_catalog.png" alt="添加目录"><br>注意：如果网络条件不好的话，可能需要钩上<code>强制创建</code>，否则会慢到怀疑人生。</p>
+<p>另外要吐槽一下，也不知道是网站重构还是怎么的，Google 搜到的<code>TrueCharts</code>文档大部分都是失效的，点进去 404，需要自己去上面的文档目录里面手动搜索，非常恶心：<br><img data-src="lost_doc.png" alt="文档失效"></p>
+<p>添加目录非常简单，只需要在应用管理面页面点击<code>探索应用程序</code>-<code>管理目录</code>-<code>添加</code>即可，按照下图方式填写即可：<br><img alt="添加目录" data-src="add_catalog.png" width="30%"/><br>注意：如果网络条件不好的话，可能需要钩上<code>强制创建</code>，否则会慢到怀疑人生。</p>
 <h2 id="安装必要软件"><a href="#安装必要软件" class="headerlink" title="安装必要软件"></a>安装必要软件</h2><p>添加完目录之后，应该就可以在应用列表里里面看到<code>TrueCharts</code>的应用了。官方源和<code>TrueCharts</code>存在许多同名的软件，这个时候便需要通过下方的 Tag 来进行区分。</p>
 <p><code>TrueCharts</code>的软件有一些奇怪的依赖顺序，必须按照依赖顺序安装，否则必定失败。我这里列出了我安装的软件的依赖顺序，供参考：</p>
 <h3 id="Prometheus-operator"><a href="#Prometheus-operator" class="headerlink" title="Prometheus-operator"></a>Prometheus-operator</h3><p>首先是最迷惑的玩意儿，必须安装<code>Prometheus-operator</code>，虽然我知道<code>prometheus</code>是一个监控软件，但是我实在不知道安装这个有啥用，让你装就装吧。</p>
 <h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>这个软件没有任何配置项，装就完事了。</p>
-<h3 id="cloudnative-pg"><a href="#cloudnative-pg" class="headerlink" title="cloudnative-pg"></a>cloudnative-pg</h3><p>这个稍微能明白一点，字面意思也能明白，就是一个 PostgreSQL 数据库，只不过是云原生的版本。只能说你们 K8S 太云原生了😷，连数据库都要单独搞一个。</p>
+<h3 id="cloudnative-pg"><a href="#cloudnative-pg" class="headerlink" title="cloudnative-pg"></a>cloudnative-pg</h3><p>这个稍微能明白一点，字面意思也能明白，就是一个 PostgreSQL 数据库，只不过是云原生的版本。只能说你们 K8S 太云原生了 😷，连数据库都要单独搞一个。</p>
 <h4 id="配置-1"><a href="#配置-1" class="headerlink" title="配置"></a>配置</h4><p>这个软件也没有任何配置项，直接装就完事了</p>
 <h3 id="cert-manager"><a href="#cert-manager" class="headerlink" title="cert-manager"></a>cert-manager</h3><blockquote>
-<p>cert-manager是一个证书生命周期管理系统，支持证书的申请、部署等功能。您可以使用cert-manager颁发ASM网关的证书，从而可以使用HTTPS协议通过ASM网关访问服务，保证数据传输的安全。</p>
+<p>cert-manager 是一个证书生命周期管理系统，支持证书的申请、部署等功能。您可以使用 cert-manager 颁发 ASM 网关的证书，从而可以使用 HTTPS 协议通过 ASM 网关访问服务，保证数据传输的安全。</p>
 </blockquote>
 <p>听不懂吧，听不懂就对了，我也不懂。总之这是集群中常用的证书管理器，用于自动化证书的申请和更新。通常在企业的环境中会使用它来签发自签名证书，这里我们需要使用它来签发 https 证书。</p>
 <h4 id="配置-2"><a href="#配置-2" class="headerlink" title="配置"></a>配置</h4><p>这个软件只有一个配置，别改他，保持默认就行了。</p>
@@ -284,10 +310,10 @@
 <h4 id="配置-3"><a href="#配置-3" class="headerlink" title="配置"></a>配置</h4><p><code>clusterissuer</code>的配置项需要稍微复杂一些了，配置文件一共分为三部分：<code>ACME Issuer</code>，<code>Certificate Authority Issuer</code>，<code>SelfSigned Issuer</code>，接下来会分别介绍他们的作用：</p>
 <ul>
 <li><code>ACME Issuer</code>，使用 ACME 协议签发证书，和<code>acme.sh</code>的用法区别不大，只支持 DNS 验证方式，因此需要配置好 DNS 服务商的 API。</li>
-<li><code>Certificate Authority Issuer</code>，用于签发CA证书使用。</li>
+<li><code>Certificate Authority Issuer</code>，用于签发 CA 证书使用。</li>
 <li><code>SelfSigned Issuer</code>，自签名证书相关配置。<br>由于我们签发的证书主要给浏览器使用，因此这里主要讲<code>ACME Issuer</code>，剩下的两种直接取消勾选<code>enable</code>，读者有能力的可以自己研究。</li>
 </ul>
-<p>配置页面大概长着这个样：<br><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="clusterissuer.png" alt="clusterissuer"><br>逐条说一下配置的含义：</p>
+<p>配置页面大概长着这个样：<br><img alt="clusterissuer" data-src="clusterissuer.png" width="30%"/><br>逐条说一下配置的含义：</p>
 <ul>
 <li>名称。随便起一个，但是后面要用所以这里需要记住。</li>
 <li><code>Type or DNS-Provider</code>。这里需要选择你的 DNS 服务商，我这里选择的是<code>Cloudflare</code>。</li>
@@ -295,7 +321,7 @@
 <li><code>电子邮件</code>。用于接收证书相关的通知。</li>
 <li><code>Cloudflare API Token</code>。 这个名称非常有歧义，总之是专指在这个<a href="https://dash.cloudflare.com/profile/api-tokens" target="_blank" rel="noopener">页面</a>生成的 Token，Token 的范围记得要选择<code>All zones</code>。</li>
 </ul>
-<h3 id="traefik"><a href="#traefik" class="headerlink" title="traefik"></a>traefik</h3><p>K8S 中的 Nginx，用于反向代理，在这个语境中也被称为<code>Ingress</code>。很久以前 Xice 就给我推荐过这个软件，但是当时我还处在<code>apt install nginx</code>的阶段，再加上对 go 编写软件的性能质疑（确实很垃圾），一直没有去尝试过。</p>
+<h3 id="Traefik"><a href="#Traefik" class="headerlink" title="Traefik"></a>Traefik</h3><p>K8S 中的 Nginx，用于反向代理，在这个语境中也被称为<code>Ingress</code>。很久以前 Xice 就给我推荐过这个软件，但是当时我还处在<code>apt install nginx</code>的阶段，再加上对 go 编写软件的性能质疑（确实很垃圾），一直没有去尝试过。</p>
 <p>另外一个勘误：我在<a href="/2022/12/04/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E6%90%AD%E5%BB%BANAS%E2%80%94%E2%80%94%E5%9D%91%E7%88%B9%E7%9A%84TrueNAS/#%E8%BF%81%E7%A7%BB%E5%88%B0SCALE">上篇文章</a>中提到 K3S 没法绑定<code>9000</code>以下的端口，这其实是不对的。对于普通软件确实不支持，但是对于这个软件是特例，它甚至可以绑定<code>:443</code>。</p>
 <p>由于<code>traefik</code>会占用<code>80</code>和<code>443</code>端口，<strong>因此需要先修改 Web UI 的默认监听端口</strong>，可以在<code>系统设置</code>-<code>常规</code>-<code>GUI</code>中修改，建议修改为<code>81</code>、<code>444</code>。</p>
 <h4 id="配置-4"><a href="#配置-4" class="headerlink" title="配置"></a>配置</h4><p><code>traefik</code>的配置项非常多，这里需要分节来讲，没有提到的部分保持默认即可。</p>
@@ -305,23 +331,108 @@
 <li><code>Service Type</code>，这里需要选择端口暴露类型，如果你的服务需要走反向代理，直接选择<code>ClusterIP</code>即可，否则请选择<code>LoadBalancer</code>，后者等价于 docker 里的 <code>-p</code>参数。由于那个 dashboard 没有卵用，也没有反代的价值，因此这里我选择的是<code>LoadBalancer</code>。</li>
 <li><code>Entrypoints Port</code>，这里指的是上面提到的 dashboard 的端口，默认<code>9000</code>不动即可。</li>
 </ul>
-<h6 id="TCP-Service"><a href="#TCP-Service" class="headerlink" title="TCP Service"></a>TCP Service</h6><p>这里才是我们说的对外暴露的两个端口，因此这里<code>Service Type</code>必须选择<code>LoadBalancer</code>。<br>这里看起来配置多，但是其实没啥可配置的，就照着写就行了：<br><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="traefik.png" alt="traefik-service"><br>这样我们就得到了两个<code>Entrypoint</code>，分别名为<code>web</code>和<code>websecure</code>，分别对应<code>80</code>和<code>443</code>端口。<br>如果你还有别的需求，例如同时监听<code>8443</code>，在下面还可以添加更多的<code>Entrypoint</code>。</p>
+<h6 id="TCP-Service"><a href="#TCP-Service" class="headerlink" title="TCP Service"></a>TCP Service</h6><p>这里才是我们说的对外暴露的两个端口，因此这里<code>Service Type</code>必须选择<code>LoadBalancer</code>。<br>这里看起来配置多，但是其实没啥可配置的，就照着写就行了：<br><img alt="traefik-service" data-src="traefik.png" width="30%"/><br>这样我们就得到了两个<code>Entrypoint</code>，分别名为<code>web</code>和<code>websecure</code>，分别对应<code>80</code>和<code>443</code>端口。<br>如果你还有别的需求，例如同时监听<code>8443</code>，在下面还可以添加更多的<code>Entrypoint</code>。</p>
 <p>关于转发头部分，这里默认是白名单，填写起来太费劲了，因此我直接勾选了<code>Insecure Mode</code>，看个人需求就好。</p>
 <h6 id="Ingress"><a href="#Ingress" class="headerlink" title="Ingress"></a>Ingress</h6><p>这里如果你想反代 dashboard 可以配置，但是因为前面说到的原因，我这里没有配置。</p>
 <h6 id="Middleware"><a href="#Middleware" class="headerlink" title="Middleware"></a>Middleware</h6><p><code>traefik</code>的中间件配置是全局的，非常傻逼，后面会提到，这里我只配置了一个<code>Real IP</code>中间件，随便起个名字就行， 我这里叫<code>x-real-ip</code></p>
 <p>全部保存之后 <code>traefik</code>应该能正常启动，至此，前置依赖安装完毕。</p>
-<h2 id="应用软件"><a href="#应用软件" class="headerlink" title="应用软件"></a>应用软件</h2><p>当干到这里，啥也没干我已经安装了5个服务，8个 pod 了。。。我已经陷入了深深的自我怀疑之中：我只是为了下个BT看个电视，为什么需要如此大动干戈？ TrueNAS 是不是脑子进水了，给家用引入 K8S？</p>
+<h2 id="应用软件"><a href="#应用软件" class="headerlink" title="应用软件"></a>应用软件</h2><p>当干到这里，啥也没干我已经安装了 5 个服务，8 个 pod 了。。。我已经陷入了深深的自我怀疑之中：我只是为了下个 BT 看个电视，为什么需要如此大动干戈？ TrueNAS 是不是脑子进水了，给家用引入 K8S？</p>
 <p>不过既然已经到了这一步，那就继续下去吧。</p>
-<h3 id="qbitorrent"><a href="#qbitorrent" class="headerlink" title="qbitorrent"></a>qbitorrent</h3><p>需要安装的第一个软件自然是<code>qbitorrent</code>，毕竟BT下载是一切的核心。直接在应用目录中搜索即可，注意不要下到了<code>TrueNAS</code>源的同名软件，要下载黄色的那个。</p>
-<h4 id="配置-5"><a href="#配置-5" class="headerlink" title="配置"></a>配置</h4><h5 id="服务-1"><a href="#服务-1" class="headerlink" title="服务"></a>服务</h5><p>首先是服务选项卡，qbt 有2个端口，一个是 WebUI 界面，一个是下载端口，这里需要分别配置：</p>
+<h3 id="一般应用配置——以-qbittorrent-为例"><a href="#一般应用配置——以-qbittorrent-为例" class="headerlink" title="一般应用配置——以 qbittorrent 为例"></a>一般应用配置——以 qbittorrent 为例</h3><p>需要安装的第一个软件自然是<code>qbittorrent</code>，毕竟 BT 下载是一切的核心。直接在应用目录中搜索即可，注意不要下到了<code>TrueNAS</code>源的同名软件，要下载黄色的那个。</p>
+<h4 id="配置-5"><a href="#配置-5" class="headerlink" title="配置"></a>配置</h4><h5 id="服务-1"><a href="#服务-1" class="headerlink" title="服务"></a>服务</h5><p>首先是服务选项卡，qbt 有 2 个端口，一个是 WebUI 界面，一个是下载端口，这里需要分别配置：</p>
 <h6 id="Main-Service-1"><a href="#Main-Service-1" class="headerlink" title="Main Service"></a>Main Service</h6><p>这个就是 WebUI 界面的配置了，我们需要把服务藏在反向代理后面，因此<code>Service Type</code>选择<code>ClusterIP</code>，端口号不重要，保持默认就行。</p>
-<h6 id="Torrent-Service"><a href="#Torrent-Service" class="headerlink" title="Torrent Service"></a>Torrent Service</h6><p>这个就是下载端口的配置了，这里要根据你在 qbt 设置里面配置的端口号来修改，由于默认的端口号<code>6881</code>为大多数PT站禁用，因此必须因人而异地选择；此外由于需要检测端口监听状况来判断服务是否 ready，也不能乱填，这点还请注意。BT服务需要接收来自他人的传入链接，因此<code>Service Type</code>要选择<code>LoadBalancer</code>。</p>
+<h6 id="Torrent-Service"><a href="#Torrent-Service" class="headerlink" title="Torrent Service"></a>Torrent Service</h6><p>这个就是下载端口的配置了，这里要根据你在 qbt 设置里面配置的端口号来修改，由于默认的端口号<code>6881</code>为大多数 PT 站禁用，因此必须因人而异地选择；此外由于需要检测端口监听状况来判断服务是否 ready，也不能乱填，这点还请注意。BT 服务需要接收来自他人的传入链接，因此<code>Service Type</code>要选择<code>LoadBalancer</code>。</p>
 <p>更新：填了也没卵用，开不开都行</p>
-<h6 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h6><p>由于 K3S 对 IPv6 的支持一坨，实在想不明白怎么让他支持 IPv6，因此这里我直接透传了网卡，走DHCP，这样就能保证 qbt 能正常接收到 v6 入站了。</p>
-<h6 id="Ingress-1"><a href="#Ingress-1" class="headerlink" title="Ingress"></a>Ingress</h6><p>这部分就是重头戏了，涉及到如何配置反向代理。这里首先我们需要开启 Ingress，添加一个主机，填写你需要的域名：<br><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="ingress_host.png" alt="ingress主机配置"></p>
-<h6 id="Integration"><a href="#Integration" class="headerlink" title="Integration"></a>Integration</h6><p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="qbt_integration.png" alt="integration"><br>切换到<code>integration</code>选项，勾选<code>enable traefik</code>，启用反向代理。在<code>Entrypoints</code>选项中增加前面提到的<code>Entrypoint</code>，我这里只填写了 https 对应的<code>websecure</code>。<br>随后增加中间件，填写前面注册的中间件名字<code>x-real-ip</code>，这样就能保证 qbt 能正确获取到用户的真实 IP。<br>在最下方，勾选上<code>certManager</code>，输入在<code>clusterissuer</code>中配置的 issuer 名称。</p>
-<p>最后点击提交，等待容器启动与证书签发，如无意外，过一会打开你配置的域名就能看到 qbt 的 WebUI 了。</p>
-<p>莫名其妙的容器启动失败，jellyfin-broadcastproxy-8g2v8</p>
+<h6 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h6><p>K8S 的服务是无状态的，但是我们实际使用的软件这么肯定不行，因此需要配置持久化存储。<br>通常一个软件具有多个存储配置，分别用于存放不同的数据（例如配置文件，缓存，用户数据等），反映在 TrueNAS WebUI 中则为多个 Storage 配置项目。</p>
+<img alt="持久化" data-src="storage_qbt.png" width="30%"/>
+以 qbt 为例，第一个配置项目为`App Config Storage`，从字面意思我们便可以理解，这是存放配置文件的目录。对于每一个目录，首先要选择存储类型，TrueCharts 提供如下存储类型供选择：
+
+<ul>
+<li><code>PVC</code>(<a href="https://docs.k3s.io/storage" target="_blank" rel="noopener">Persistent Volumes</a>)，与 docker 的 volume 类似，在 k8s 的升级，重启，回滚过程中都不会发生改变。</li>
+<li><code>Host Path</code>，映射一个主机的目录</li>
+<li><code>emptyDir</code>，类似 <code>/tmp</code> 的内存文件系统，重启就没</li>
+<li><code>NFS Share/iSCSI Share</code>，字面意思，挂载一个远程的共享盘</li>
+</ul>
+<p>由于<code>App Config Storage</code>的路径是固定的，因此我只需要选择主机上的路径即可，无需手动指定挂载点；除此之外我还添加了一个额外的存储，挂载到容器的<code>/downloads</code>目录下，用于保存下载的文件。</p>
+<h6 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h6><p>由于 K3S 对 IPv6 的支持一坨，实在想不明白怎么让他支持 IPv6，因此这里我直接透传了网卡，走 DHCP，这样就能保证 qbt 能正常接收到 v6 入站了。</p>
+<h6 id="Ingress-1"><a href="#Ingress-1" class="headerlink" title="Ingress"></a>Ingress</h6><p>这部分就是重头戏了，涉及到如何配置反向代理。这里首先我们需要开启 Ingress，添加一个主机，填写你需要的域名：<br><img alt="ingress主机配置" data-src="ingress_host.png" width="30%"/></p>
+<h6 id="Integration"><a href="#Integration" class="headerlink" title="Integration"></a>Integration</h6><img alt="integration" data-src="qbt_integration.png" width="30%"/>
+
+<p>切换到<code>integration</code>选项，勾选<code>enable traefik</code>，启用反向代理。在<code>Entrypoints</code>选项中增加前面提到的<code>Entrypoint</code>，我这里只填写了 https 对应的<code>websecure</code>。<br>随后增加中间件，填写前面注册的中间件名字<code>x-real-ip</code>，这样就能保证 qbt 能正确获取到用户的真实 IP。<br>在最下方，勾选上<code>certManager</code>，输入在<code>clusterissuer</code>中配置的 issuer 名称。</p>
+<p>最后点击提交，等待容器启动与证书签发，如无意外，过一会打开你配置的域名就能看到带 https 的 qbt 的 WebUI 了。<br><img alt="qbt的webui" data-src="qbt_webui.png" width="70%"/></p>
+<h3 id="Prefix-应用配置——syncthing"><a href="#Prefix-应用配置——syncthing" class="headerlink" title="Prefix 应用配置——syncthing"></a>Prefix 应用配置——syncthing</h3><p>这里我需要部署的软件是<code>syncthing</code>，这个软件是一个 P2P 同步软件，可以用于同步文件夹。</p>
+<p>与<code>qbittorrent</code>不同的是，<code>syncthing</code>我需要部署在一个子目录下，形如<code>http://example.com/syncthing/</code>，为了达成这个目的，需要进行一些额外的配置。</p>
+<h4 id="配置-6"><a href="#配置-6" class="headerlink" title="配置"></a>配置</h4><h5 id="Ingress-2"><a href="#Ingress-2" class="headerlink" title="Ingress"></a>Ingress</h5><p>前面大部分配置和<code>qbittorrent</code>没有什么区别，主要的区别还是在<code>Ingress</code>这部分：<br><img alt="syncthin ingress" data-src="syncthing_ingress.png" width="30%"/></p>
+<p>在这里<code>Prefix</code>填写需要的 subpath:<code>/syncthing/</code>，这样对于所有满足前缀匹配<code>/syncthing/</code>的路由均会被路由至<code>syncthing</code>所在的容器。然而，如果只是这样做，只会收获一个大大的 404 错误。</p>
+<p>上述的路由过程可以理解为：</p>
+<blockquote class="blockquote-center">
+            <p><a href="https://example.com/syncthing/" target="_blank" rel="noopener">https://example.com/syncthing/</a> =&gt; traefik =&gt; <a href="http://172.16.1.158/syncthing/" target="_blank" rel="noopener">http://172.16.1.158/syncthing/</a></p>
+
+          </blockquote>
+<p>很显然，对于<code>Syncthing</code>的容器，是无法找到这个路径上的任何资源的，因此我们这里需要增加一个中间件。</p>
+<p>切换到 traefik 的编辑页面，定位到<code>Middlewares</code>，增加一个<code>stripPrefixRegex</code>中间件：<br><img alt="stripPrefixRegex中间件" data-src="traefik_strip_prefix.png" width="30%"/><br>然后回到 syncthing 的 ingress 配置页面，增加这个中间件：<br><img alt="增加中间件" data-src="syncthing_middlewares.png" width="30%"/><br>这里又体现出了这个配置页面的傻逼之处：<strong>中间件的声明和使用是分离的</strong>。</p>
+<p>我们来设想一个长场景：在你编辑到一半的时候如果你突然想要增加中间件，于是你切换到了 traefik， 在长长的列表之间找到你要的中间件，添加；然后你会突然发现之前编辑了半天的配置没法保存，所有的配置要再来一遍。</p>
+<p>这个过程，在我摸索的过程中至少重复了 6，7 次！</p>
+<p>另外，不知道是不是做成下拉框会要了他们母亲的命，所有的这一切都没有提示，因此只要你的中间件有一点拼写错误，都无法完成添加。</p>
+<p>总之，在添加完上述的中间件后，traefik 会按照你之前写的规则 strip 掉路径，这样就可以正常访问了：</p>
+<blockquote class="blockquote-center">
+            <p><a href="https://example.com/syncthing/" target="_blank" rel="noopener">https://example.com/syncthing/</a> =&gt; traefik =&gt; stripPrefixRegex =&gt; <a href="http://172.16.1.158/" target="_blank" rel="noopener">http://172.16.1.158/</a></p>
+
+          </blockquote>
+<p>效果如下：<br><img alt="syncthing 的 WebUI" data-src="syncthing_webui.png" width="70%"/></p>
+<p>顺便说一句，前面这么多复杂、需要来回切换的配置在 Nginx 中可能就一小段：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> /syncthing/ &#123;</span><br><span class="line">    <span class="attribute">proxy_set_header</span>        Host localhost;</span><br><span class="line">    <span class="attribute">proxy_set_header</span>        X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span>        X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span>        X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line">    <span class="attribute">proxy_pass</span>              http://127.0.0.1:8384/;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>孰优孰劣，不言而喻。</p>
+<h2 id="Homepage"><a href="#Homepage" class="headerlink" title="Homepage"></a>Homepage</h2><p>后来某一天在闲逛时，突然发现在服务集成的下方还有一个选项:<code>Homepage</code><br><img alt="homepage_config" data-src="homepage_config.png" width="30%"/><br>根据其<a href="https://gethomepage.dev/latest/" target="_blank" rel="noopener">官网</a>的效果图和描述，看起来是一个非常酷炫的主页<br>接入方法也非常简单，直接打勾，填写分组即可。</p>
+<p>对于部分软件，还提供了 Widget 选项，通过填写软件内部的 API Key 即可将部分信息透传在 Homepage 主页上，具体可以看 TrueCharts 提供的<a href="https://truecharts.org/charts/stable/homepage/hp-integration/" target="_blank" rel="noopener">例子</a>。<br>最终效果：<br><img alt="homepage效果图" data-src="homepage_main.png" width="70%"/><br>安装这个之后相当于给 NAS 上所有的服务添加了快捷方式，非常适合给家里的长辈使用，再也不用给老爹添加一大堆快捷方式了。</p>
+<h1 id="遇到的坑"><a href="#遇到的坑" class="headerlink" title="遇到的坑"></a>遇到的坑</h1><p>看了前面的这些，是不是觉得还挺顺利的？但是这些有别忘了一个前提，前面的这些都是我在<strong>官方文档失效</strong>，<strong>TrueNAS 更新</strong>的情况下，一点点根据 Reddit 和 Youtube 上的视频教程摸索出来的。如果你觉得这些不够苦痛，那么下面的就足够你喝一壶了。</p>
+<h2 id="PVC-无法使用"><a href="#PVC-无法使用" class="headerlink" title="PVC 无法使用"></a>PVC 无法使用</h2><p>前面提到了，应用的持久化中有一种存储类型叫<code>PVC</code>，由于不用指定存储路径，因此非常方便。</p>
+<p>但是其实早在安装<code>syncthing</code>的时候我便遇到了一个问题：使用 PVC 的容器无法启动。具体报错信息为:<code>no persistent volumes available for this claim and no storage class is set</code></p>
+<p>顺便说一句，这个傻逼的报错只能从那个小小的“相关的 Kubernetes 事件”中看到：<br><img alt="小小的日志框" data-src="log_view.png" width="70%"/><br>而这个框能容纳的信息非常少，你必须不停往下滑动滚动条，然而这个框他只支持鼠标滚轮，因此你的滚动速度还严重受限。更气人的是，它甚至每 3 秒就会刷新一次，所以你好不容易滚到下面的消息又会马上重置，非常地令人火大。</p>
+<p>回到正题，遇到这种难以解决的，不熟悉的错误，我第一反应是当然是回避。惹不起我还躲不起吗？因此不论是 qbittorrent 还是 syncthing，我都使用了<code>host path</code>类型来存储内容。</p>
+<p>本以为就能当一切无事发生地混过去，然而大抵是老天要我逃脱平庸的重力吧，在安装<code>photprism</code>的时候，遇到了一个无法回避的问题：它竟然使用了一个页面上没有的存储，而且强制类型是 PVC！<br><img data-src="photoprism_pvc.jpg" alt="隐藏的PVC"><br>这个<code>photoprism-mariadb-data</code>根本没有标记在配置项目中，因此无法调整他的存储类型。</p>
+<p>这个问题在网上不算罕见，随便一搜都能遇到很多，但是绝大多数人都是使用的完整 K8S，如果加上我这个 TrueNAS 限定，那则是一篇文档都没有！原来这就是得罕见病的感受吗~</p>
+<p>网上没有解答，那就只能自己动手丰衣足食了。先来看看这个报错吧，字面意思似乎是缺少一个<code>storage class</code>，那么这个又是什么呢？通过一通搜索引擎之后：</p>
+<blockquote>
+<p>Kubernetes 提供一种自动创建 PV 的机制，叫 StorageClass，它的作用就是创建 PV 的模板。</p>
+</blockquote>
+<p>看的不太明白，但是看了许多例子，有什么<code>nfs storage class</code>，<code>host path storage class</code>…似乎这个东西是指导 PV 创建的！</p>
+<p>仔细回想一下，在我们选择 PVC 的时候，系统并没有让我们提供任何信息，那么数据最终保存在哪里呢？系统可没办法帮我们决定数据保存在哪个盘上，这可能就是问题的关键！<br>来看看我们目前已经有哪些<code>storage class</code>吧：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">k3s kubectl get storageclass</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="no_storageclass.jpg" alt="no storage class"><br>哈哈，尴尬……不过这个应该就是问题的根源了，于是我用<code>k3s no storageclass</code>开始了搜索，并最终定位到了这么一篇 <a href="https://github.com/k3s-io/k3s/issues/85#issuecomment-468293334" target="_blank" rel="noopener">issue</a></p>
+<blockquote>
+<p>k3s doesn’t come with a default storage class. We are looking at including <a href="https://github.com/rancher/local-path-provisioner" target="_blank" rel="noopener">https://github.com/rancher/local-path-provisioner</a> by default which just uses local disk, such that PVCs will at least work by default. You can try that storage class or install another third party one. More info here</p>
+</blockquote>
+<p>又是精简版惹的祸！我算是知道为啥 NAS 群友都让我珍爱生命远离 K3S 了。</p>
+<p>在上面那个 issue 中，网友们推荐了一个 <a href="https://github.com/rancher/local-path-provisioner/tree/master/deploy/chart/local-path-provisioner" target="_blank" rel="noopener">local-path-provisioner</a> ，我按照网友们的指引克隆了仓库，并自学了一通<code>helm</code>的用法之后：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">helm install -f localpath-provisioner/values.yaml <span class="built_in">local</span>-path-storage ./<span class="built_in">local</span>-path-provisioner</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="install_storage_class.jpg" alt="install storage class"><br>执行完后再来试试：<br><img data-src="has_storage_class.jpg" alt="get storage class"><br>看起来 OK 了！回到 GUI 中，<code>photoprism</code>已经正常启动了，这个问题大抵是解决了。</p>
+<p>PS：黑色幽默的是，我花费了这么大的精力最后还是抛弃了<code>photoprism</code>，因为这个沙屌玩意儿竟然没有自动扫描！</p>
+<p>罢了，权当学习 K8S 吧，照片管理目前用的是<a href="https://github.com/photoview/photoview" target="_blank" rel="noopener">Photoview</a>，虽然简陋但是能用。</p>
+<h3 id="正确的解法"><a href="#正确的解法" class="headerlink" title="正确的解法"></a>正确的解法</h3><p>多日以后，这篇文章已经快落成了，我才在一个偶然的机会得知了正确的做法：安装<code>OpenEBS</code>即可。</p>
+<p>而这一切都隐藏在 TrueCharts 那该死的 404 的文档之中：<a href="https://truecharts.org/scale/#openebs-setup" target="_blank" rel="noopener">https://truecharts.org/scale/#openebs-setup</a><br>没文档，真坑人。</p>
+<h2 id="路径转发"><a href="#路径转发" class="headerlink" title="路径转发"></a>路径转发</h2><p>前面提到，syncthing 使用的路径为<code>/syncthing/</code>，因此当使用<code>/syncthing</code>访问时，路由其实并不会命中。通常我们会配置一个 rewrite，将不带<code>/</code>的路径 302 至带<code>/</code>的路径上，在 Nginx 上这非常容易：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> /syncthing</span><br><span class="line">&#123;</span><br><span class="line">    <span class="attribute">return</span> <span class="number">302</span> <span class="variable">$scheme</span>://<span class="variable">$host</span>:<span class="number">8443</span>/syncthing/;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是在 traefik 上，我只有一个<code>redirectRegex</code>中间件可以用。哪怕我穷尽毕生所学正则表达式，尝试了各种姿势，我也没能写出来 work 的配置。写出来的配置不是无限加<code>/</code>，就是 css 和 js 无法加载，所以我放弃了。如果有人能在评论区告诉我正确的写法，我将感激不尽。</p>
+<h2 id="Homepage-1"><a href="#Homepage-1" class="headerlink" title="Homepage"></a>Homepage</h2><p>前面提到了，homepage 为了展示 widget 需要填写软件的 API key。<br>对于<code>jellyfin</code>这种天然支持 API Token 的软件自然不消多说，但是对于<code>qbittorrent</code>这种采用用户名密码的可就犯了难，输入框只有一个，但是需要输入两个内容，该怎么办呢？<br>好在 homepage 在他的<a href="https://gethomepage.dev/latest/widgets/services/qbittorrent/" target="_blank" rel="noopener">官网</a>提供了不同软件的配置文件例子，其中<code>qbittorrent</code>的部分是这么写的：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">widget:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">qbittorrent</span></span><br><span class="line">  <span class="attr">url:</span> <span class="string">http://qbittorrent.host.or.ip</span></span><br><span class="line">  <span class="attr">username:</span> <span class="string">username</span></span><br><span class="line">  <span class="attr">password:</span> <span class="string">password</span></span><br></pre></td></tr></table></figure>
+
+<p>再结合 homepage 配置选项中有一个奇怪的“密钥”，其实答案就已经呼之欲出了：所谓“密钥”就是<code>Key</code>的拙劣翻译，因此只需要按照 K-V 形式书写配置文件即可：<br><img alt="奇怪的密钥" data-src="strange_key.png" width="30%"/><br>保存之后，毫不意外地正常工作：<br><img data-src="widget_of_qbt.png" alt="qbt的widget"></p>
+<h2 id="其他的奇怪问题"><a href="#其他的奇怪问题" class="headerlink" title="其他的奇怪问题"></a>其他的奇怪问题</h2><p>在<code>jellfin</code>这种多容器的服务中，经常会遇到莫名其妙的容器启动失败问题，导致<code>jellyfin</code>的服务状态一直不健康：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Back-off restarting failed container jellyfin in pod jellyfin-broadcastproxy-lb4pk_ix-jellyfin(0cea11c3-39e4-4e41-871d-ee72eb762242)</span><br></pre></td></tr></table></figure>
+
+<p>进入容器看日志也没看出来个所以然，最后是发现存在野实例的问题：<br>使用<code>k3s kubectl --namespace ix-jellyfin get pods</code>命令获取 pod 列表，预期只有 2 个实例的服务却获取到了 3 个。<br>于是尝试将多出来的实例删除：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">k3s kubectl --namespace ix-jellyfin delete pods jellyfin-broadcastproxy-8g2v8\</span><br></pre></td></tr></table></figure>
+
+<p>成功删除后恢复正常。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这次 NAS 装机环境难度远超我的预料，在配置软件上耗费的的时间（接近一周）大大超过了安装硬件的时间（一个晚上）。</p>
+<p>虽然通过这种复杂的配置，我收获了一个白屏化的 NAS 界面，看似一切操作都可以在 GUI 上完成，但是其并没有实现 100%的白屏化，PVC 等问题依旧需要在终端进行处理，更何况 K8S 命令行陡峭的学习曲线更是极大地抵消了白屏化带来的便捷。最终效果也并没有比手工维护的 TrueNAS Core 好到哪儿去，而后者我可以在一个晚上便完成所有的部署操作。</p>
+<p>我在整个过程中遇到的最大的问题便是相关资料的缺乏，因此我将我的经历编写成本文，如果能够给后来者提供一些便利，那便不虚此文了。</p>
+<p>では、諸君は。</p>
 
     </div>
 
@@ -350,6 +461,7 @@
           <div class="post-tags">
               <a href="/tags/%E6%B6%88%E8%B4%B9%E7%94%B5%E5%AD%90/" rel="tag"># 消费电子</a>
               <a href="/tags/NAS/" rel="tag"># NAS</a>
+              <a href="/tags/K3S/" rel="tag"># K3S</a>
               <a href="/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/" rel="tag"># 云原生</a>
               <a href="/tags/TrueNAS-Scale/" rel="tag"># TrueNAS Scale</a>
               <a href="/tags/K8S/" rel="tag"># K8S</a>
@@ -424,7 +536,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#起因"><span class="nav-number">1.</span> <span class="nav-text">起因</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#缘起-Scale"><span class="nav-number">2.</span> <span class="nav-text">缘起 Scale</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-TrueCharts"><span class="nav-number">2.1.</span> <span class="nav-text">安装 TrueCharts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装必要软件"><span class="nav-number">2.2.</span> <span class="nav-text">安装必要软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prometheus-operator"><span class="nav-number">2.2.1.</span> <span class="nav-text">Prometheus-operator</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置"><span class="nav-number">2.2.1.1.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cloudnative-pg"><span class="nav-number">2.2.2.</span> <span class="nav-text">cloudnative-pg</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-1"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cert-manager"><span class="nav-number">2.2.3.</span> <span class="nav-text">cert-manager</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-2"><span class="nav-number">2.2.3.1.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#clusterissuer"><span class="nav-number">2.2.4.</span> <span class="nav-text">clusterissuer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-3"><span class="nav-number">2.2.4.1.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#traefik"><span class="nav-number">2.2.5.</span> <span class="nav-text">traefik</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-4"><span class="nav-number">2.2.5.1.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务"><span class="nav-number">2.2.5.1.1.</span> <span class="nav-text">服务</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Main-Service"><span class="nav-number">2.2.5.1.1.1.</span> <span class="nav-text">Main Service</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#TCP-Service"><span class="nav-number">2.2.5.1.1.2.</span> <span class="nav-text">TCP Service</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Ingress"><span class="nav-number">2.2.5.1.1.3.</span> <span class="nav-text">Ingress</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Middleware"><span class="nav-number">2.2.5.1.1.4.</span> <span class="nav-text">Middleware</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用软件"><span class="nav-number">2.3.</span> <span class="nav-text">应用软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#qbitorrent"><span class="nav-number">2.3.1.</span> <span class="nav-text">qbitorrent</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-5"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务-1"><span class="nav-number">2.3.1.1.1.</span> <span class="nav-text">服务</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Main-Service-1"><span class="nav-number">2.3.1.1.1.1.</span> <span class="nav-text">Main Service</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Torrent-Service"><span class="nav-number">2.3.1.1.1.2.</span> <span class="nav-text">Torrent Service</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#网络"><span class="nav-number">2.3.1.1.1.3.</span> <span class="nav-text">网络</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Ingress-1"><span class="nav-number">2.3.1.1.1.4.</span> <span class="nav-text">Ingress</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Integration"><span class="nav-number">2.3.1.1.1.5.</span> <span class="nav-text">Integration</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#起因"><span class="nav-number">2.</span> <span class="nav-text">起因</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安裝"><span class="nav-number">3.</span> <span class="nav-text">安裝</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-TrueCharts"><span class="nav-number">3.1.</span> <span class="nav-text">安装 TrueCharts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装必要软件"><span class="nav-number">3.2.</span> <span class="nav-text">安装必要软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prometheus-operator"><span class="nav-number">3.2.1.</span> <span class="nav-text">Prometheus-operator</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置"><span class="nav-number">3.2.1.1.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cloudnative-pg"><span class="nav-number">3.2.2.</span> <span class="nav-text">cloudnative-pg</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-1"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cert-manager"><span class="nav-number">3.2.3.</span> <span class="nav-text">cert-manager</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-2"><span class="nav-number">3.2.3.1.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#clusterissuer"><span class="nav-number">3.2.4.</span> <span class="nav-text">clusterissuer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-3"><span class="nav-number">3.2.4.1.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Traefik"><span class="nav-number">3.2.5.</span> <span class="nav-text">Traefik</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-4"><span class="nav-number">3.2.5.1.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务"><span class="nav-number">3.2.5.1.1.</span> <span class="nav-text">服务</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Main-Service"><span class="nav-number">3.2.5.1.1.1.</span> <span class="nav-text">Main Service</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#TCP-Service"><span class="nav-number">3.2.5.1.1.2.</span> <span class="nav-text">TCP Service</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Ingress"><span class="nav-number">3.2.5.1.1.3.</span> <span class="nav-text">Ingress</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Middleware"><span class="nav-number">3.2.5.1.1.4.</span> <span class="nav-text">Middleware</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用软件"><span class="nav-number">3.3.</span> <span class="nav-text">应用软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一般应用配置——以-qbittorrent-为例"><span class="nav-number">3.3.1.</span> <span class="nav-text">一般应用配置——以 qbittorrent 为例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-5"><span class="nav-number">3.3.1.1.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务-1"><span class="nav-number">3.3.1.1.1.</span> <span class="nav-text">服务</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Main-Service-1"><span class="nav-number">3.3.1.1.1.1.</span> <span class="nav-text">Main Service</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Torrent-Service"><span class="nav-number">3.3.1.1.1.2.</span> <span class="nav-text">Torrent Service</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#持久化"><span class="nav-number">3.3.1.1.1.3.</span> <span class="nav-text">持久化</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#网络"><span class="nav-number">3.3.1.1.1.4.</span> <span class="nav-text">网络</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Ingress-1"><span class="nav-number">3.3.1.1.1.5.</span> <span class="nav-text">Ingress</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Integration"><span class="nav-number">3.3.1.1.1.6.</span> <span class="nav-text">Integration</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Prefix-应用配置——syncthing"><span class="nav-number">3.3.2.</span> <span class="nav-text">Prefix 应用配置——syncthing</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-6"><span class="nav-number">3.3.2.1.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Ingress-2"><span class="nav-number">3.3.2.1.1.</span> <span class="nav-text">Ingress</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Homepage"><span class="nav-number">3.4.</span> <span class="nav-text">Homepage</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#遇到的坑"><span class="nav-number">4.</span> <span class="nav-text">遇到的坑</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PVC-无法使用"><span class="nav-number">4.1.</span> <span class="nav-text">PVC 无法使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#正确的解法"><span class="nav-number">4.1.1.</span> <span class="nav-text">正确的解法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#路径转发"><span class="nav-number">4.2.</span> <span class="nav-text">路径转发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Homepage-1"><span class="nav-number">4.3.</span> <span class="nav-text">Homepage</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他的奇怪问题"><span class="nav-number">4.4.</span> <span class="nav-text">其他的奇怪问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -447,7 +559,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -520,12 +632,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">55k</span>
+    <span title="站点总字数">61k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">50 分钟</span>
+    <span title="站点阅读时长">55 分钟</span>
 </div>
 
         
@@ -543,6 +655,9 @@
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 
@@ -555,6 +670,65 @@
 
 
 <script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
 
 
 
@@ -579,6 +753,7 @@
 
 
 
+    <div id="pjax">
   
 
   
@@ -603,18 +778,6 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
 });
 </script>
 
-
-        <style>
-            [bg-lazy] {
-                background-image: none !important;
-                background-color: #eee !important;
-            }
-        </style>
-        <script>
-            window.imageLazyLoadSetting = {
-                isSPA: false,
-                preloadRatio: 1,
-                processImages: null,
-            };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(r){r.imageLazyLoadSetting.processImages=t;var e=r.imageLazyLoadSetting.isSPA,n=r.imageLazyLoadSetting.preloadRatio||1,c=a();function a(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(){e&&(c=a());for(var t,o=0;o<c.length;o++)0<=(t=(t=c[o]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(r.innerHeight*n||document.documentElement.clientHeight*n)&&function(){var t,e,n,a,i=c[o];e=function(){c=c.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(n=new Image,a=t.getAttribute("data-original"),n.onload=function(){t.src=a,t.removeAttribute("data-original"),e&&e()},t.src!==a&&(n.src=a))}()}function i(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",i),r.addEventListener("resize",i),r.addEventListener("orientationchange",i)}(this);</script></body>
+    </div>
+</body>
 </html>
