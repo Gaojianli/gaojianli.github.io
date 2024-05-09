@@ -777,7 +777,7 @@
 </blockquote>
 <p>大意就是为了响应 K8S 与 Docker 的脱钩（改为使用 containerd ），Scale 也将不再搭载 Docker 引擎。这下就没办法了，虽然我还有虚拟机这最后一条路，但是作为一个完美主义者，虚拟机这种浪费资源的行径是万万不能接受的！没办法，只能来硬着头皮啃一下之前一点不愿意了解的 K8S 了，毕竟人总是要跳出舒适圈的，<strong>逃离平庸的重力</strong>。</p>
 <h2 id="安装-TrueCharts"><a href="#安装-TrueCharts" class="headerlink" title="安装 TrueCharts"></a>安装 TrueCharts</h2><p>在动手之前，我自然也看了许多的教程，相应地也了解到，官方自带镜像源中的软件数量是远远不够的。幸好一个第三方软件源<code>TrueCharts</code>提供了许多常用软件的支持，并在此之上搭建了一整套相对完善的软件生态。官网指路 ☞：<a href="https://truecharts.org/scale/" target="_blank" rel="noopener">https://truecharts.org/scale/</a></p>
-<p>另外要吐槽一下，也不知道是网站重构还是怎么的，Google 搜到的<code>TrueCharts</code>文档大部分都是失效的，点进去 404，需要自己去上面的文档目录里面手动搜索，非常恶心：<br><img data-src="lost_doc.png" alt="文档失效"></p>
+<p>另外要吐槽一下，也不知道是网站重构还是怎么的，Google 搜到的<code>TrueCharts</code>文档大部分都是失效的，点进去 404，需要自己去上面的文档目录里面手动搜索，非常恶心：<br><img alt="文档失效" data-src="lost_doc.png" width="70%"/></p>
 <p>添加目录非常简单，只需要在应用管理面页面点击<code>探索应用程序</code>-<code>管理目录</code>-<code>添加</code>即可，按照下图方式填写即可：<br><img alt="添加目录" data-src="add_catalog.png" width="30%"/><br>注意：如果网络条件不好的话，可能需要钩上<code>强制创建</code>，否则会慢到怀疑人生。</p>
 <h2 id="安装必要软件"><a href="#安装必要软件" class="headerlink" title="安装必要软件"></a>安装必要软件</h2><p>添加完目录之后，应该就可以在应用列表里里面看到<code>TrueCharts</code>的应用了。官方源和<code>TrueCharts</code>存在许多同名的软件，这个时候便需要通过下方的 Tag 来进行区分。</p>
 <p><code>TrueCharts</code>的软件有一些奇怪的依赖顺序，必须按照依赖顺序安装，否则必定失败。我这里列出了我安装的软件的依赖顺序，供参考：</p>
