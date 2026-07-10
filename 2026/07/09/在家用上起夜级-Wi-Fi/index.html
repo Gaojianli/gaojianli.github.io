@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.gaojianli.me","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"gitalk","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+  </script>
+
+  <meta name="description" content="其实这篇文章已经完成很久了，但是直到最近才找到机会把它完善并发表出来。 WPA2&#x2F;3-Enterprise 第一次接触到这种 Wi-Fi 还是在北邮，当时学校的BUPT-mobile需要同时输入账号密码，令我大感新奇。一晃多年，毕业后住进了自己的出租屋，终于有机会来自己折腾一下网络了。 企业在哪里？作为 WPA2 标准中的一对孪生兄弟，Enterprise和Personal 采用完全相同的链路层加">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在家用上起夜级 Wi-Fi">
+<meta property="og:url" content="https://blog.gaojianli.me/2026/07/09/%E5%9C%A8%E5%AE%B6%E7%94%A8%E4%B8%8A%E8%B5%B7%E5%A4%9C%E7%BA%A7-Wi-Fi/index.html">
+<meta property="og:site_name" content="高渐离の屋">
+<meta property="og:description" content="其实这篇文章已经完成很久了，但是直到最近才找到机会把它完善并发表出来。 WPA2&#x2F;3-Enterprise 第一次接触到这种 Wi-Fi 还是在北邮，当时学校的BUPT-mobile需要同时输入账号密码，令我大感新奇。一晃多年，毕业后住进了自己的出租屋，终于有机会来自己折腾一下网络了。 企业在哪里？作为 WPA2 标准中的一对孪生兄弟，Enterprise和Personal 采用完全相同的链路层加">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.gaojianli.me/2026/07/09/%E5%9C%A8%E5%AE%B6%E7%94%A8%E4%B8%8A%E8%B5%B7%E5%A4%9C%E7%BA%A7-Wi-Fi/login.png">
+<meta property="og:image" content="https://blog.gaojianli.me/2026/07/09/%E5%9C%A8%E5%AE%B6%E7%94%A8%E4%B8%8A%E8%B5%B7%E5%A4%9C%E7%BA%A7-Wi-Fi/main.png">
+<meta property="og:image" content="https://blog.gaojianli.me/2026/07/09/%E5%9C%A8%E5%AE%B6%E7%94%A8%E4%B8%8A%E8%B5%B7%E5%A4%9C%E7%BA%A7-Wi-Fi/user_management.png">
+<meta property="og:image" content="https://blog.gaojianli.me/2026/07/09/%E5%9C%A8%E5%AE%B6%E7%94%A8%E4%B8%8A%E8%B5%B7%E5%A4%9C%E7%BA%A7-Wi-Fi/log.png">
+<meta property="article:published_time" content="2026-07-09T08:17:52.000Z">
+<meta property="article:modified_time" content="2026-07-10T08:59:03.458Z">
+<meta property="article:author" content="高渐离">
+<meta property="article:tag" content="NAS">
+<meta property="article:tag" content="网络">
+<meta property="article:tag" content="FreeRADIUS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.gaojianli.me/2026/07/09/%E5%9C%A8%E5%AE%B6%E7%94%A8%E4%B8%8A%E8%B5%B7%E5%A4%9C%E7%BA%A7-Wi-Fi/login.png">
+
+<link rel="canonical" href="https://blog.gaojianli.me/2026/07/09/%E5%9C%A8%E5%AE%B6%E7%94%A8%E4%B8%8A%E8%B5%B7%E5%A4%9C%E7%BA%A7-Wi-Fi/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>在家用上起夜级 Wi-Fi | 高渐离の屋</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="高渐离の屋" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">高渐离の屋</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个不起眼的个人小站</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-fab fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-fab fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-fab fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-fab fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/Gaojianli" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.gaojianli.me/2026/07/09/%E5%9C%A8%E5%AE%B6%E7%94%A8%E4%B8%8A%E8%B5%B7%E5%A4%9C%E7%BA%A7-Wi-Fi/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="高渐离">
+      <meta itemprop="description" content="一个不起眼的个人小站">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="高渐离の屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          在家用上起夜级 Wi-Fi
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2026-07-09 16:17:52" itemprop="dateCreated datePublished" datetime="2026-07-09T16:17:52+08:00">2026-07-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-07-10 16:59:03" itemprop="dateModified" datetime="2026-07-10T16:59:03+08:00">2026-07-10</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>15k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>13 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>其实这篇文章已经完成很久了，但是直到最近才找到机会把它完善并发表出来。</p>
+<p><code>WPA2/3-Enterprise</code> 第一次接触到这种 Wi-Fi 还是在北邮，当时学校的<code>BUPT-mobile</code>需要同时输入账号密码，令我大感新奇。一晃多年，毕业后住进了自己的出租屋，终于有机会来自己折腾一下网络了。</p>
+<h1 id="企业在哪里？"><a href="#企业在哪里？" class="headerlink" title="企业在哪里？"></a>企业在哪里？</h1><p>作为 WPA2 标准中的一对孪生兄弟，<code>Enterprise</code>和<code>Personal</code> 采用完全相同的链路层加密方式和 4-Way Handshake 密钥协商机制。唯一的区别在于<strong>身份认证</strong>流程：</p>
+<ul>
+<li>WPA2-PSK（Personal）：AP 和所有客户端预先共享一段密码（Passphrase），双方直接用它派生成对主密钥 PMK，然后进入 4-Way Handshake。</li>
+<li>WPA2-Enterprise（802.1X 模式）：AP不提供任何认证流程，而是通过 EAP 协议交由 RADIUS 服务器进行身份认证。认证通过后，RADIUS 再派生属于本次会话的 PMK ，用于后续加密。<a id="more"></a>
+通过中心化的 RADIUS 服务器针对每个用户的独立账号进行认证，针对每个用户生成独立的 PMK；当发生密码泄漏等安全事故时可以只单一吊销指定用户的凭据。同时 RADIUS 还可以提供授权，计费等功能，用于更多复杂的场景。<br><code>802.1X</code>最初是为有线网络设计的，因此在企业级交换机上，它也用于有线网络认证。在企业管理的场景中，可以根据认证信息的不同把同一交换机上的用户接入到不同的 VLAN 网络（研发，内部，访客）。</li>
+</ul>
+<h1 id="认证流程"><a href="#认证流程" class="headerlink" title="认证流程"></a>认证流程</h1><p>WPA2-Enterprise 的完整接入过程可以拆成 4 个阶段：</p>
+<ol>
+<li><strong>射频关联</strong>：Client 与 AP 建立射频层连接，形成了一个临时的通道，此时AP 的”受控端口”处于未授权状态，只放行 EAPOL 帧。</li>
+<li><strong>EAP 认证</strong>：EAP Client（运行在客户端上）与 RAIDUS 服务器沟通，完成身份验证。</li>
+<li><strong>Handshake</strong>: 使用上一步拿到的 PMK 进行握手</li>
+<li>正常通信</li>
+</ol>
+<p>可以看到，在整个 EAP 流程中，AP 不参与任何认证相关的工作，它只负责把 Client 侧的 EAP 消息封装进 RADIUS 报文送给 Server，把 Server 侧的 EAP 消息剥壳后转交 Client。</p>
+<p>因此你甚至可以直接绕过 AP 直接与 RADIUS Server沟通（这在调试的时候非常有用）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eapol_test -ctest.conf -a127.0.0.1 -p1812 -ssecret -r1</span><br></pre></td></tr></table></figure>
+
+<p>EAP 有多种认证方法，常见的有 EAP-TLS、EAP-TTLS、PEAP 等。接下来介绍一下他们的区别：</p>
+<ul>
+<li><strong>EAP-TLS</strong>：基于证书的认证方式，客户端和服务器都<strong>需要安装证书</strong>。在大企业中其实用的很多，但是在家里面部署就稍微有些繁琐了。部署非常方便，直接在 FreeRADIUS的<code>cert</code>目录下运行make即可。缺点是需要针对每个客户端都生成证书，证书还有过期时间，管理起来比较麻烦。客户端还需要手动安装CA证书和客户端证书，容易被家里人屌。</li>
+<li><strong>EAP-TTLS</strong>：只有服务端需要使用证书，随后在 TLS 隧道中使用用户名密码进行认证。证书可以直接复用 Web 的SSL证书，因此客户端甚至不需要安装CA证书，使用起来最简单。缺点是部署起来非常复杂，而且文档缺乏，需要自己摸索。北邮的 BUPT-mobile 就是使用的这种方式。</li>
+<li><strong>PEAP</strong>：微软特供版<code>EAP-TTLS</code>，不支持明文密码，据说 Windows 上可以开箱即用，我没跑起来过。</li>
+</ul>
+<p>介绍完背景知识，我们就可以来搭建一下自己的企业级 Wi-Fi 了。我这里选择的方案是 EAP-TTLS + FreeRADIUS + rest.</p>
+<h1 id="安装-FreeRADIUS"><a href="#安装-FreeRADIUS" class="headerlink" title="安装 FreeRADIUS"></a>安装 FreeRADIUS</h1><blockquote>
+<p>FreeRADIUS是一款基于BSD协议的开源RADIUS服务器，主要用于宽带账户认证、授权和计费（AAA）管理。它支持多种认证方式，包括 PAP、CHAP、MS-CHAPv1/v2、EAP 等，并且可以与多种数据库（如 MySQL、PostgreSQL、LDAP 等）集成，以实现用户信息的存储和管理。</p>
+</blockquote>
+<p>都什么年代了，还在传统安装，直接 docker 启动：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">FreeRADIUS:</span></span><br><span class="line">  <span class="attr">container_name:</span> <span class="string">radius_FreeRADIUS</span></span><br><span class="line">  <span class="attr">depends_on:</span></span><br><span class="line">    <span class="attr">radius_mgnt:</span></span><br><span class="line">      <span class="attr">condition:</span> <span class="string">service_healthy</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">FreeRADIUS/FreeRADIUS-server:latest-alpine</span></span><br><span class="line">  <span class="attr">networks:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">default</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">1812</span><span class="string">:1812/udp</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">1813</span><span class="string">:1813/udp</span></span><br><span class="line">  <span class="attr">restart:</span> <span class="string">unless-stopped</span></span><br><span class="line">  <span class="attr">volumes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">/mnt/docker/FreeRADIUS_rest:/etc/raddb</span> <span class="comment"># 配置文件</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">/private/certs:/etc/raddb/certs</span> <span class="comment">#证书</span></span><br></pre></td></tr></table></figure>
+<h1 id="配置-FreeRADIUS"><a href="#配置-FreeRADIUS" class="headerlink" title="配置 FreeRADIUS"></a>配置 FreeRADIUS</h1><p>这部分是最复杂的部分，网上的资料很少，踩了无数的坑。其中还涉及到2.x和3.x版本的差异，很多教程都是过时的。我们这里主要涉及到修改5个文件：<code>clients.conf</code>,<code>mods-enabled/eap</code>,<code>mods-enabled/rest</code>,<code>sites-enabled/default</code>,<code>sites-enabled/inner-tunnel</code>。</p>
+<h2 id="clients-conf"><a href="#clients-conf" class="headerlink" title="clients.conf"></a>clients.conf</h2><p>这个文件最简单，主要是配置允许访问 RADIUS 的客户端设备，也就是我们的AP。默认只开启了 <code>localhost</code>，我们直接在文件尾部追加一行就行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">client gaojianli &#123;</span><br><span class="line">	ipaddr 		&#x3D; 192.168.1.0&#x2F;24</span><br><span class="line">	secret		&#x3D; &lt;YOUR_SECRET&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="模块配置"><a href="#模块配置" class="headerlink" title="模块配置"></a>模块配置</h2><p>FreeRADIUS 作为一个企业级软件，支持各种五花八门的认证方式。从最简单的纯密码，到花里胡哨的 yubikey 都支持，这些模块的配置文件都放置在了 <code>mods-available</code> 目录下，默认是未启用状态。</p>
+<p>虽然 FreeRADIUS 有名为 <code>mysql</code> 和 <code>python</code> 的模块，可以直接去查询数据库。但是其用户体验还是太超前了，配置起来也极其恶心。好在 FreeRADIUS 还有一个 <code>rest</code> 模块，可以把认证流程外包给外部HTTP接口，我们就可以自己写认证程序了！</p>
+<p>我们在启动一个模块之前需要先把它添加到 <code>mods-enabled</code> 目录下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ln -s ../mods-available/eap mods-enabled/</span><br><span class="line">ln -s ../mods-available/rest mods-enabled/</span><br></pre></td></tr></table></figure>
+
+<h3 id="eap"><a href="#eap" class="headerlink" title="eap"></a>eap</h3><p>这个模块是 FreeRADIUS 的核心模块，负责处理 EAP 协议的认证。</p>
+<p>这个文件默认很长，一大堆杂七杂八的东西，一点用没有，还容易漏了导致配错。我们只保留 <code>tls</code> 相关的配置，其他的都删掉。同样都是配置 TLS ，因此其配置内容和 nginx 差不多，就是配置一下证书路径这些信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">eap eap-home &#123; &#x2F;&#x2F; 这个名字需要记一下</span><br><span class="line">    default_eap_type &#x3D; ttls &#x2F;&#x2F; 默认使用 EAP-TTLS</span><br><span class="line">    timer_expire &#x3D; 120</span><br><span class="line">    ignore_unknown_eap_types &#x3D; no</span><br><span class="line">    cisco_accounting_username_bug &#x3D; no</span><br><span class="line">    max_sessions &#x3D; $&#123;max_requests&#125;</span><br><span class="line"></span><br><span class="line">    tls-config tls-common &#123;</span><br><span class="line">        private_key_file &#x3D; $&#123;certdir&#125;&#x2F;xxx.gaojianli.me&#x2F;xxx.gaojianli.me.key &#x2F;&#x2F; 私钥路径</span><br><span class="line">        certificate_file &#x3D; $&#123;certdir&#125;&#x2F;xxx.gaojianli.me&#x2F;xxx.gaojianli.me.full.cer &#x2F;&#x2F; 证书路径</span><br><span class="line">        ca_file &#x3D; &#x2F;etc&#x2F;ssl&#x2F;cert.pem &#x2F;&#x2F; 我证书是合法证书，所以直接用系统CA就行</span><br><span class="line">        dh_file &#x3D; $&#123;certdir&#125;&#x2F;dh</span><br><span class="line">        ca_path &#x3D; $&#123;cadir&#125;</span><br><span class="line">        cipher_list &#x3D; &quot;DEFAULT&quot;</span><br><span class="line">        cipher_server_preference &#x3D; no</span><br><span class="line">        ecdh_curve &#x3D; &quot;prime256v1&quot;</span><br><span class="line"></span><br><span class="line">        cache &#123;</span><br><span class="line">            enable &#x3D; no</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ocsp &#123;</span><br><span class="line">            enable &#x3D; no</span><br><span class="line">            override_cert_url &#x3D; yes</span><br><span class="line">            url &#x3D; &quot;http:&#x2F;&#x2F;127.0.0.1&#x2F;ocsp&#x2F;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ttls &#123;</span><br><span class="line">        tls &#x3D; tls-common</span><br><span class="line">        default_eap_type &#x3D; pap</span><br><span class="line">        copy_request_to_tunnel &#x3D; yes</span><br><span class="line">        use_tunneled_reply &#x3D; yes</span><br><span class="line">        virtual_server &#x3D; &quot;inner-tunnel&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="rest"><a href="#rest" class="headerlink" title="rest"></a>rest</h3><p>这个模块的文档是少之又少，官方文档只写了一个简单的配置示例，其他的都需要自己摸索。配套接口的开发更是一步三个坑，一度把我弄到放弃。最后还是直接找 BYR 的同学抄了作业，才跑通了流程，核心配置文件其实就这两节:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">authorize &#123;</span><br><span class="line">	uri &#x3D; &quot;$&#123;..connect_uri&#125;&#x2F;api&#x2F;v1&#x2F;radius&#x2F;authorize&quot;</span><br><span class="line">       	method &#x3D; &#39;post&#39;</span><br><span class="line">        body &#x3D; &#39;json&#39;</span><br><span class="line">       	data &#x3D; &#39;&#123;&quot;username&quot;: &quot;%&#123;User-Name&#125;&quot;&#125;&#39;</span><br><span class="line">       	tls &#x3D; $&#123;..tls&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">authenticate &#123;</span><br><span class="line">	uri &#x3D; &quot;$&#123;..connect_uri&#125;&#x2F;api&#x2F;v1&#x2F;radius&#x2F;auth&quot;</span><br><span class="line">	update control&#123;</span><br><span class="line">           &amp;REST-HTTP-Header +&#x3D; &quot;X-Device-MAC: %&#123;Calling-Station-Id&#125;&quot;</span><br><span class="line">           &amp;REST-HTTP-Header +&#x3D; &quot;X-NAS-IP: %&#123;NAS-IP-Address&#125;&quot;</span><br><span class="line">           &amp;REST-HTTP-Header +&#x3D; &quot;X-Target-SSID: %&#123;Called-Station-Id&#125;&quot;</span><br><span class="line">	&#125;</span><br><span class="line">       	method &#x3D; &#39;post&#39;</span><br><span class="line">        body &#x3D; &#39;json&#39;</span><br><span class="line">       	data &#x3D; &#39;&#123;&quot;username&quot;: &quot;%&#123;User-Name&#125;&quot;,&quot;password&quot;: &quot;%&#123;User-Password&#125;&quot;&#125;&#39;</span><br><span class="line">        tls &#x3D; $&#123;..tls&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>配置文件在有现成参考的情况下还是挺直观的，URL、参数什么的都一目了然。其实就是记住一个点，只有 <code>authenticate</code> 才需要密码，<code>authorize</code> 只需要用户名就行。另外可以通过 header 传递一些额外信息给后端，比如客户端的 MAC 地址，AP 的 IP 地址，连接的 SSID 等等。</p>
+<p>另外如果你的后端是 HTTPS 的话，记得在 <code>rest</code> 模块的 <code>tls</code> 配置中把 CA 证书路径配置正确，否则会报错。</p>
+<h2 id="站点配置"><a href="#站点配置" class="headerlink" title="站点配置"></a>站点配置</h2><p><code>sites-enabled</code>这个和 nginx 的站点配置也差不多，也是需要从 <code>sites-available</code> 目录下启用的。由于前面提到的 EAP 流程中，真实认证是在隧道中进行的，因此我们需要配置两个站点，一个是外部站点，一个是内网隧道站点。在我这里 <code>home</code> 站点就是外部站点，<code>inner-tunnel</code> 就是内网隧道站点。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">server home &#123;</span><br><span class="line">    listen &#123;</span><br><span class="line">        type &#x3D; auth</span><br><span class="line">        ipaddr &#x3D; *</span><br><span class="line">        port &#x3D; 1812 &#x2F;&#x2F; 监听地址</span><br><span class="line">        limit &#123;</span><br><span class="line">          max_connections &#x3D; 16</span><br><span class="line">          lifetime &#x3D; 0</span><br><span class="line">          idle_timeout &#x3D; 30</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    authorize &#123;</span><br><span class="line">        eap-home &#123;</span><br><span class="line">           ok &#x3D; return</span><br><span class="line">        &#125;</span><br><span class="line">        rest</span><br><span class="line">    &#125;</span><br><span class="line">    authenticate &#123;</span><br><span class="line">        Auth-Type eap-home &#123;</span><br><span class="line">            eap-home</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里 <code>authorize</code> 段的配置文件非常反直觉，因此值得拿出来好好讲讲：</p>
+<ol>
+<li>首先是 <code>eap-home</code> ，这是在前面 <code>eap</code> 模块中配置实例名，代表了一套证书的配置。RADIUS 服务器会根据对应的 <code>eap</code> 配置文件中的逻辑，执行 EAP 流程。</li>
+<li>流程返回 <code>ok</code>后，EAP根据 <code>ok = return</code> 的配置，直接返回到 <code>authorize</code> 段的上一级，也就是跳过了后续的 <code>rest</code> 模块。</li>
+<li>如果是非 EAP 流程，比如内部使用 <code>radtest</code> 进行测试的场景，则直接 fallback 到 <code>rest</code> 模块，去调用后端的 HTTP 接口进行认证。</li>
+</ol>
+<p><strong>这里就有一个大坑</strong>：在步骤 2 中隐含了一个逻辑，<code>eap</code>模块在完成认证的同时会设置 <code>Auth-Type = eap-home</code>，这个是后续 <code>authenticate</code> 段的关键，RADIUS 服务器会根据这个值去调用对应的认证模块进行认证。</p>
+<p>接下来的 <code>authenticate</code> 就还比较直观了，<code>Auth-Type eap-home</code> 代表了前面设置的认证类型，如果命中这个类型，则会调用 <code>eap-home</code> 模块进行认证（也就是我们在 <code>eap</code> 模块中配置的 URL）。</p>
+<p>这个配置文件总体来看最恶心的地方就是省略了 if-else 语句，同时又是 DSL 又是半脚本，导致逻辑非常隐晦；同时 <code>Auth-Type</code> 和 <code>eap</code> 模块的实例名是相同的，进一步增加了排查的难度。整个流程总结下来是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Access-Request 到达</span><br><span class="line">       ↓</span><br><span class="line">进入 server home 的 authorize &#123; &#125; 段</span><br><span class="line">       ↓</span><br><span class="line">按顺序执行第 1 条：eap-home 模块</span><br><span class="line">       ↓</span><br><span class="line">eap-home 模块内部逻辑：</span><br><span class="line">   1. 检查请求里有没有 EAP-Message 属性</span><br><span class="line">   2. 有 → 执行 update control &#123; Auth-Type :&#x3D; eap-home &#125;   ← ★ 就在这里设置</span><br><span class="line">        └ 返回码 &#x3D; updated（或 ok）</span><br><span class="line">   3. 没有 → 什么都不做，返回码 &#x3D; noop</span><br><span class="line">       ↓</span><br><span class="line">遇到 ok &#x3D; return，立即从 authorize 返回</span><br><span class="line">       ↓</span><br><span class="line">FreeRADIUS 查 control:Auth-Type，值为 eap-home</span><br><span class="line">       ↓</span><br><span class="line">进入 authenticate &#123; &#125; 段</span><br><span class="line">       ↓</span><br><span class="line">匹配到 Auth-Type eap-home &#123; eap-home &#125;，调用 eap-home 模块做真正的 EAP 处理</span><br></pre></td></tr></table></figure>
+
+<p>比起<code>home</code>站点的配置，<code>inner-tunnel</code>站点就简单多了，主要是处理 EAP-TTLS 隧道中的 PAP 认证，具体解释可以看注释：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">server inner-tunnel &#123;</span><br><span class="line">    listen &#123;</span><br><span class="line">        ipaddr &#x3D; 127.0.0.1 &#x2F;&#x2F; 只监听本地回环地址</span><br><span class="line">        port &#x3D; 18120</span><br><span class="line">        type &#x3D; auth</span><br><span class="line">    &#125;</span><br><span class="line">    authorize &#123;</span><br><span class="line">        if (&amp;User-Password) &#123; &#x2F;&#x2F; 只有在隧道中才会有密码</span><br><span class="line">            update control &#123;</span><br><span class="line">								&amp;REST-HTTP-Header +&#x3D; &quot;X-Device-MAC: %&#123;Calling-Station-Id&#125;&quot;</span><br><span class="line">		        		&amp;REST-HTTP-Header +&#x3D; &quot;X-NAS-IP: %&#123;NAS-IP-Address&#125;&quot;</span><br><span class="line">		        		&amp;REST-HTTP-Header +&#x3D; &quot;X-Target-SSID: %&#123;Called-Station-Id&#125;&quot;</span><br><span class="line">                Auth-Type :&#x3D; rest &#x2F;&#x2F; 强制制定 Auth-Type 为 rest</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    authenticate &#123;</span><br><span class="line">        rest &#x2F;&#x2F; 前面已经指定了，所以直接调用 rest 模块就行</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="后端开发"><a href="#后端开发" class="headerlink" title="后端开发"></a>后端开发</h1><p>这部分没啥好讲的，就是简单的CRUB而已，需要实现 <code>authorize</code> 和 <code>authenticate</code> 两个接口。</p>
+<p>虽然文档说返回值可以是JSON，还可以自定义写入 RADIUS 的属性，但是我实测没成功。最后只能返回 Status Code 200 或者 403，其他设置任何内容都会跑不通，body必须留空，真是奇怪。</p>
+<p>如果读者知道为什么，欢迎在评论区交流：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(rc *RadiusController)</span> <span class="title">Authenticate</span><span class="params">(ctx context.Context, c *app.RequestContext)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> req RadiusAuthRequest</span><br><span class="line">	<span class="keyword">if</span> err := c.BindAndValidate(&amp;req); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		c.JSON(consts.StatusBadRequest, RadiusAuthResponse&#123;</span><br><span class="line">			StatusCode: <span class="number">400</span>,</span><br><span class="line">			Reply:      <span class="string">"Invalid request format"</span>,</span><br><span class="line">		&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	user, err := database.DAO.User.GetByUsernameForAuth(ctx, req.Username)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		c.JSON(consts.StatusNotFound, RadiusAuthResponse&#123;</span><br><span class="line">			StatusCode: <span class="number">404</span>,</span><br><span class="line">			Reply:      <span class="string">"Authentication failed: user not found or disabled"</span>,</span><br><span class="line">		&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> !user.CheckPassword(req.Password) &#123;</span><br><span class="line">		<span class="comment">// 记录密码错误的认证日志</span></span><br><span class="line">		authLog := &amp;models.AuthLog&#123;</span><br><span class="line">			Username:   req.Username,</span><br><span class="line">			AuthType:   <span class="string">"authenticate"</span>,</span><br><span class="line">			Success:    <span class="literal">false</span>,</span><br><span class="line">			IPAddress:  <span class="keyword">string</span>(c.GetHeader(<span class="string">"X-NAS-IP"</span>)),</span><br><span class="line">			UserAgent:  <span class="keyword">string</span>(c.UserAgent()),</span><br><span class="line">			DeviceMAC:  <span class="keyword">string</span>(c.GetHeader(<span class="string">"X-Device-MAC"</span>)),</span><br><span class="line">			TargetSSID: <span class="keyword">string</span>(c.GetHeader(<span class="string">"X-Target-SSID"</span>)),</span><br><span class="line">			CreatedAt:  time.Now(),</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 异步记录日志，不影响响应速度</span></span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">			database.DAO.AuthLog.Create(context.Background(), authLog)</span><br><span class="line">		&#125;()</span><br><span class="line"></span><br><span class="line">		c.JSON(consts.StatusForbidden, RadiusAuthResponse&#123;</span><br><span class="line">			StatusCode: <span class="number">403</span>,</span><br><span class="line">			Reply:      <span class="string">"Authentication failed: invalid password"</span>,</span><br><span class="line">		&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 记录认证成功的日志</span></span><br><span class="line">	authLog := &amp;models.AuthLog&#123;</span><br><span class="line">		Username:   user.Username,</span><br><span class="line">		AuthType:   <span class="string">"authenticate"</span>,</span><br><span class="line">		Success:    <span class="literal">true</span>,</span><br><span class="line">		IPAddress:  <span class="keyword">string</span>(c.GetHeader(<span class="string">"X-NAS-IP"</span>)),</span><br><span class="line">		UserAgent:  <span class="keyword">string</span>(c.UserAgent()),</span><br><span class="line">		DeviceMAC:  <span class="keyword">string</span>(c.GetHeader(<span class="string">"X-Device-MAC"</span>)),</span><br><span class="line">		TargetSSID: <span class="keyword">string</span>(c.GetHeader(<span class="string">"X-Target-SSID"</span>)),</span><br><span class="line">		CreatedAt:  time.Now(),</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 异步记录日志，不影响响应速度</span></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		database.DAO.AuthLog.Create(context.Background(), authLog)</span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	c.JSON(consts.StatusOK, RadiusAuthResponse&#123;&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(rc *RadiusController)</span> <span class="title">Authorize</span><span class="params">(ctx context.Context, c *app.RequestContext)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> req <span class="keyword">struct</span> &#123;</span><br><span class="line">		Username <span class="keyword">string</span> <span class="string">`json:"username" binding:"required"`</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err := c.BindAndValidate(&amp;req); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		c.JSON(consts.StatusBadRequest, RadiusAuthorizeResponse&#123;</span><br><span class="line">			Reply: <span class="string">"Invalid request format"</span>,</span><br><span class="line">		&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	_, err := database.DAO.User.GetByUsernameForAuth(ctx, req.Username)</span><br><span class="line">	success := err == <span class="literal">nil</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> !success &#123;</span><br><span class="line">		c.JSON(consts.StatusForbidden, RadiusAuthorizeResponse&#123;</span><br><span class="line">			Reply: <span class="string">"User not found, disabled, or banned"</span>,</span><br><span class="line">		&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	c.JSON(consts.StatusOK, RadiusAuthorizeResponse&#123;&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>除了JSON Body可以读取账号密码外，还可以通过前面注入的 header 来获取客户端的 MAC 地址，AP 的 IP 地址，连接的 SSID 等等信息用于记录访问情况。</p>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>后端开发完成部署后，我们先以调试模式启动 FreeRADIUS，看看有没有报错：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">radiusd -X</span><br></pre></td></tr></table></figure>
+<p>如果配置文件有问题，这时应该会报错；如果看到类似这样的输出，就代表 FreeRADIUS 已经准备就绪了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">radiusd: #### Opening IP addresses and Ports ####</span><br><span class="line">listen &#123;</span><br><span class="line">  	type &#x3D; &quot;auth&quot;</span><br><span class="line">  	ipaddr &#x3D; *</span><br><span class="line">  	port &#x3D; 1812</span><br><span class="line">   limit &#123;</span><br><span class="line">   	max_connections &#x3D; 16</span><br><span class="line">   	lifetime &#x3D; 0</span><br><span class="line">   	idle_timeout &#x3D; 30</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">listen &#123;</span><br><span class="line">  	type &#x3D; &quot;auth&quot;</span><br><span class="line">  	ipaddr &#x3D; 127.0.0.1</span><br><span class="line">  	port &#x3D; 18120</span><br><span class="line">&#125;</span><br><span class="line">Listening on auth address * port 1812 bound to server home</span><br><span class="line">Listening on auth address 127.0.0.1 port 18120 bound to server inner-tunnel</span><br><span class="line">Listening on proxy address * port 38071</span><br><span class="line">All secret information will be replaced with the string &#39;&lt;&lt;secret&gt;&gt;&#39;</span><br><span class="line">To see the contents of passwords, set &#96;suppress_secrets&#x3D;no&#96; in the main configuration file.</span><br><span class="line">Ready to process requests</span><br></pre></td></tr></table></figure>
+
+<p>接下来我们就可以用 <code>eapol_test</code> 来测试一下了:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; ttls.conf &lt;&lt;EOF</span><br><span class="line">network=&#123;</span><br><span class="line">	key_mgmt=WPA-EAP</span><br><span class="line">	eap=TTLS</span><br><span class="line">	identity=<span class="string">"test"</span></span><br><span class="line">	password=<span class="string">"testPwd123"</span></span><br><span class="line">	phase2=<span class="string">"auth=PAP"</span></span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">docker run --rm -it --network=host -v <span class="variable">$PWD</span>:/supplicant rkolaja/eapol_test -c ttls.conf -a localhost -p 1812 -s testing123</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">EAPOL: Received EAP-Packet frame</span><br><span class="line">EAPOL: SUPP_BE entering state REQUEST</span><br><span class="line">EAPOL: getSuppRsp</span><br><span class="line">EAP: EAP entering state RECEIVED</span><br><span class="line">EAP: Received EAP-Success</span><br><span class="line">EAP: Status notification: completion (param&#x3D;success)</span><br><span class="line">EAP: EAP entering state SUCCESS</span><br><span class="line">CTRL-EVENT-EAP-SUCCESS EAP authentication completed successfully</span><br><span class="line">EAPOL: IEEE 802.1X for plaintext connection; no EAPOL-Key frames required</span><br><span class="line">WPA: EAPOL processing complete</span><br><span class="line">Cancelling authentication timeout</span><br><span class="line">State: DISCONNECTED -&gt; COMPLETED</span><br><span class="line">EAPOL: SUPP_PAE entering state AUTHENTICATED</span><br><span class="line">EAPOL: SUPP_BE entering state RECEIVE</span><br><span class="line">EAPOL: SUPP_BE entering state SUCCESS</span><br><span class="line">EAPOL: SUPP_BE entering state IDLE</span><br><span class="line">eapol_sm_cb: result&#x3D;1</span><br><span class="line">EAPOL: Successfully fetched key (len&#x3D;32)</span><br><span class="line">PMK from EAPOL - hexdump(len&#x3D;32): ab 24 31 2a 63 65 08 95 8d 6b a0 55 a3 9b 0b d6 89 02 80 35 3d 1a e4 21 54 4a 51 bb 1c a6 07 a0</span><br><span class="line">No EAP-Key-Name received from server</span><br><span class="line">WPA: Clear old PMK and PTK</span><br><span class="line">EAP: deinitialize previously used EAP method (21, TTLS) at EAP deinit</span><br><span class="line">ENGINE: engine deinit</span><br><span class="line">MPPE keys OK: 1  mismatch: 0</span><br><span class="line">SUCCESS</span><br></pre></td></tr></table></figure>
+<p>同时日志出现 <code>Access-Accept</code> 便说明认证成功：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">(5) rest: Adding reply:REST-HTTP-Status-Code &#x3D; &quot;200&quot;</span><br><span class="line">rlm_rest (rest): Released connection (0)</span><br><span class="line">Need more connections to reach 10 spares</span><br><span class="line">rlm_rest (rest): Opening additional connection (5), 1 of 27 pending slots used</span><br><span class="line">rlm_rest (rest): Connecting to &quot;http:&#x2F;&#x2F;radius_mgnt:8080&quot;</span><br><span class="line">rlm_rest (rest): Closing expired connection (4) - Hit idle_timeout limit</span><br><span class="line">rlm_rest (rest): Closing expired connection (3) - Hit idle_timeout limit</span><br><span class="line">rlm_rest (rest): Closing expired connection (2) - Hit idle_timeout limit</span><br><span class="line">rlm_rest (rest): You probably need to lower &quot;min&quot;</span><br><span class="line">rlm_rest (rest): Closing expired connection (1) - Hit idle_timeout limit</span><br><span class="line">(5)       [rest] &#x3D; ok</span><br><span class="line">(5)     &#125; # authenticate &#x3D; ok</span><br><span class="line">(5) &#125; # server inner-tunnel</span><br><span class="line">(5) Virtual server sending reply</span><br><span class="line">(5)   REST-HTTP-Status-Code &#x3D; 200</span><br><span class="line">(5) eap_ttls: Got tunneled Access-Accept</span><br><span class="line">(5) eap-home: Sending EAP Success (code 3) ID 175 length 4</span><br><span class="line">(5) eap-home: Freeing handler</span><br><span class="line">(5)     [eap-home] &#x3D; ok</span><br><span class="line">(5)   &#125; # Auth-Type eap-home &#x3D; ok</span><br><span class="line">(5) session-state: Discarding attributes for server home</span><br><span class="line">(5) Sent Access-Accept Id 5 from 172.16.2.4:1812 to 192.168.1.1:38284 length 164</span><br><span class="line">(5)   MS-MPPE-Recv-Key &#x3D; &lt;&lt;&lt; secret &gt;&gt;&gt;</span><br><span class="line">(5)   MS-MPPE-Send-Key &#x3D; &lt;&lt;&lt; secret &gt;&gt;&gt;</span><br><span class="line">(5)   EAP-Message &#x3D; 0x03af0004</span><br><span class="line">(5)   Message-Authenticator &#x3D; 0x00000000000000000000000000000000</span><br><span class="line">(5)   User-Name &#x3D; &quot;tv&quot;</span><br><span class="line">(5) Finished request</span><br></pre></td></tr></table></figure>
+
+<h1 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h1><p>最后我是让GPT帮忙写了一整套前后端，代码开源在这里：<a href="https://github.com/Gaojianli/Radius-Manager" target="_blank" rel="noopener">https://github.com/Gaojianli/Radius-Manager</a> ，支持了多用户管理和日志功能，可以直接拿去用：<br><img data-src="login.png" alt="登录界面"><br><img data-src="main.png" alt="主界面"><br><img data-src="user_management.png" alt="用户管理"><br><img data-src="log.png" alt="授权日志"></p>
+<p>docker-compose 部署文件仅供参考：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">freeradius:</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">radius_freeradius</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="attr">radius_mgnt:</span></span><br><span class="line">        <span class="attr">condition:</span> <span class="string">service_healthy</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">freeradius/freeradius-server:latest-alpine</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">default</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">1812</span><span class="string">:1812/udp</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">1813</span><span class="string">:1813/udp</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">unless-stopped</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/mnt/docker/freeradius_rest:/etc/raddb</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/etc/certs:/etc/raddb/certs:ro</span></span><br><span class="line">  <span class="attr">mariadb:</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">radius_mariadb</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">MARIADB_DATABASE:</span> <span class="string">radius_mgnt</span></span><br><span class="line">      <span class="attr">MARIADB_PASSWORD:</span> <span class="string">radius123</span></span><br><span class="line">      <span class="attr">MARIADB_ROOT_PASSWORD:</span> <span class="string">radius123</span></span><br><span class="line">      <span class="attr">MARIADB_USER:</span> <span class="string">radius</span></span><br><span class="line">    <span class="attr">expose:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">'3306'</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mariadb:lts-ubi9</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">default</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">unless-stopped</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">mariadb_data:/var/lib/mysql</span></span><br><span class="line">  <span class="attr">radius_mgnt:</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">radius_mgnt_app</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">mariadb</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">DB_HOST:</span> <span class="string">mariadb</span></span><br><span class="line">      <span class="attr">DB_NAME:</span> <span class="string">radius_mgnt</span></span><br><span class="line">      <span class="attr">DB_PASSWORD:</span> <span class="string">radius123</span></span><br><span class="line">      <span class="attr">DB_PORT:</span> <span class="number">3306</span></span><br><span class="line">      <span class="attr">DB_USER:</span> <span class="string">radius</span></span><br><span class="line">      <span class="attr">DEFAULT_ADMIN_EMAIL:</span> <span class="string">admin@gaojianli.me</span></span><br><span class="line">      <span class="attr">DEFAULT_ADMIN_PASSWORD:</span> <span class="string">1145141919810yajuu</span></span><br><span class="line">      <span class="attr">DEFAULT_ADMIN_USER:</span> <span class="string">admin</span></span><br><span class="line">      <span class="attr">JWT_SECRET:</span> <span class="string">1145141919810yajuu</span></span><br><span class="line">      <span class="attr">SERVER_PORT:</span> <span class="string">':8080'</span></span><br><span class="line">    <span class="attr">healthcheck:</span></span><br><span class="line">      <span class="attr">interval:</span> <span class="string">10s</span></span><br><span class="line">      <span class="attr">retries:</span> <span class="number">5</span></span><br><span class="line">      <span class="attr">start_period:</span> <span class="string">20s</span></span><br><span class="line">      <span class="attr">test:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">CMD</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">nc</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">'-z'</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">localhost</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">'8080'</span></span><br><span class="line">      <span class="attr">timeout:</span> <span class="string">5s</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">ghcr.io/gaojianli/radius-manager:latest</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">default</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">unless-stopped</span></span><br><span class="line"><span class="attr">version:</span> <span class="string">'3.8'</span></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">mariadb_data:</span> <span class="string">&#123;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>最后在路由器上配置好加密方式和 RADIUS 服务器的 IP 地址和端口，恭喜你，你已经拥有了自己的<del>有病</del>企业级 Wi-Fi 了！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">option encryption &#39;wpa2&#39;</span><br><span class="line">option auth_server &#39;192.168.1.1&#39;</span><br><span class="line">option auth_secret &#39;your_secret_key&#39;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>高渐离
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.gaojianli.me/2026/07/09/%E5%9C%A8%E5%AE%B6%E7%94%A8%E4%B8%8A%E8%B5%B7%E5%A4%9C%E7%BA%A7-Wi-Fi/" title="在家用上起夜级 Wi-Fi">https://blog.gaojianli.me/2026/07/09/在家用上起夜级-Wi-Fi/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/NAS/" rel="tag"># NAS</a>
+              <a href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag"># 网络</a>
+              <a href="/tags/FreeRADIUS/" rel="tag"># FreeRADIUS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/05/08/%E8%B5%9B%E5%8D%9A%E5%8F%97%E5%88%91%E2%80%94%E2%80%94k3s/" rel="prev" title="赛博受刑——k3s">
+      <i class="fa fa-chevron-left"></i> 赛博受刑——k3s
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#企业在哪里？"><span class="nav-number">1.</span> <span class="nav-text">企业在哪里？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#认证流程"><span class="nav-number">2.</span> <span class="nav-text">认证流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装-FreeRADIUS"><span class="nav-number">3.</span> <span class="nav-text">安装 FreeRADIUS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置-FreeRADIUS"><span class="nav-number">4.</span> <span class="nav-text">配置 FreeRADIUS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#clients-conf"><span class="nav-number">4.1.</span> <span class="nav-text">clients.conf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模块配置"><span class="nav-number">4.2.</span> <span class="nav-text">模块配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#eap"><span class="nav-number">4.2.1.</span> <span class="nav-text">eap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rest"><span class="nav-number">4.2.2.</span> <span class="nav-text">rest</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#站点配置"><span class="nav-number">4.3.</span> <span class="nav-text">站点配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#后端开发"><span class="nav-number">5.</span> <span class="nav-text">后端开发</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#测试"><span class="nav-number">6.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#部署"><span class="nav-number">7.</span> <span class="nav-text">部署</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="高渐离"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">高渐离</p>
+  <div class="site-description" itemprop="description">一个不起眼的个人小站</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Gaojianli" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Gaojianli" rel="noopener" target="_blank"><i class="fa fa-fw fa-fab fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:admin@gaojianli.me" title="E-Mail → mailto:admin@gaojianli.me" rel="noopener" target="_blank"><i class="fa fa-fw fa-fab fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/Gaojianlidesu" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;Gaojianlidesu" rel="noopener" target="_blank"><i class="fa fa-fw fa-fab fa-twitter"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://byrio.org/" title="http:&#x2F;&#x2F;byrio.org&#x2F;" rel="noopener" target="_blank">BYRIO</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.xice.wang/" title="https:&#x2F;&#x2F;blog.xice.wang&#x2F;" rel="noopener" target="_blank">Xice's Note</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://beardic.cn/" title="https:&#x2F;&#x2F;beardic.cn&#x2F;" rel="noopener" target="_blank">Dict Xiong</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://makiras.org/" title="https:&#x2F;&#x2F;makiras.org&#x2F;" rel="noopener" target="_blank">Makira的咸鱼小站</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://marycly.github.io/" title="https:&#x2F;&#x2F;marycly.github.io&#x2F;" rel="noopener" target="_blank">程序员玛丽的星海方舟</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sh.alynx.one/" title="https:&#x2F;&#x2F;sh.alynx.one&#x2F;" rel="noopener" target="_blank">喵's StackHarbor</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">高渐离</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">75k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:08</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '885335d032aa6845f987',
+      clientSecret: 'c928e0aaf80e0a91bc7a00c6c786e7a4d95d5643',
+      repo        : 'gaojianli.github.io',
+      owner       : 'Gaojianli',
+      admin       : ['Gaojianli'],
+      id          : '3f8c09851e013589a4231015463b777a',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+    </div>
+</body>
+</html>
